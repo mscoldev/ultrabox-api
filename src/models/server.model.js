@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-
+const{dbConnection}= require('../database/config.database');
 
 class Server {
 
@@ -11,13 +11,22 @@ class Server {
         this.pkg = 
         this.userPath = '/api/users';
         this.generalPath = '/api/';
-
+        this.authPath = '/api/auth';
+        this.recipePath= '/api/recipe';
+        
+        //Conectar a la base de datos
+        this.connectToDatabase();
         // Middlewares
         this.middlewares();
 
         // Rutas de mi aplicación
         this.routes();
 
+    }
+
+    //Conectar a la base de datos
+    async connectToDatabase (){
+        await dbConnection();
     }
 
     middlewares() {
@@ -38,6 +47,8 @@ class Server {
 
     routes() {
         this.app.use( this.userPath, require('../routes/user.routes'));
+        this.app.use( this.authPath, require('../routes/auth.routes'));
+        this.app.use( this.recipePath, require('../routes/recipe.routes'));
         // this.app.use( this.generalPath, require('../routes/api.routes'));
     }
 

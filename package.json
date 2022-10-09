@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "API intercambio para equipos MIOBOX MES",
   "main": "index.js",
-  "url_docs":"https://documentacion.org",
+  "url_docs": "https://documentacion.org",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "",
-    "dev":"nodemon src/app.js --exec babel-node",
-    "build":"babel ./ --out-dir build"
+    "dev": "nodemon src/app.js --exec babel-node " 
   },
   "keywords": [],
   "author": "mscoldev",
@@ -20,6 +19,7 @@
     "express": "^4.17.1",
     "helmet": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.6.5",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
