@@ -1,0 +1,33 @@
+const { Schema, model } = require("mongoose")
+
+const materialSchema = Schema({
+    name:{
+        type: String,
+        required:[true,'El nombre de la receta es obligatorio']
+    },
+    erp_code:{
+        type: Number,
+        required:[true,'El codigo ERP es requerido'],
+        unique:[true,'El codigo ERP debe ser unico']
+    },
+    description:{
+        type: String,
+        required:false,
+    },
+    id_controller:{
+        type: Number,
+        required:false,
+        unique:false
+    },
+    type:{
+        type: String,
+        required:[true,'El tipo de material es requerido debe es A=Aditivo o M=Material'],
+        emun:['A','M','O'],
+        default:'M'
+    }
+    }, {
+        timestamps: true,
+        versionKey: false
+    })
+
+module.exports = model('Material',materialSchema);

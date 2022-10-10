@@ -3,14 +3,16 @@ const Recipe = require('../models/recipe.model.js')
 
 
 const recipePost = async (req=request,res=response)=>{
+    //TODO: Usar desestructuracion de  objetos
     const body = req.body;
+    console.log(body);
     const recipe = new Recipe(body);
 
-    await recipe.save();
+    const recipeSaved = await recipe.save();
 
     res.status(200).json({
         msg:'Post API - Recetas post',
-        recipe
+        recipeSaved
     })
 }
 
