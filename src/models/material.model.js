@@ -24,6 +24,11 @@ const materialSchema = Schema({
         required:[true,'El tipo de material es requerido debe es A=Aditivo o M=Material'],
         emun:['A','M','O'],
         default:'M'
+    },
+    enable:{
+        type: Boolean,
+        required:[true,'El tipo de material es requerido debe es A=Aditivo o M=Material'],
+        default:true
     }
     }, {
         timestamps: true,
