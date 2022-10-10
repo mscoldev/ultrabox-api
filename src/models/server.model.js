@@ -13,7 +13,7 @@ class Server {
         this.generalPath = '/api/';
         this.authPath = '/api/auth';
         this.recipePath= '/api/recipe';
-        this.materialPath= '/api/material'
+        this.materialPath= '/api/'
         
         //Conectar a la base de datos
         this.connectToDatabase();

@@ -10,14 +10,14 @@ const materialSchema = Schema({
         required:[true,'El codigo ERP es requerido'],
         unique:[true,'El codigo ERP debe ser unico']
     },
-    description:{
-        type: String,
-        required:false,
-    },
     id_controller:{
         type: Number,
         required:false,
         unique:false
+    },
+    description:{
+        type: String,
+        required:false,
     },
     type:{
         type: String,
