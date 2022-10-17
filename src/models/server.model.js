@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const{dbConnection}= require('../database/config.database');
+const {createRoles}= require('../libs/initialSetupDatabase');
 
 class Server {
 
@@ -14,24 +15,42 @@ class Server {
         this.authPath = '/api/auth';
         this.recipePath= '/api/recipe';
         this.materialPath= '/api/material'
-        
+
+
         //Conectar a la base de datos
-        this.connectToDatabase();
+        this.dbInitialize();
+
+        // this.connectToDatabase();
+        // this.initialSetupDatabase();
         // Middlewares
         this.middlewares();
 
         // Rutas de mi aplicación
         this.routes();
 
+
+
     }
 
-    //Conectar a la base de datos
-    async connectToDatabase (){
-        await dbConnection();
+    //* Connect & Initialize Database
+   
+    async dbInitialize (){
+        await Promise.all([
+            dbConnection(),
+            createRoles(),
+        ])
     }
+   
+    // async connectToDatabase (){
+    //     await dbConnection();
+    // }
+    
+    // async initialSetupDatabase (){
+    //     await createRoles();
+    // }
 
     middlewares() {
-
+       
         // CORS
         this.app.use( cors() );
         

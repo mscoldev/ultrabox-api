@@ -16,9 +16,9 @@ const {username, email, password, roles} = req.body;
 
     const savedUser = await newUser.save();
     
-    // res.json({newUser})
+    //*Return TOKEN to FRONTEND
    const token = jwt.sign({ id: savedUser._id },process.env.SECRET_KEY, {
-       expiresIn: 86400
+       expiresIn: 86400 //*24 Hours
    })
 
    res.status(200).json({token});
@@ -29,7 +29,6 @@ const {username, email, password, roles} = req.body;
 const signIn = async (req = request, res = response) => {
 res.json('signIn')
 }
-
 
 
 module.exports = {

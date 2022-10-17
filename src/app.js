@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Server = require('./models/server.model');
-import pkg from '../package.json'
+import pkg from '../package.json';
+
 
 
 const server = new Server();
@@ -17,7 +18,6 @@ server.app.get('/api',(req, res)=>{
         url_docs : server.app.get('pkg').url_docs
 })
 })
-
 
 
 server.listen();
