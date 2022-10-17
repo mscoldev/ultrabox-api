@@ -2,7 +2,7 @@
 const { Router } = require('express');
 
 // Funciones desde el controlador
-const { authGet } = require('../controllers/auth.controller');
+const { signIn,signUp } = require('../controllers/auth.controller');
 
 //Importacion de Router express
 const router = Router();
@@ -10,6 +10,11 @@ const router = Router();
 
 //Aqui las rutas necesarias --->
 
-router.get('/', authGet);
+
+
+router.post('/signup', signUp);
+router.post('/signin', signIn);
+
+
 
 module.exports = router;

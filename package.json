@@ -13,19 +13,19 @@
   "author": "mscoldev",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "helmet": "^6.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.6.5",
-    "morgan": "^1.10.0"
+    "bcryptjs": "2.4.3",
+    "cors": "2.8.5",
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "helmet": "6.0.0",
+    "jsonwebtoken": "8.5.1",
+    "mongoose": "6.6.5",
+    "morgan": "1.10.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.19.3",
-    "@babel/node": "^7.19.1",
-    "@babel/preset-env": "^7.19.3"
+    "@babel/cli": "7.19.3",
+    "@babel/core": "7.19.3",
+    "@babel/node": "7.19.1",
+    "@babel/preset-env": "7.19.3"
   }
 }

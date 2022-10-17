@@ -1,6 +1,5 @@
 require('dotenv').config();
 const Server = require('./models/server.model');
-import { urlencoded } from 'express';
 import pkg from '../package.json'
 
 

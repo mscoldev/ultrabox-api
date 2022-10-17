@@ -1,26 +1,38 @@
 const { response, request } = require('express');
+const User = require('../models/user.model');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
+//TODO: Implements Singleton Pattern
+const signUp = async(req = request, res = response) => {
+const {username, email, password, roles} = req.body;
 
-const authGet = (req = request, res = response) => {
-
-    res.json({
-        msg:"Auth Get"
+    const newUser = new User({
+        username,
+        email,
+        password:await User.encryptPassword(password)
     })
 
+    const savedUser = await newUser.save();
+    
+    // res.json({newUser})
+   const token = jwt.sign({ id: savedUser._id },process.env.SECRET_KEY, {
+       expiresIn: 86400
+   })
+
+   res.status(200).json({token});
 }
 
-const authPut = (req = request, res = response) => {
 
+
+const signIn = async (req = request, res = response) => {
+res.json('signIn')
 }
 
-const authPost = (req = request, res = response) => {
-
-}
 
 
 module.exports = {
-    authGet,
-    authPut,
-    authPost
+signUp,
+signIn
 }
