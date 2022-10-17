@@ -1,4 +1,4 @@
-import Role from '../models/roles.model';
+const Role =  require('../models/roles.model');
 
 //* Initial configuration Roles in database
 
@@ -16,7 +16,7 @@ try {
      ]);
 
     console.log(values);
-}catch(error){
+}catch{
     console.error(error);
 }
 
