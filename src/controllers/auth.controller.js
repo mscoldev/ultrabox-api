@@ -1,37 +1,64 @@
-const { response, request } = require('express');
-const User = require('../models/user.model');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const { response, request } = require("express");
+const User = require("../models/user.model");
+const Role = require("../models/role.model");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
+//TODO: Implementar la verificacion de parametros de entrada.
 
-//TODO: Implements Singleton Pattern
-const signUp = async(req = request, res = response) => {
-const {username, email, password, roles} = req.body;
+const signUp = async (req = request, res = response) => {
+    const { username, email, password, status, roles } = req.body;
 
     const newUser = new User({
         username,
         email,
-        password:await User.encryptPassword(password)
-    })
+        password: await User.encryptPassword(password),
+        status,
+    });
+    //* assign roles - if roles == null default roles is user.
+
+    if (roles) {
+        const foundRoles = await Role.find({ name: { $in: roles } });
+        newUser.roles = foundRoles.map((role) => role._id);
+    } else {
+        const role = await Role.findOne({ name: { $in: "user" } });
+        newUser.roles = [role._id];
+    }
 
     const savedUser = await newUser.save();
-    
+    console.log(savedUser);
+
     //*Return TOKEN to FRONTEND
-   const token = jwt.sign({ id: savedUser._id },process.env.SECRET_KEY, {
-       expiresIn: 86400 //*24 Hours
-   })
+    const token = jwt.sign({ id: savedUser._id }, process.env.SECRET_KEY, {
+        expiresIn: 86400, //*24 Hours
+    });
 
-   res.status(200).json({token});
-}
+    res.status(200).json({ token });
+};
 
-
-
+//----------------------------
 const signIn = async (req = request, res = response) => {
-res.json('signIn')
-}
+    const usernameFound = await User.findOne({ username: req.body.username });
+    if (!usernameFound) {
+        return res.status(400).json({
+            msg: "Usuario o password incorrectos - Username",
+        });
+    } else {
+        console.log("Usuario encontrado");
+        res.json({ token: "123456" });
+    }
 
+    //TODO: Verificar si el usuario esta activo
+    // if (!User.status) {
+    //     return res.status(400).json({
+    //         msg: 'Usuario o password incorrectos - Inactivo'
+    //     });
+    // }
+
+    //TODO: Verificar la contrasena
+};
 
 module.exports = {
-signUp,
-signIn
-}
+    signUp,
+    signIn,
+};

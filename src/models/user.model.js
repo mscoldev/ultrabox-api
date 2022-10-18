@@ -2,37 +2,41 @@ const { Schema, model } = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const userSchema = Schema({
-    username:{
+    username: {
         type: String,
-        unique: [true,'Este id ya se encuentra registrado en otra receta']
+        unique: [true, 'Este id ya se encuentra registrado en otra receta']
     },
-    email:{
+    email: {
         type: String,
-        unique: [true,'Este id ya se encuentra registrado en otra receta'],
-        required:[true,'El codifo ERP es requerido'],
+        unique: [true, 'Este id ya se encuentra registrado en otra receta'],
+        required: [true, 'El codifo ERP es requerido'],
     },
-    password:{
+    password: {
         type: String,
-        required:true,
+        required: true,
     },
-    roles:[{
-        ref:'Role',
+    status: {
+        type: Boolean,
+        default: false,
+    },
+    roles: [{
+        ref: 'Role',
         type: Schema.Types.ObjectId
     }],
-    }, {
-        timestamps: true,
-        versionKey: false
-    })
+}, {
+    timestamps: true,
+    versionKey: false
+})
 
 
-userSchema.statics.encryptPassword = async (password)=>{
-     const salt = await bcrypt.genSalt(10)
-     return await bcrypt.hash(password,salt)
+userSchema.statics.encryptPassword = async (password) => {
+    const salt = await bcrypt.genSalt(10)
+    return await bcrypt.hash(password, salt)
 }
 
-userSchema.statics.comparePassword = async (password, receivedPassword)=>{
-    return await bcrypt.compare(password,receivedPassword)
+userSchema.statics.comparePassword = async (password, receivedPassword) => {
+    return await bcrypt.compare(password, receivedPassword)
     // Return: False or True
 }
 
-module.exports = model('User',userSchema);
+module.exports = model('User', userSchema);
