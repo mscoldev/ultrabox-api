@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcryptjs");
-
+//Comentario prueba
 const userSchema = Schema({
     username: {
         type: String,
