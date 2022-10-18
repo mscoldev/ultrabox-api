@@ -38,14 +38,16 @@ const signUp = async (req = request, res = response) => {
 
 //----------------------------
 const signIn = async (req = request, res = response) => {
-    const usernameFound = await User.findOne({ username: req.body.username });
+    const usernameFound = await User.findOne({ username: req.body.username }).populate('roles');
     if (!usernameFound) {
         return res.status(400).json({
             msg: "Usuario o password incorrectos - Username",
         });
     } else {
         console.log("Usuario encontrado");
-        res.json({ token: "123456" });
+        console.log(usernameFound);
+        console.log("ROLES: " + usernameFound.roles);
+        res.json(usernameFound);
     }
 
     //TODO: Verificar si el usuario esta activo

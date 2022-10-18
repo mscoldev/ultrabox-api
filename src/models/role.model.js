@@ -5,8 +5,8 @@ const roleSchema = Schema({
         type: String,
         unique: [false, 'Debe definir un nombre para el Esquema']
     },
-    main: {
-        type: String,
+    menu: {
+        type: [Map],
         unique: [false, 'Debe definir un nombre para el Esquema'],
         default: ""
     },

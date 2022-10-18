@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Dashboard",
+    "route": "index",
+    "submain": []
+  },
+  {
+    "title": "Produccion",
+    "route": "",
+    "submain": [
+      {
+        "title": "Configuracion",
+        "route": "",
+        "submain": [
+          {
+            "title": "Materiales",
+            "route": "material"
+          },
+          {
+            "title": "Receta",
+            "route": "receta"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Data Log",
+    "route": "dataLog",
+    "submain": []
+  },
+  {
+    "title": "Mail",
+    "route": "index",
+    "submain": []
+  },
+  {
+    "title": "Blog",
+    "route": "index",
+    "submain": []
+  },
+  {
+    "title": "Documentacion",
+    "route": "index",
+    "submain": []
+  }
+]
