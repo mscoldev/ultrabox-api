@@ -26,12 +26,14 @@ var _require = require('../database/config.database'),
 var _require2 = require('../libs/initialSetupDatabase'),
     createRoles = _require2.createRoles;
 
+var PORT = process.env.API_PORT_SERVER || 3000;
+
 var Server = /*#__PURE__*/function () {
   function Server() {
     _classCallCheck(this, Server);
 
     this.app = express();
-    this.port = process.env.API_PORT_SERVER;
+    this.port = PORT;
     this.userPath = '/api/users';
     this.generalPath = '/api/';
     this.authPath = '/api/auth';

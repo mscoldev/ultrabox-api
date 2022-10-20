@@ -3,12 +3,12 @@ const cors = require('cors');
 const morgan = require('morgan');
 const { dbConnection } = require('../database/config.database');
 const { createRoles } = require('../libs/initialSetupDatabase');
-
+const PORT = process.env.API_PORT_SERVER || 3000
 class Server {
 
     constructor() {
         this.app = express();
-        this.port = process.env.API_PORT_SERVER;
+        this.port = PORT;
         this.userPath = '/api/users';
         this.generalPath = '/api/';
         this.authPath = '/api/auth';
