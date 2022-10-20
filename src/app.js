@@ -1,6 +1,6 @@
 require('dotenv').config();
 const Server = require('./models/server.model');
-import pkg from '../package.json';
+const pkg = require('../package.json');
 
 
 
