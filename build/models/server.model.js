@@ -26,7 +26,7 @@ var _require = require('../database/config.database'),
 var _require2 = require('../libs/initialSetupDatabase'),
     createRoles = _require2.createRoles;
 
-var PORT = process.env.API_PORT_SERVER || 3000;
+var PORT = process.env.API_PORT_SERVER || 80;
 
 var Server = /*#__PURE__*/function () {
   function Server() {
