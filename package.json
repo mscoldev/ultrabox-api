@@ -1,12 +1,16 @@
 {
   "name": "ULTRABOX",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.x"
+  },
   "description": "API intercambio para equipos MIOBOX MES",
   "main": "index.js",
   "url_docs": "https://documentacion.org",
   "scripts": {
     "start": "",
-    "dev": "nodemon src/app.js --exec babel-node " 
+    "dev": "nodemon src/app.js --exec babel-node ",
+    "build":"babel src --out-dir build" 
   },
   "keywords": [],
   "author": "mscoldev",
