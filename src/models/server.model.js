@@ -3,7 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const { dbConnection } = require('../database/config.database');
 const { createRoles } = require('../libs/initialSetupDatabase');
-const PORT = process.env.API_PORT_SERVER || 3000
+const PORT = process.env.API_PORT_SERVER || 80;
 class Server {
 
     constructor() {

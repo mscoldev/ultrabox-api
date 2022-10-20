@@ -8,7 +8,7 @@
   "main": "index.js",
   "url_docs": "https://documentacion.org",
   "scripts": {
-    "start": "node build/app.js",
+    "start": "npm run build && node build/app.js",
     "dev": "nodemon src/app.js --exec babel-node ",
     "build": "babel src --out-dir build"
   },
