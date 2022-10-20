@@ -53,7 +53,7 @@ var createRoles = /*#__PURE__*/function () {
           case 12:
             _context.prev = 12;
             _context.t0 = _context["catch"](0);
-            console.error(error);
+            console.error(_context.t0);
 
           case 15:
           case "end":

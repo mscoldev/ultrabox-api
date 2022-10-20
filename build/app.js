@@ -1,16 +1,14 @@
 "use strict";
 
-var _package = _interopRequireDefault(require("../package.json"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 require('dotenv').config();
 
 var Server = require('./models/server.model');
 
+var pkg = require('../package.json');
+
 var server = new Server();
-server.app.set('pkg', _package["default"]);
-console.log(_package["default"]);
+server.app.set('pkg', pkg);
+console.log(pkg);
 server.app.get('/api', function (req, res) {
   res.json({
     app: server.app.get('pkg').name,
