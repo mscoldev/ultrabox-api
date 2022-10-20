@@ -16,7 +16,7 @@ const createRoles = async () => {
     ]);
 
     console.log(values);
-  } catch {
+  } catch (error) {
     console.error(error);
   }
 
