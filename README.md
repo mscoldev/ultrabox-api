@@ -6,3 +6,8 @@ Pasos para implementar
 
 
 
+#DOCUMENTACION DE LA API - POSTMAN
+
+https://documenter.getpostman.com/view/5304645/2s84DiyQgF
+
+
