@@ -23,9 +23,13 @@ const productionSchema = Schema({
         type: String,
         default: 'kg'
     },
+    deleted: {
+        type: Boolean,
+        default: false
+    }
 }, {
     timestamps: true,
     versionKey: false
 })
 
-module.exports = model('Material', productionSchema);
+module.exports = model('Production', productionSchema);

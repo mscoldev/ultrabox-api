@@ -16,13 +16,13 @@ const router = Router();
 //Routes production
 router.get('/', getProductions);
 
-router.get('/:id', getProductionById);
+router.get('/:_id', getProductionById);
 
 router.post('/', createProduction);
 
-router.put('/:id', updateProductionById);
+router.put('/:_id', updateProductionById);
 
-router.delete('/:id', deleteProductionById);
+router.delete('/:_id', deleteProductionById);
 
 
 
