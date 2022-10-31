@@ -4,6 +4,13 @@ const morgan = require('morgan');
 const { dbConnection } = require('../database/config.database');
 const { createRoles } = require('../libs/initialSetupDatabase');
 const PORT = process.env.PORT || 3000;
+
+const corsOptions = {
+    credentials: true,
+    preflightContinue: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    origin: true
+}
 class Server {
 
     constructor() {
@@ -51,7 +58,7 @@ class Server {
     middlewares() {
 
         // CORS
-        this.app.use(cors());
+        this.app.use(cors(corsOptions));
 
         //Morgan
         this.app.use(morgan('dev'));
