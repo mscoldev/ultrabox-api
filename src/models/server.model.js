@@ -9,7 +9,7 @@ const corsOptions = {
     credentials: true,
     preflightContinue: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    origin: true
+    origin: "*"
 }
 class Server {
 
