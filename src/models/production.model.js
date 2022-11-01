@@ -17,7 +17,13 @@ const productionSchema = Schema({
     },
     _idRecipe: {
         ref: 'Recipe',
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        required: [true, 'the _idRecipe is required'],
+    },
+    _idProductionLine: {
+        ref: 'ProductionLine',
+        type: Schema.Types.ObjectId,
+        required: [true, 'the _idProductionLine is required']
     },
     units: {
         type: String,
