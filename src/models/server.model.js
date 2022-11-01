@@ -20,8 +20,9 @@ class Server {
         this.generalPath = '/api/';
         this.authPath = '/api/auth';
         this.recipePath = '/api/recipe';
-        this.materialPath = '/api/material'
-        this.productionPath = '/api/production'
+        this.materialPath = '/api/material';
+        this.productionPath = '/api/production';
+        this.productionLinePath = '/api/productionline';
 
 
         //Conectar a la base de datos
@@ -78,6 +79,7 @@ class Server {
         this.app.use(this.recipePath, require('../routes/recipe.routes'));
         this.app.use(this.materialPath, require('../routes/material.routes'));
         this.app.use(this.productionPath, require('../routes/production.routes'));
+        this.app.use(this.productionLinePath, require('../routes/productionLine.routes'));
         // this.app.use( this.generalPath, require('../routes/api.routes'));
     }
 
