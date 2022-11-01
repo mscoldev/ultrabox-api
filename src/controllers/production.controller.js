@@ -22,7 +22,7 @@ const createProduction = async (req = request, res = response) => {
         const productionSaved = await production.save();
 
         res.status(201).json({
-            msg: 'Production Created',
+            msg: 'Producción Creada',
             productionSaved
         })
     } catch (err) {
@@ -42,7 +42,7 @@ const getProductionById = async (req = request, res = response) => {
             });
         } else {
             res.status(404).json({
-                msg: 'Material no encontrado, verifique el Id ingresado'
+                msg: 'Producción no encontrada, verifique el Id ingresado'
             })
         }
     } catch (error) {
@@ -58,12 +58,12 @@ const updateProductionById = async (req = request, res = response) => {
         const updatedProduction = await Production.findByIdAndUpdate(paramsId, body, { new: true });
         if (updatedProduction != null) {
             res.status(200).json({
-                msg: 'Produccion actualizada segun Id',
+                msg: 'Producción actualizada segun Id',
                 updatedProduction
             });
         } else {
             res.status(404).json({
-                msg: 'Id de produccion no encontrado'
+                msg: 'Id de Producción no encontrado'
             })
         }
     }
