@@ -1,13 +1,13 @@
 const { Router } = require('express');
 
 // Funciones desde el controlador
-const { 
-    materialPost,
+const {
+    createMaterial,
     getMaterials,
     getMaterialsById,
     updateMaterialById,
     deleteMaterialById
- } = require('../controllers/material.controller');
+} = require('../controllers/material.controller');
 
 //Importacion de Router express
 const router = Router();
@@ -25,7 +25,7 @@ router.put('/:materialId', updateMaterialById);
 router.delete('/:materialId', deleteMaterialById);
 
 //Agregar nuevos materiales al base de datos
-router.post('/', materialPost);
+router.post('/', createMaterial);
 
 
 module.exports = router;
