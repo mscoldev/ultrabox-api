@@ -27,11 +27,11 @@ const materialSchema = Schema({
     },
     ppm: {
         type: Number,
-        required: [true, 'PPM is required']
+        required: [false, 'PPM is required']
     },
     density: {
         type: Number,
-        required: [true, 'Density is required']
+        required: [false, 'Density is required']
     },
     deleted: {
         type: Boolean,
