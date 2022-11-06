@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
+const clc = require('cli-color');
+const localDatabase = process.env.MONGODB_LOCAL_CNN;
+const remoteDatabase = process.env.MONGODB_CNN;
+
+const config = { serverSelectionTimeoutMS: 3000 }
 
 const dbConnection = async () => {
-    console.log("<==========Ejecutando Conexion a DB==============>");
     try {
-
-        await mongoose.connect(process.env.MONGODB_CNN);
-
-        console.log('Database Online OK!...>');
-
+        const connectionLocalActive = await mongoose.connect(localDatabase, config);
+        console.log(clc.green('Database Local Online OK!...>'));
     } catch (error) {
-        console.log(error);
-        throw new Error('Error connecting to database mongo')
+        console.error(clc.red('No fue posible conectar a la base de datos local'))
+        console.error(error.reason);
+        try {
+            const connectionRemoteActive = await mongoose.connect(remoteDatabase, config);
+            console.log(clc.green('Database Remote Online OK!...>'));
+        } catch (error) {
+            console.error(error.reason);
+        }
     }
 
 }

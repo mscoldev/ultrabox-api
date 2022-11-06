@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
 // Funciones desde el controlador
-const { recipePost, getRecipe } = require('../controllers/recipe.controller');
+const { recipeMaterialCreate } = require('../controllers/recipeMaterial.controller');
 
 //Importacion de Router express
 const router = Router();
@@ -9,7 +9,6 @@ const router = Router();
 
 //Aqui las rutas necesarias --->
 
-router.post('/', recipePost);
-router.get('/', getRecipe);
+router.post('/', recipeMaterialCreate);
 
 module.exports = router;
