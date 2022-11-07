@@ -20,6 +20,7 @@ class Server {
         this.generalPath = '/api/';
         this.authPath = '/api/auth';
         this.recipePath = '/api/recipe';
+        this.recipeMaterialPath = '/api/recipematerial';
         this.materialPath = '/api/material';
         this.productionPath = '/api/production';
         this.productionLinePath = '/api/productionline';
@@ -28,8 +29,7 @@ class Server {
         //Conectar a la base de datos
         this.dbInitialize();
 
-        // this.connectToDatabase();
-        // this.initialSetupDatabase();
+
         // Middlewares
         this.middlewares();
 
@@ -77,6 +77,7 @@ class Server {
         this.app.use(this.userPath, require('../routes/user.routes'));
         this.app.use(this.authPath, require('../routes/auth.routes'));
         this.app.use(this.recipePath, require('../routes/recipe.routes'));
+        this.app.use(this.recipeMaterialPath, require('../routes/recipeMaterial.routes'));
         this.app.use(this.materialPath, require('../routes/material.routes'));
         this.app.use(this.productionPath, require('../routes/production.routes'));
         this.app.use(this.productionLinePath, require('../routes/productionLine.routes'));
