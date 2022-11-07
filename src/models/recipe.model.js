@@ -14,14 +14,28 @@ const recipeSchema = Schema({
         required: false,
         unique: [true, 'Este id ya se encuentra registrado en otra receta']
     },
-    _idRecipeMaterials: [{
-        ref: 'RecipeMaterial',
+    ingredients: [{
         type: Schema.Types.ObjectId,
-        alias: 'Components'
-    }],
+        ref: 'Ingredient'
+    }]
 }, {
     timestamps: true,
     versionKey: false
 })
 
-module.exports = model('Recipe', recipeSchema);
+const ingredientSchema = Schema({
+    _idMaterial: {
+        type: Schema.Types.ObjectId,
+        ref: 'Material'
+    },
+    qty: {
+        type: Number,
+    }
+}, {
+    timestamps: true,
+    versionKey: false
+})
+
+const Recipe = model('Recipe', recipeSchema);
+const Ingredient = model('Ingredient', ingredientSchema)
+module.exports = { Recipe, Ingredient }
