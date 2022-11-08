@@ -5,14 +5,7 @@ const { Recipe, Ingredient } = require('../models/recipe.model');
 const getRecipe = async (req = request, res = response) => {
     try {
         const recipes = await Recipe.find({ "deleted": false })
-            .populate({
-                path: 'ingredients',
-                select: { qty: 1, _id: 0 },
-                populate: {
-                    path: '_idMaterial',
-                    select: { name: 1, type: 1, ppm: 1, density: 1, _id: 0 }
-                }
-            });
+            .populate({ path: 'ingredients._idMaterial', select: { name: 1, _id: 0 } });
         // .populate(
         //     {
         //         path: '_idRecipeMaterials',
@@ -36,11 +29,10 @@ const createRecipe = async (req = request, res = response) => {
     try {
         //TODO: Usar desestructuracion de  objetos
         const body = req.body;
-        console.log(body);
-        const recipe = new Recipe(body);
-
-
-
+        const recipe = new Recipe(body)
+        const { ingredients, ...tempRecipe } = body;
+        // const recipe = new Recipe(tempRecipe);
+        // recipe.ingredients.push(ingredients);
         const recipeSaved = await recipe.save();
 
         res.status(200).json(

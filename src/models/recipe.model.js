@@ -14,10 +14,20 @@ const recipeSchema = Schema({
         required: false,
         unique: [true, 'Este id ya se encuentra registrado en otra receta']
     },
-    ingredients: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Ingredient'
-    }]
+    deleted: {
+        type: Boolean,
+        required: [true, 'El estado deleted es requerido no puede dejarlo en blanco T/F'],
+        default: false,
+    },
+    ingredients: [new Schema({
+        _idMaterial: {
+            type: Schema.Types.ObjectId,
+            ref: 'Material'
+        },
+        qty: {
+            type: Number,
+        }
+    })]
 }, {
     timestamps: true,
     versionKey: false
