@@ -47,7 +47,14 @@ const signIn = async (req = request, res = response) => {
         console.log("Usuario encontrado");
         console.log(usernameFound);
         console.log("ROLES: " + usernameFound.roles);
-        res.json(usernameFound);
+        const roles = usernameFound.roles
+
+        const token = jwt.sign({ id: usernameFound._id }, process.env.SECRET_KEY, {
+            expiresIn: 86400, //*24 Hours
+        });
+
+        res.status(200).json({ token, roles });
+
     }
 
     //TODO: Verificar si el usuario esta activo
