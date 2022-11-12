@@ -1,23 +1,14 @@
 const { response, request } = require('express');
 const { Recipe, Ingredient } = require('../models/recipe.model');
+const jsonata = require('jsonata');
 
 
 const getRecipe = async (req = request, res = response) => {
+
+
     try {
-        const recipes = await Recipe.find({ "deleted": false })
-            .populate({ path: 'ingredients._idMaterial', select: { name: 1, _id: 0 } });
-        // .populate(
-        //     {
-        //         path: '_idRecipeMaterials',
-        //         select: { qty: 1, _id: 0 },
-        //         populate:
-        //         {
-        //             path: '_idMaterial',
-        //             select: { name: 1, type: 1, ppm: 1, density: 1, _id: 0 },
-        //         }
-        //     });
+        const recipes = await JSONataExpression(await getRecipesToDatabase());
         res.status(200).json({
-            msg: 'List of recipes',
             recipes
         })
     } catch (err) {
@@ -63,5 +54,27 @@ const updateRecipe = async (req = request, res = response) => {
         })
     }
 }
+
+//get Data to database mongo.
+const getRecipesToDatabase = async () => {
+    try {
+        const recipes = await Recipe.find({ "deleted": false })
+            .populate({ path: 'ingredients._idMaterial', select: { name: 1, _id: 1 } })
+        return recipes;
+    } catch (err) {
+        message: err.message
+    }
+}
+
+//Function - List recipe apply a JSONata Expression
+const JSONataExpression = async (dataPromise) => {
+    const queryJSONata = `$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,
+        "ingredients":ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"qty":qty}}`;
+    const expression = jsonata(queryJSONata);
+
+    const result = expression.evaluate(dataPromise);
+    return result;
+}
+
 
 module.exports = { createRecipe, getRecipe, updateRecipe }

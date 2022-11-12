@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const { dbConnection } = require('../database/config.database');
 const { createRoles } = require('../libs/initialSetupDatabase');
 const PORT = process.env.PORT || 3000;
+const jsonata = require('jsonata');
 
 const corsOptions = {
     credentials: true,
