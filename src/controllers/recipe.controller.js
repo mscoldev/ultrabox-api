@@ -4,8 +4,6 @@ const jsonata = require('jsonata');
 
 
 const getRecipe = async (req = request, res = response) => {
-
-
     try {
         const recipes = await JSONataExpression(await getRecipesToDatabase());
         res.status(200).json({
@@ -55,6 +53,25 @@ const updateRecipe = async (req = request, res = response) => {
     }
 }
 
+const deleteRecipeById = async (req = request, res = response) => {
+    try {
+        const paramsId = req.params.recipeId;
+        const body = { deleted: true }
+        const deletedRecipe = await Recipe.findByIdAndUpdate(paramsId, body);
+        if (deletedRecipe != null) {
+            res.status(200).json({
+                msg: 'Receta eliminada Id:' + paramsId
+            });
+        } else {
+            res.status(404).json({
+                msg: 'Material no encontrado, verifique el Id ingresado'
+            })
+        }
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
 //get Data to database mongo.
 const getRecipesToDatabase = async () => {
     try {
@@ -77,4 +94,4 @@ const JSONataExpression = async (dataPromise) => {
 }
 
 
-module.exports = { createRecipe, getRecipe, updateRecipe }
+module.exports = { createRecipe, getRecipe, updateRecipe, deleteRecipeById }
