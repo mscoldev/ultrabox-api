@@ -1,5 +1,5 @@
 const { response, request } = require('express');
-const { Recipe, Ingredient } = require('../models/recipe.model');
+const Recipe = require('../models/recipe.model');
 const jsonata = require('jsonata');
 
 

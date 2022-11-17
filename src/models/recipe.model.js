@@ -22,10 +22,12 @@ const recipeSchema = Schema({
     ingredients: [new Schema({
         _idMaterial: {
             type: Schema.Types.ObjectId,
-            ref: 'Material'
+            ref: 'Material',
+            required: [true, 'Defina un id de material como ingrediente']
         },
         qty: {
             type: Number,
+            required: [true, 'Defina la cantidad a utilizar del material']
         }
     })]
 }, {
@@ -33,19 +35,5 @@ const recipeSchema = Schema({
     versionKey: false
 })
 
-const ingredientSchema = Schema({
-    _idMaterial: {
-        type: Schema.Types.ObjectId,
-        ref: 'Material'
-    },
-    qty: {
-        type: Number,
-    }
-}, {
-    timestamps: true,
-    versionKey: false
-})
-
 const Recipe = model('Recipe', recipeSchema);
-const Ingredient = model('Ingredient', ingredientSchema)
-module.exports = { Recipe, Ingredient }
+module.exports = Recipe
