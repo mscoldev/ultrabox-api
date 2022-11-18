@@ -85,8 +85,8 @@ const getRecipesToDatabase = async () => {
 
 //Function - List recipe apply a JSONata Expression
 const JSONataExpression = async (dataPromise) => {
-    const queryJSONata = `$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,
-        "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"qty":qty}]}`;
+    const queryJSONata = `[$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,
+        "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"qty":qty}]}]`;
     const expression = jsonata(queryJSONata);
 
     const result = expression.evaluate(dataPromise);
