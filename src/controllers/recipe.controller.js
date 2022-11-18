@@ -5,6 +5,7 @@ const jsonata = require('jsonata');
 
 const getRecipe = async (req = request, res = response) => {
     try {
+        // const recipes = await getRecipesToDatabase()
         const recipes = await JSONataExpression(await getRecipesToDatabase());
         res.status(200).json({
             recipes
@@ -76,7 +77,7 @@ const deleteRecipeById = async (req = request, res = response) => {
 const getRecipesToDatabase = async () => {
     try {
         const recipes = await Recipe.find({ "deleted": false })
-            .populate({ path: 'ingredients._idMaterial', select: { name: 1, _id: 1 } })
+            .populate({ path: 'ingredients._idMaterial', select: { name: 1, _id: 1, type: 1, deleted: 1, erp_code: 1, id_controller: 1 } })
         return recipes;
     } catch (err) {
         message: err.message
@@ -86,7 +87,7 @@ const getRecipesToDatabase = async () => {
 //Function - List recipe apply a JSONata Expression
 const JSONataExpression = async (dataPromise) => {
     const queryJSONata = `[$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,
-        "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"qty":qty}]}]`;
+        "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"type":_idMaterial.type,"deleted":_idMaterial.deleted,"qty":qty}]}]`;
     const expression = jsonata(queryJSONata);
 
     const result = expression.evaluate(dataPromise);
