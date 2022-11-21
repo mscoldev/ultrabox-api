@@ -28,7 +28,9 @@
     "jsonwebtoken": "8.5.1",
     "mongoose": "6.6.5",
     "morgan": "1.10.0",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.25.6"
   },
   "devDependencies": {
     "@babel/cli": "7.19.3",

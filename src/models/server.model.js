@@ -2,9 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const { dbConnection } = require('../database/config.database');
+const pgConnection = require('../database/config.databasepg');
 const { createRoles } = require('../libs/initialSetupDatabase');
 const PORT = process.env.PORT || 3000;
-const jsonata = require('jsonata');
 
 const corsOptions = {
     credentials: true,
@@ -45,6 +45,7 @@ class Server {
 
     async dbInitialize() {
         await Promise.all([
+            pgConnection(),
             dbConnection(),
             createRoles(),
         ])
