@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const ProductionLine = require("../models/productionLine.model");
+const ProductionLine = require("../../models/productionLine.model");
 
 
 const getProductionLines = async (req = request, res = response) => {

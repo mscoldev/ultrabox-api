@@ -1,5 +1,5 @@
 const { response, request } = require('express');
-const Material = require('../models/material.model')
+const Material = require("../../models/material.model");
 
 
 const getMaterials = async (req = request, res = response) => {

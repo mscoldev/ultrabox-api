@@ -7,7 +7,7 @@ const {
     updateProductionById,
     createProduction,
     deleteProductionById
-} = require('../controllers/production.controller');
+} = require("../../controllers/mes/production.controller");
 
 
 const router = Router();

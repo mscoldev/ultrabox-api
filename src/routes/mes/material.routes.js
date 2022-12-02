@@ -7,7 +7,7 @@ const {
     getMaterialsById,
     updateMaterialById,
     deleteMaterialById
-} = require('../controllers/material.controller');
+} = require("../../controllers/mes/material.controller");
 
 //Importacion de Router express
 const router = Router();

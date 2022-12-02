@@ -2,9 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const { dbConnection } = require('../database/config.database');
-const pgConnection = require('../database/config.databasepg');
+const { pgConnection } = require('../database/config.databasepg');
 const { createRoles } = require('../libs/initialSetupDatabase');
 const PORT = process.env.PORT || 3000;
+
 
 const corsOptions = {
     credentials: true,
@@ -17,14 +18,18 @@ class Server {
     constructor() {
         this.app = express();
         this.port = PORT;
+        //*PATHS MES
         this.userPath = '/api/users';
         this.generalPath = '/api/';
         this.authPath = '/api/auth';
         this.recipePath = '/api/recipe';
-        this.recipeMaterialPath = '/api/recipematerial';
         this.materialPath = '/api/material';
         this.productionPath = '/api/production';
         this.productionLinePath = '/api/productionline';
+
+        //*PATHS SCALE
+        this.clientPath = '/api/scale/client';
+        this.driverPath = '/api/scale/driver';
 
 
         //Conectar a la base de datos
@@ -76,14 +81,20 @@ class Server {
     }
 
     routes() {
+        //*ROUTES APP MES
         this.app.use(this.userPath, require('../routes/user.routes'));
         this.app.use(this.authPath, require('../routes/auth.routes'));
-        this.app.use(this.recipePath, require('../routes/recipe.routes'));
-        this.app.use(this.recipeMaterialPath, require('../routes/recipeMaterial.routes'));
-        this.app.use(this.materialPath, require('../routes/material.routes'));
-        this.app.use(this.productionPath, require('../routes/production.routes'));
-        this.app.use(this.productionLinePath, require('../routes/productionLine.routes'));
+        this.app.use(this.recipePath, require('../routes/mes/recipe.routes'));
+        this.app.use(this.materialPath, require('../routes/mes/material.routes'));
+        this.app.use(this.productionPath, require('../routes/mes/production.routes'));
+        this.app.use(this.productionLinePath, require('../routes/mes/productionLine.routes'));
         // this.app.use( this.generalPath, require('../routes/api.routes'));
+
+        //*ROUTES APP SCALE
+
+        this.app.use(this.clientPath, require('../routes/scale/client.routes'));
+        this.app.use(this.driverPath, require('../routes/scale/driver.routes'));
+
     }
 
     listen() {
