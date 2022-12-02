@@ -15,7 +15,7 @@ const product = sequelize.define('products', {
     enabled: {
         type: DataTypes.BOOLEAN,
         required: true,
-        default: true
+        defaultValue: true
     }
 })
 

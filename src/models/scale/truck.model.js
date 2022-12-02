@@ -4,9 +4,9 @@ const { sequelize } = require('../../database/config.databasepg');
 
 const truck = sequelize.define('trucks', {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        defaultValue: DataTypes.UUIDV4
     },
     numberPlate: {
         type: DataTypes.STRING,
@@ -23,7 +23,7 @@ const truck = sequelize.define('trucks', {
     enabled: {
         type: DataTypes.BOOLEAN,
         required: true,
-        default: true
+        defaultValue: true
     }
 })
 

@@ -15,7 +15,7 @@ const project = sequelize.define('projects', {
     enabled: {
         type: DataTypes.BOOLEAN,
         required: true,
-        default: true
+        defaultValue: true
     }
 })
 

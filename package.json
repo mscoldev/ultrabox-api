@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node build/app.js",
     "dev": "nodemon src/app.js --exec babel-node ",
-    "build": "babel src --out-dir build"
+    "build": "babel src --out-dir build",
+    "lint": "eslint"
   },
   "keywords": [],
   "author": "mscoldev",

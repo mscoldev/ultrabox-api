@@ -7,6 +7,7 @@ const { createRoles } = require('../libs/initialSetupDatabase');
 const PORT = process.env.PORT || 3000;
 
 
+
 const corsOptions = {
     credentials: true,
     preflightContinue: true,
@@ -30,6 +31,10 @@ class Server {
         //*PATHS SCALE
         this.clientPath = '/api/scale/client';
         this.driverPath = '/api/scale/driver';
+        this.originPath = '/api/scale/origin';
+        this.productPath = '/api/scale/product';
+        this.projectPath = '/api/scale/project';
+        this.truckPath = '/api/scale/truck';
 
 
         //Conectar a la base de datos
@@ -94,6 +99,10 @@ class Server {
 
         this.app.use(this.clientPath, require('../routes/scale/client.routes'));
         this.app.use(this.driverPath, require('../routes/scale/driver.routes'));
+        this.app.use(this.originPath, require('../routes/scale/origin.routes'));
+        this.app.use(this.productPath, require('../routes/scale/product.routes'));
+        this.app.use(this.projectPath, require('../routes/scale/project.routes'));
+        this.app.use(this.truckPath, require('../routes/scale/truck.routes'));
 
     }
 

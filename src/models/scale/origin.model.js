@@ -10,12 +10,13 @@ const origin = sequelize.define('origins', {
     },
     originName: {
         type: DataTypes.STRING,
-        required: true
+        required: true,
+        unique: true
     },
     enabled: {
         type: DataTypes.BOOLEAN,
         required: true,
-        default: true
+        defaultValue: true
     }
 })
 
