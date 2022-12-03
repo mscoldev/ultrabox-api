@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const { dbConnection } = require('../database/config.database');
 const { pgConnection } = require('../database/config.databasepg');
 const { createRoles } = require('../libs/initialSetupDatabase');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5001;
 
 
 

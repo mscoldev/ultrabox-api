@@ -8,66 +8,300 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var mongoose = require('mongoose');
+var _require = require('express'),
+    response = _require.response,
+    request = _require.request;
 
-var clc = require('cli-color');
+var Product = require('../../models/scale/product.model');
 
-var localDatabase = process.env.MONGODB_LOCAL_CNN;
-var remoteDatabase = process.env.MONGODB_CNN;
-var config = {
-  serverSelectionTimeoutMS: 3000
-};
-
-var dbConnection = /*#__PURE__*/function () {
+var getProducts = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var connectionLocalActive, connectionRemoteActive;
+    var req,
+        res,
+        products,
+        _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return mongoose.connect(localDatabase, config);
+            req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
+            res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
+            _context.prev = 2;
+            _context.next = 5;
+            return Product.findAll();
 
-          case 3:
-            connectionLocalActive = _context.sent;
-            console.log(clc.green('Database Local Online OK!...>'));
-            _context.next = 21;
+          case 5:
+            products = _context.sent;
+            res.status(200).json({
+              msg: 'Lista de Productos',
+              products: products
+            });
+            _context.next = 12;
             break;
 
-          case 7:
-            _context.prev = 7;
-            _context.t0 = _context["catch"](0);
-            console.error(clc.red('No fue posible conectar a la base de datos local'));
-            console.error(_context.t0.reason);
-            _context.prev = 11;
-            _context.next = 14;
-            return mongoose.connect(remoteDatabase, config);
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](2);
+            return _context.abrupt("return", res.status(500).json({
+              message: _context.t0.message
+            }));
 
-          case 14:
-            connectionRemoteActive = _context.sent;
-            console.log(clc.green('Database Remote Online OK!...>'));
-            _context.next = 21;
-            break;
-
-          case 18:
-            _context.prev = 18;
-            _context.t1 = _context["catch"](11);
-            console.error(_context.t1.reason);
-
-          case 21:
+          case 12:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7], [11, 18]]);
+    }, _callee, null, [[2, 9]]);
   }));
 
-  return function dbConnection() {
+  return function getProducts() {
     return _ref.apply(this, arguments);
   };
 }();
 
+var getProductById = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var req,
+        res,
+        id,
+        product,
+        _args2 = arguments;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
+            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            _context2.prev = 2;
+            id = req.params.id;
+            _context2.next = 6;
+            return Product.findByPk(id);
+
+          case 6:
+            product = _context2.sent;
+
+            if (product != null) {
+              res.status(200).json({
+                msg: 'Información del producto',
+                product: product
+              });
+            } else {
+              console.log('Not found');
+              res.status(200).json({
+                msg: 'Producto no encontrado, verifique id'
+              });
+            }
+
+            _context2.next = 13;
+            break;
+
+          case 10:
+            _context2.prev = 10;
+            _context2.t0 = _context2["catch"](2);
+            return _context2.abrupt("return", res.status(500).json({
+              message: "Se ha producido un error, ".concat(_context2.t0.message)
+            }));
+
+          case 13:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[2, 10]]);
+  }));
+
+  return function getProductById() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var updateProductById = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var req,
+        res,
+        id,
+        _req$body,
+        productName,
+        enable,
+        productUpdated,
+        _args3 = arguments;
+
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
+            res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
+            _context3.prev = 2;
+            id = req.params.id;
+            _req$body = req.body, productName = _req$body.productName, enable = _req$body.enable;
+            _context3.next = 7;
+            return Product.findByPk(id);
+
+          case 7:
+            productUpdated = _context3.sent;
+
+            if (!(productUpdated != null)) {
+              _context3.next = 17;
+              break;
+            }
+
+            console.log('found');
+            productUpdated.productName = productName;
+            productUpdated.enable = enable;
+            _context3.next = 14;
+            return productUpdated.save();
+
+          case 14:
+            res.status(200).json({
+              msg: 'Origen actualizado',
+              productUpdated: productUpdated
+            });
+            _context3.next = 19;
+            break;
+
+          case 17:
+            console.log('Not found');
+            res.status(200).json({
+              msg: 'Producto no encontrado, verifique id'
+            });
+
+          case 19:
+            _context3.next = 24;
+            break;
+
+          case 21:
+            _context3.prev = 21;
+            _context3.t0 = _context3["catch"](2);
+            return _context3.abrupt("return", res.status(500).json({
+              message: "Se ha producido un error, ".concat(_context3.t0.message)
+            }));
+
+          case 24:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[2, 21]]);
+  }));
+
+  return function updateProductById() {
+    return _ref3.apply(this, arguments);
+  };
+}(); //TODO: Pendiente Implementar
+
+
+var deleteProductById = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var req,
+        res,
+        paramsId,
+        body,
+        deletedProduct,
+        _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
+            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
+            _context4.prev = 2;
+            paramsId = req.params.ProductId;
+            body = {
+              deleted: true
+            };
+            _context4.next = 7;
+            return Product.findByIdAndUpdate(paramsId, body);
+
+          case 7:
+            deletedProduct = _context4.sent;
+
+            if (deletedProduct != null) {
+              res.status(200).json({
+                msg: 'Products eliminado Id:' + paramsId
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Products no encontrado, verifique el Id ingresado'
+              });
+            }
+
+            _context4.next = 14;
+            break;
+
+          case 11:
+            _context4.prev = 11;
+            _context4.t0 = _context4["catch"](2);
+            return _context4.abrupt("return", res.status(500).json({
+              message: _context4.t0.message
+            }));
+
+          case 14:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[2, 11]]);
+  }));
+
+  return function deleteProductById() {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var createProduct = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+    var req,
+        res,
+        productName,
+        newProduct,
+        _args5 = arguments;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
+            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
+            _context5.prev = 2;
+            productName = req.body.productName;
+            _context5.next = 6;
+            return Product.create({
+              productName: productName
+            });
+
+          case 6:
+            newProduct = _context5.sent;
+            res.status(201).json({
+              msg: 'Origen creado satisfactoriamente!',
+              newProduct: newProduct
+            });
+            _context5.next = 13;
+            break;
+
+          case 10:
+            _context5.prev = 10;
+            _context5.t0 = _context5["catch"](2);
+            return _context5.abrupt("return", res.status(500).json({
+              message: "Se ha producido un error, ".concat(_context5.t0.message)
+            }));
+
+          case 13:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[2, 10]]);
+  }));
+
+  return function createProduct() {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
 module.exports = {
-  dbConnection: dbConnection
+  getProducts: getProducts,
+  getProductById: getProductById,
+  updateProductById: updateProductById,
+  deleteProductById: deleteProductById,
+  createProduct: createProduct
 };

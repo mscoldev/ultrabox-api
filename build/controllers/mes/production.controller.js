@@ -8,66 +8,280 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var mongoose = require('mongoose');
+var _require = require("express"),
+    response = _require.response,
+    request = _require.request;
 
-var clc = require('cli-color');
+var Production = require("../../models/production.model");
 
-var localDatabase = process.env.MONGODB_LOCAL_CNN;
-var remoteDatabase = process.env.MONGODB_CNN;
-var config = {
-  serverSelectionTimeoutMS: 3000
-};
-
-var dbConnection = /*#__PURE__*/function () {
+var getProductions = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var connectionLocalActive, connectionRemoteActive;
+    var req,
+        res,
+        productions,
+        _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return mongoose.connect(localDatabase, config);
+            req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
+            res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
+            _context.prev = 2;
+            _context.next = 5;
+            return Production.find();
 
-          case 3:
-            connectionLocalActive = _context.sent;
-            console.log(clc.green('Database Local Online OK!...>'));
-            _context.next = 21;
+          case 5:
+            productions = _context.sent;
+            res.status(200).json({
+              msg: 'Lista de producciones',
+              productions: productions
+            });
+            _context.next = 12;
             break;
 
-          case 7:
-            _context.prev = 7;
-            _context.t0 = _context["catch"](0);
-            console.error(clc.red('No fue posible conectar a la base de datos local'));
-            console.error(_context.t0.reason);
-            _context.prev = 11;
-            _context.next = 14;
-            return mongoose.connect(remoteDatabase, config);
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](2);
+            return _context.abrupt("return", res.status(500).json({
+              message: _context.t0.message
+            }));
 
-          case 14:
-            connectionRemoteActive = _context.sent;
-            console.log(clc.green('Database Remote Online OK!...>'));
-            _context.next = 21;
-            break;
-
-          case 18:
-            _context.prev = 18;
-            _context.t1 = _context["catch"](11);
-            console.error(_context.t1.reason);
-
-          case 21:
+          case 12:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7], [11, 18]]);
+    }, _callee, null, [[2, 9]]);
   }));
 
-  return function dbConnection() {
+  return function getProductions() {
     return _ref.apply(this, arguments);
   };
 }();
 
+var createProduction = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var req,
+        res,
+        body,
+        production,
+        productionSaved,
+        _args2 = arguments;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
+            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            _context2.prev = 2;
+            body = req.body;
+            production = new Production(body);
+            _context2.next = 7;
+            return production.save();
+
+          case 7:
+            productionSaved = _context2.sent;
+            res.status(201).json({
+              msg: 'Producción Creada',
+              productionSaved: productionSaved
+            });
+            _context2.next = 14;
+            break;
+
+          case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](2);
+            return _context2.abrupt("return", res.status(500).json({
+              message: _context2.t0.message
+            }));
+
+          case 14:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[2, 11]]);
+  }));
+
+  return function createProduction() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var getProductionById = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var req,
+        res,
+        production,
+        _args3 = arguments;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
+            res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
+            _context3.prev = 2;
+            _context3.next = 5;
+            return Production.findById(req.params._id);
+
+          case 5:
+            production = _context3.sent;
+
+            if (production != null) {
+              res.status(200).json({
+                msg: 'Producción por Id',
+                production: production
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Producción no encontrada, verifique el Id ingresado'
+              });
+            }
+
+            _context3.next = 12;
+            break;
+
+          case 9:
+            _context3.prev = 9;
+            _context3.t0 = _context3["catch"](2);
+            res.status(500).json({
+              message: _context3.t0.message
+            });
+
+          case 12:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[2, 9]]);
+  }));
+
+  return function getProductionById() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var updateProductionById = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var req,
+        res,
+        paramsId,
+        body,
+        updatedProduction,
+        _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
+            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
+            _context4.prev = 2;
+            paramsId = req.params._id;
+            body = req.body;
+            _context4.next = 7;
+            return Production.findByIdAndUpdate(paramsId, body, {
+              "new": true
+            });
+
+          case 7:
+            updatedProduction = _context4.sent;
+
+            if (updatedProduction != null) {
+              res.status(200).json({
+                msg: 'Producción actualizada segun Id',
+                updatedProduction: updatedProduction
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Id de Producción no encontrado'
+              });
+            }
+
+            _context4.next = 14;
+            break;
+
+          case 11:
+            _context4.prev = 11;
+            _context4.t0 = _context4["catch"](2);
+            return _context4.abrupt("return", res.status(500).json({
+              message: _context4.t0.message
+            }));
+
+          case 14:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[2, 11]]);
+  }));
+
+  return function updateProductionById() {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var deleteProductionById = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+    var req,
+        res,
+        paramsId,
+        body,
+        deletedProduction,
+        _args5 = arguments;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
+            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
+            _context5.prev = 2;
+            paramsId = req.params._id;
+            body = {
+              deleted: true
+            };
+            _context5.next = 7;
+            return Production.findByIdAndUpdate(paramsId, body);
+
+          case 7:
+            deletedProduction = _context5.sent;
+
+            if (deletedProduction != null) {
+              res.status(200).json({
+                msg: 'Material eliminado Id:' + paramsId
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Material no encontrado, verifique el Id ingresado'
+              });
+            }
+
+            _context5.next = 14;
+            break;
+
+          case 11:
+            _context5.prev = 11;
+            _context5.t0 = _context5["catch"](2);
+            res.status(500).json({
+              message: _context5.t0.message
+            });
+
+          case 14:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[2, 11]]);
+  }));
+
+  return function deleteProductionById() {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
 module.exports = {
-  dbConnection: dbConnection
+  getProductions: getProductions,
+  createProduction: createProduction,
+  getProductionById: getProductionById,
+  updateProductionById: updateProductionById,
+  deleteProductionById: deleteProductionById
 };

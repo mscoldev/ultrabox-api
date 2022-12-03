@@ -17,9 +17,26 @@ var recipeSchema = Schema({
     type: Number,
     required: false,
     unique: [true, 'Este id ya se encuentra registrado en otra receta']
-  }
+  },
+  deleted: {
+    type: Boolean,
+    required: [true, 'El estado deleted es requerido no puede dejarlo en blanco T/F'],
+    "default": false
+  },
+  ingredients: [new Schema({
+    _idMaterial: {
+      type: Schema.Types.ObjectId,
+      ref: 'Material',
+      required: [true, 'Defina un id de material como ingrediente']
+    },
+    qty: {
+      type: Number,
+      required: [true, 'Defina la cantidad a utilizar del material']
+    }
+  })]
 }, {
   timestamps: true,
   versionKey: false
 });
-module.exports = model('Recipe', recipeSchema);
+var Recipe = model('Recipe', recipeSchema);
+module.exports = Recipe;

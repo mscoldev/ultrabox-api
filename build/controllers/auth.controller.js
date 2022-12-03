@@ -131,6 +131,8 @@ var signIn = /*#__PURE__*/function () {
     var req,
         res,
         usernameFound,
+        roles,
+        token,
         _args2 = arguments;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
@@ -159,9 +161,19 @@ var signIn = /*#__PURE__*/function () {
             console.log("Usuario encontrado");
             console.log(usernameFound);
             console.log("ROLES: " + usernameFound.roles);
-            res.json(usernameFound);
+            roles = usernameFound.roles;
+            token = jwt.sign({
+              id: usernameFound._id
+            }, process.env.SECRET_KEY, {
+              expiresIn: 86400 //*24 Hours
 
-          case 13:
+            });
+            res.status(200).json({
+              token: token,
+              roles: roles
+            });
+
+          case 15:
           case "end":
             return _context2.stop();
         }

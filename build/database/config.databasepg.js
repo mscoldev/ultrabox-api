@@ -8,66 +8,57 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var mongoose = require('mongoose');
+var _require = require('sequelize'),
+    Sequelize = _require.Sequelize;
 
-var clc = require('cli-color');
+var database = process.env.PG_DATABASE_NAME;
+var username = process.env.PG_USERNAME;
+var password = process.env.PG_DATABASE_PASSWORD;
+var host = process.env.PG_HOST;
+var port = process.env.PG_PORT; // Option 3: Passing parameters separately (other dialects)
 
-var localDatabase = process.env.MONGODB_LOCAL_CNN;
-var remoteDatabase = process.env.MONGODB_CNN;
-var config = {
-  serverSelectionTimeoutMS: 3000
-};
+var sequelize = new Sequelize(database, username, password, {
+  host: host,
+  dialect: 'postgres',
+  port: port
+});
 
-var dbConnection = /*#__PURE__*/function () {
+var pgConnection = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var connectionLocalActive, connectionRemoteActive;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return mongoose.connect(localDatabase, config);
+            return sequelize.sync({
+              alter: true
+            });
 
           case 3:
-            connectionLocalActive = _context.sent;
-            console.log(clc.green('Database Local Online OK!...>'));
-            _context.next = 21;
+            console.log('Conectado a la base de datos postgres');
+            _context.next = 9;
             break;
 
-          case 7:
-            _context.prev = 7;
+          case 6:
+            _context.prev = 6;
             _context.t0 = _context["catch"](0);
-            console.error(clc.red('No fue posible conectar a la base de datos local'));
-            console.error(_context.t0.reason);
-            _context.prev = 11;
-            _context.next = 14;
-            return mongoose.connect(remoteDatabase, config);
+            console.error('Unable to connect to the database:', _context.t0);
 
-          case 14:
-            connectionRemoteActive = _context.sent;
-            console.log(clc.green('Database Remote Online OK!...>'));
-            _context.next = 21;
-            break;
-
-          case 18:
-            _context.prev = 18;
-            _context.t1 = _context["catch"](11);
-            console.error(_context.t1.reason);
-
-          case 21:
+          case 9:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7], [11, 18]]);
+    }, _callee, null, [[0, 6]]);
   }));
 
-  return function dbConnection() {
+  return function pgConnection() {
     return _ref.apply(this, arguments);
   };
 }();
 
 module.exports = {
-  dbConnection: dbConnection
+  sequelize: sequelize,
+  pgConnection: pgConnection
 };

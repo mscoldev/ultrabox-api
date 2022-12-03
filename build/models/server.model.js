@@ -23,26 +23,44 @@ var morgan = require('morgan');
 var _require = require('../database/config.database'),
     dbConnection = _require.dbConnection;
 
-var _require2 = require('../libs/initialSetupDatabase'),
-    createRoles = _require2.createRoles;
+var _require2 = require('../database/config.databasepg'),
+    pgConnection = _require2.pgConnection;
 
-var PORT = process.env.API_PORT_SERVER || 80;
+var _require3 = require('../libs/initialSetupDatabase'),
+    createRoles = _require3.createRoles;
+
+var PORT = process.env.PORT || 3000;
+var corsOptions = {
+  credentials: false,
+  preflightContinue: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  origin: "*"
+};
 
 var Server = /*#__PURE__*/function () {
   function Server() {
     _classCallCheck(this, Server);
 
     this.app = express();
-    this.port = PORT;
+    this.port = PORT; //*PATHS MES
+
     this.userPath = '/api/users';
     this.generalPath = '/api/';
     this.authPath = '/api/auth';
     this.recipePath = '/api/recipe';
-    this.materialPath = '/api/material'; //Conectar a la base de datos
+    this.materialPath = '/api/material';
+    this.productionPath = '/api/production';
+    this.productionLinePath = '/api/productionline'; //*PATHS SCALE
 
-    this.dbInitialize(); // this.connectToDatabase();
-    // this.initialSetupDatabase();
-    // Middlewares
+    this.clientPath = '/api/scale/client';
+    this.driverPath = '/api/scale/driver';
+    this.originPath = '/api/scale/origin';
+    this.productPath = '/api/scale/product';
+    this.projectPath = '/api/scale/project';
+    this.truckPath = '/api/scale/truck';
+    this.registerPath = '/api/scale/register'; //Conectar a la base de datos
+
+    this.dbInitialize(); // Middlewares
 
     this.middlewares(); // Rutas de mi aplicación
 
@@ -59,7 +77,7 @@ var Server = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return Promise.all([dbConnection(), createRoles()]);
+                return Promise.all([pgConnection(), dbConnection(), createRoles()]);
 
               case 2:
               case "end":
@@ -85,7 +103,7 @@ var Server = /*#__PURE__*/function () {
     key: "middlewares",
     value: function middlewares() {
       // CORS
-      this.app.use(cors()); //Morgan
+      this.app.use(cors(corsOptions)); //Morgan
 
       this.app.use(morgan('dev')); // Lectura y parseo del body
 
@@ -96,10 +114,22 @@ var Server = /*#__PURE__*/function () {
   }, {
     key: "routes",
     value: function routes() {
+      //*ROUTES APP MES
       this.app.use(this.userPath, require('../routes/user.routes'));
       this.app.use(this.authPath, require('../routes/auth.routes'));
-      this.app.use(this.recipePath, require('../routes/recipe.routes'));
-      this.app.use(this.materialPath, require('../routes/material.routes')); // this.app.use( this.generalPath, require('../routes/api.routes'));
+      this.app.use(this.recipePath, require('../routes/mes/recipe.routes'));
+      this.app.use(this.materialPath, require('../routes/mes/material.routes'));
+      this.app.use(this.productionPath, require('../routes/mes/production.routes'));
+      this.app.use(this.productionLinePath, require('../routes/mes/productionLine.routes')); // this.app.use( this.generalPath, require('../routes/api.routes'));
+      //*ROUTES APP SCALE
+
+      this.app.use(this.clientPath, require('../routes/scale/client.routes'));
+      this.app.use(this.driverPath, require('../routes/scale/driver.routes'));
+      this.app.use(this.originPath, require('../routes/scale/origin.routes'));
+      this.app.use(this.productPath, require('../routes/scale/product.routes'));
+      this.app.use(this.projectPath, require('../routes/scale/project.routes'));
+      this.app.use(this.truckPath, require('../routes/scale/truck.routes'));
+      this.app.use(this.registerPath, require('../routes/scale/register.routes'));
     }
   }, {
     key: "listen",

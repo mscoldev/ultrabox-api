@@ -7,7 +7,7 @@ var _require = require("mongoose"),
 var materialSchema = Schema({
   name: {
     type: String,
-    required: [true, 'El nombre de la receta es obligatorio']
+    required: [true, 'El nombre del material es obligatorio']
   },
   erp_code: {
     type: Number,
@@ -25,14 +25,22 @@ var materialSchema = Schema({
   },
   type: {
     type: String,
-    required: [true, 'El tipo de material es requerido debe es A=Aditivo o M=Material'],
+    required: [true, 'El tipo de material es requerido debe ser A=Aditivo, M=Material u O=Otro'],
     emun: ['A', 'M', 'O'],
     "default": 'M'
   },
-  enable: {
+  ppm: {
+    type: Number,
+    required: [false, 'PPM is required']
+  },
+  density: {
+    type: Number,
+    required: [false, 'Density is required']
+  },
+  deleted: {
     type: Boolean,
-    required: [true, 'El tipo de material es requerido debe es A=Aditivo o M=Material'],
-    "default": true
+    required: [true, 'Default Activated'],
+    "default": false
   }
 }, {
   timestamps: true,
