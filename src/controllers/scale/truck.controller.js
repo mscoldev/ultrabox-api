@@ -1,5 +1,5 @@
 const { response, request } = require('express');
-const Truck = require('../../models/scale/Truck.model');
+const Truck = require('../../models/scale/truck.model');
 
 
 const getTrucks = async (req = request, res = response) => {

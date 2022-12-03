@@ -41,12 +41,12 @@ const getOriginById = async (req = request, res = response) => {
 const updateOriginById = async (req = request, res = response) => {
     try {
         const { id } = req.params;
-        const { name, nit, enable } = req.body;
+        const { originName, nit, enable } = req.body;
         const originUpdated = await Origin.findByPk(id);
 
         if (originUpdated != null) {
             console.log('found');
-            originUpdated.name = name;
+            originUpdated.originName = originName;
             originUpdated.nit = nit;
             originUpdated.enable = enable;
 

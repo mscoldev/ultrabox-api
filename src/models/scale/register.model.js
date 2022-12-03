@@ -4,9 +4,9 @@ const { sequelize } = require('../../database/config.databasepg');
 
 const register = sequelize.define('registers', {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        defaultValue: DataTypes.UUIDV4
     },
     date: {
         type: DataTypes.DATE,
@@ -83,7 +83,7 @@ const register = sequelize.define('registers', {
     enabled: {
         type: DataTypes.BOOLEAN,
         required: true,
-        default: true
+        defaultValue: true
     }
 })
 

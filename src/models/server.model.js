@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 
 const corsOptions = {
-    credentials: true,
+    credentials: false,
     preflightContinue: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     origin: "*"
@@ -35,6 +35,7 @@ class Server {
         this.productPath = '/api/scale/product';
         this.projectPath = '/api/scale/project';
         this.truckPath = '/api/scale/truck';
+        this.registerPath = '/api/scale/register';
 
 
         //Conectar a la base de datos
@@ -103,6 +104,7 @@ class Server {
         this.app.use(this.productPath, require('../routes/scale/product.routes'));
         this.app.use(this.projectPath, require('../routes/scale/project.routes'));
         this.app.use(this.truckPath, require('../routes/scale/truck.routes'));
+        this.app.use(this.registerPath, require('../routes/scale/register.routes'));
 
     }
 
