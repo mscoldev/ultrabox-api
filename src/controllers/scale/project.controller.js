@@ -1,5 +1,5 @@
 const { response, request } = require('express');
-const Project = require('../../models/scale/Project.model');
+const Project = require('../../models/scale/project.model');
 
 
 const getProjects = async (req = request, res = response) => {
