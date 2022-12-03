@@ -12,7 +12,7 @@ var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
-var Project = require('../../models/scale/Project.model');
+var Project = require('../../models/scale/project.model');
 
 var getProjects = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
