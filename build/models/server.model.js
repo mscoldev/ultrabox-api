@@ -29,7 +29,7 @@ var _require2 = require('../database/config.databasepg'),
 var _require3 = require('../libs/initialSetupDatabase'),
     createRoles = _require3.createRoles;
 
-var PORT = process.env.PORT || 5001;
+var PORT = process.env.PORT || 3000;
 var corsOptions = {
   credentials: false,
   preflightContinue: true,
