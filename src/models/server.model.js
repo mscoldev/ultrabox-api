@@ -29,6 +29,8 @@ class Server {
         this.productionPath = '/api/production';
         this.productionLinePath = '/api/productionline';
         this.rolePath = '/api/role';
+        this.typesDocumentPath = '/api/typesDocument';
+
 
         //*PATHS SCALE
         this.clientPath = '/api/scale/client';
@@ -97,6 +99,7 @@ class Server {
         this.app.use(this.productionPath, require('../routes/mes/production.routes'));
         this.app.use(this.productionLinePath, require('../routes/mes/productionLine.routes'));
         this.app.use(this.rolePath, require('../routes/mes/role.routes'));
+        this.app.use(this.typesDocumentPath, require('../routes/mes/typesDocument.routes'));
         // this.app.use( this.generalPath, require('../routes/api.routes'));
 
         //*ROUTES APP SCALE
