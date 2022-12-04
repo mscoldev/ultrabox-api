@@ -7,12 +7,17 @@ var _require = require("mongoose"),
 var roleSchema = Schema({
   name: {
     type: String,
-    unique: [false, 'Debe definir un nombre para el Esquema']
+    unique: [false, 'Ya existe un rol con este nombre.'],
+    required: [true, 'El nombre es requerido, debe definir uno']
   },
   menu: {
     type: [Map],
-    unique: [false, 'Debe definir un nombre para el Esquema'],
+    required: [true, 'Debe definir un nombre para el Esquema'],
     "default": ""
+  },
+  deleted: {
+    type: Boolean,
+    "default": false
   }
 }, {
   timestamps: true,

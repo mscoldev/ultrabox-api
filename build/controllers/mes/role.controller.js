@@ -8,145 +8,274 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _require = require('express'),
+    response = _require.response,
+    request = _require.request;
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+var Role = require("../../models/role.model");
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+var getRoles = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var req,
+        res,
+        roles,
+        _args = arguments;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
+            res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
+            _context.prev = 2;
+            _context.next = 5;
+            return Role.find({
+              "deleted": false
+            });
 
-require('dotenv').config();
+          case 5:
+            roles = _context.sent;
+            res.status(200).json({
+              msg: 'List of Roles',
+              roles: roles
+            });
+            _context.next = 12;
+            break;
 
-var express = require('express');
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](2);
+            return _context.abrupt("return", res.status(500).json({
+              message: _context.t0.message
+            }));
 
-var cors = require('cors');
-
-var morgan = require('morgan');
-
-var _require = require('../database/config.database'),
-    dbConnection = _require.dbConnection;
-
-var _require2 = require('../database/config.databasepg'),
-    pgConnection = _require2.pgConnection;
-
-var _require3 = require('../libs/initialSetupDatabase'),
-    createRoles = _require3.createRoles;
-
-var PORT = process.env.PORT || 3000;
-var corsOptions = {
-  credentials: false,
-  preflightContinue: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  origin: "*"
-};
-
-var Server = /*#__PURE__*/function () {
-  function Server() {
-    _classCallCheck(this, Server);
-
-    this.app = express();
-    this.port = PORT; //*PATHS MES
-
-    this.userPath = '/api/users';
-    this.generalPath = '/api/';
-    this.authPath = '/api/auth';
-    this.recipePath = '/api/recipe';
-    this.materialPath = '/api/material';
-    this.productionPath = '/api/production';
-    this.productionLinePath = '/api/productionline';
-    this.rolePath = '/api/role'; //*PATHS SCALE
-
-    this.clientPath = '/api/scale/client';
-    this.driverPath = '/api/scale/driver';
-    this.originPath = '/api/scale/origin';
-    this.productPath = '/api/scale/product';
-    this.projectPath = '/api/scale/project';
-    this.truckPath = '/api/scale/truck';
-    this.registerPath = '/api/scale/register'; //Conectar a la base de datos
-
-    this.dbInitialize(); // Middlewares
-
-    this.middlewares(); // Rutas de mi aplicación
-
-    this.routes();
-  } //* Connect & Initialize Database
-
-
-  _createClass(Server, [{
-    key: "dbInitialize",
-    value: function () {
-      var _dbInitialize = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return Promise.all([pgConnection(), dbConnection(), createRoles()]);
-
-              case 2:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function dbInitialize() {
-        return _dbInitialize.apply(this, arguments);
+          case 12:
+          case "end":
+            return _context.stop();
+        }
       }
+    }, _callee, null, [[2, 9]]);
+  }));
 
-      return dbInitialize;
-    }() // async connectToDatabase (){
-    //     await dbConnection();
-    // }
-    // async initialSetupDatabase (){
-    //     await createRoles();
-    // }
-
-  }, {
-    key: "middlewares",
-    value: function middlewares() {
-      // CORS
-      this.app.use(cors(corsOptions)); //Morgan
-
-      this.app.use(morgan('dev')); // Lectura y parseo del body
-
-      this.app.use(express.json()); // Directorio Público
-
-      this.app.use(express["static"]('public'));
-    }
-  }, {
-    key: "routes",
-    value: function routes() {
-      //*ROUTES APP MES
-      this.app.use(this.userPath, require('../routes/user.routes'));
-      this.app.use(this.authPath, require('../routes/auth.routes'));
-      this.app.use(this.recipePath, require('../routes/mes/recipe.routes'));
-      this.app.use(this.materialPath, require('../routes/mes/material.routes'));
-      this.app.use(this.productionPath, require('../routes/mes/production.routes'));
-      this.app.use(this.productionLinePath, require('../routes/mes/productionLine.routes'));
-      this.app.use(this.rolePath, require('../routes/mes/role.routes')); // this.app.use( this.generalPath, require('../routes/api.routes'));
-      //*ROUTES APP SCALE
-
-      this.app.use(this.clientPath, require('../routes/scale/client.routes'));
-      this.app.use(this.driverPath, require('../routes/scale/driver.routes'));
-      this.app.use(this.originPath, require('../routes/scale/origin.routes'));
-      this.app.use(this.productPath, require('../routes/scale/product.routes'));
-      this.app.use(this.projectPath, require('../routes/scale/project.routes'));
-      this.app.use(this.truckPath, require('../routes/scale/truck.routes'));
-      this.app.use(this.registerPath, require('../routes/scale/register.routes'));
-    }
-  }, {
-    key: "listen",
-    value: function listen() {
-      var _this = this;
-
-      this.app.listen(this.port, function () {
-        console.log('Server running on port: ', _this.port);
-      });
-    }
-  }]);
-
-  return Server;
+  return function getRoles() {
+    return _ref.apply(this, arguments);
+  };
 }();
 
-module.exports = Server;
+var getRoleById = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var req,
+        res,
+        role,
+        _args2 = arguments;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
+            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            _context2.next = 4;
+            return Role.findById(req.params.RoleId);
+
+          case 4:
+            role = _context2.sent;
+
+            if (role != null) {
+              res.status(200).json({
+                msg: 'Role por Id',
+                role: role
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Role no encontrado, verifique el Id ingresado'
+              });
+            }
+
+          case 6:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function getRoleById() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var updateRoleById = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var req,
+        res,
+        paramsId,
+        body,
+        updatedRole,
+        _args3 = arguments;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
+            res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
+            _context3.prev = 2;
+            paramsId = req.params._id;
+            body = req.body;
+            _context3.next = 7;
+            return Role.findByIdAndUpdate(paramsId, body, {
+              "new": true
+            });
+
+          case 7:
+            updatedRole = _context3.sent;
+
+            if (updatedRole != null) {
+              res.status(200).json({
+                msg: 'Role actualizado por Id',
+                updatedRole: updatedRole
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Role no encontrado, verifique el Id ingresado'
+              });
+            }
+
+            _context3.next = 14;
+            break;
+
+          case 11:
+            _context3.prev = 11;
+            _context3.t0 = _context3["catch"](2);
+            return _context3.abrupt("return", res.status(500).json({
+              message: _context3.t0.message
+            }));
+
+          case 14:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[2, 11]]);
+  }));
+
+  return function updateRoleById() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var deleteRoleById = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var req,
+        res,
+        paramsId,
+        body,
+        deletedRole,
+        _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
+            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
+            _context4.prev = 2;
+            paramsId = req.params._id;
+            console.log(paramsId);
+            body = {
+              deleted: true
+            };
+            _context4.next = 8;
+            return Role.findByIdAndUpdate(paramsId, body);
+
+          case 8:
+            deletedRole = _context4.sent;
+            console.log(deletedRole);
+
+            if (deletedRole != null) {
+              res.status(200).json({
+                msg: 'Role eliminado Id:' + paramsId
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Role no encontrado, verifique el Id ingresado'
+              });
+            }
+
+            _context4.next = 16;
+            break;
+
+          case 13:
+            _context4.prev = 13;
+            _context4.t0 = _context4["catch"](2);
+            return _context4.abrupt("return", res.status(500).json({
+              message: _context4.t0.message
+            }));
+
+          case 16:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[2, 13]]);
+  }));
+
+  return function deleteRoleById() {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var createRole = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+    var req,
+        res,
+        body,
+        role,
+        roleSaved,
+        _args5 = arguments;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
+            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
+            _context5.prev = 2;
+            body = req.body;
+            console.log(body);
+            role = new Role(body);
+            _context5.next = 8;
+            return role.save();
+
+          case 8:
+            roleSaved = _context5.sent;
+            res.status(201).json({
+              msg: 'Role created successfully',
+              roleSaved: roleSaved
+            });
+            _context5.next = 15;
+            break;
+
+          case 12:
+            _context5.prev = 12;
+            _context5.t0 = _context5["catch"](2);
+            return _context5.abrupt("return", res.status(500).json({
+              message: _context5.t0.message
+            }));
+
+          case 15:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[2, 12]]);
+  }));
+
+  return function createRole() {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+module.exports = {
+  createRole: createRole,
+  getRoles: getRoles,
+  getRoleById: getRoleById,
+  updateRoleById: updateRoleById,
+  deleteRoleById: deleteRoleById
+};
