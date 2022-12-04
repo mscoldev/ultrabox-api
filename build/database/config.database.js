@@ -8,6 +8,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+require('dotenv').config();
+
 var mongoose = require('mongoose');
 
 var clc = require('cli-color');
@@ -26,41 +28,42 @@ var dbConnection = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            _context.next = 3;
+            console.log("Intentando conectar a DB local ".concat(localDatabase));
+            _context.next = 4;
             return mongoose.connect(localDatabase, config);
 
-          case 3:
+          case 4:
             connectionLocalActive = _context.sent;
-            console.log(clc.green("Database Local Online OK!...>".concat(localDatabase)));
-            _context.next = 21;
+            console.log(clc.green("Database Local Online OK!...>"));
+            _context.next = 22;
             break;
 
-          case 7:
-            _context.prev = 7;
+          case 8:
+            _context.prev = 8;
             _context.t0 = _context["catch"](0);
             console.error(clc.red('No fue posible conectar a la base de datos local'));
             console.error(_context.t0.reason);
-            _context.prev = 11;
-            _context.next = 14;
+            _context.prev = 12;
+            _context.next = 15;
             return mongoose.connect(remoteDatabase, config);
 
-          case 14:
+          case 15:
             connectionRemoteActive = _context.sent;
             console.log(clc.green('Database Remote Online OK!...>'));
-            _context.next = 21;
+            _context.next = 22;
             break;
 
-          case 18:
-            _context.prev = 18;
-            _context.t1 = _context["catch"](11);
+          case 19:
+            _context.prev = 19;
+            _context.t1 = _context["catch"](12);
             console.error(_context.t1.reason);
 
-          case 21:
+          case 22:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7], [11, 18]]);
+    }, _callee, null, [[0, 8], [12, 19]]);
   }));
 
   return function dbConnection() {

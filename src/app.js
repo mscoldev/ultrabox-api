@@ -7,9 +7,6 @@ const pkg = require('../package.json');
 const server = new Server();
 server.listen();
 
-server.app.set('pkg', pkg)
-console.log(pkg);
-
 server.app.get('/api', (req, res) => {
     res.json({
         app: server.app.get('pkg').name,
