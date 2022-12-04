@@ -140,11 +140,6 @@ var Server = /*#__PURE__*/function () {
         console.log('Server running on port: ', _this.port);
       });
     }
-  }, {
-    key: "getPkg",
-    value: function getPkg(pkg) {
-      this.app.pkg = this.app.set('pkg', pkg);
-    }
   }]);
 
   return Server;

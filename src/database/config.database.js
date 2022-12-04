@@ -8,7 +8,7 @@ const config = { serverSelectionTimeoutMS: 3000 }
 const dbConnection = async () => {
     try {
         const connectionLocalActive = await mongoose.connect(localDatabase, config);
-        console.log(clc.green('Database Local Online OK!...>'));
+        console.log(clc.green(`Database Local Online OK!...>${localDatabase}`));
     } catch (error) {
         console.error(clc.red('No fue posible conectar a la base de datos local'))
         console.error(error.reason);

@@ -114,9 +114,6 @@ class Server {
         });
     }
 
-    getPkg(pkg) {
-        this.app.pkg = this.app.set('pkg', pkg)
-    }
 
 }
 

@@ -31,7 +31,7 @@ var dbConnection = /*#__PURE__*/function () {
 
           case 3:
             connectionLocalActive = _context.sent;
-            console.log(clc.green('Database Local Online OK!...>'));
+            console.log(clc.green("Database Local Online OK!...>".concat(localDatabase)));
             _context.next = 21;
             break;
 
