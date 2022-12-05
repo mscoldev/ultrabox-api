@@ -4,7 +4,8 @@ const bcrypt = require("bcryptjs");
 const userSchema = Schema({
     username: {
         type: String,
-        unique: [true, 'Este id ya se encuentra registrado en otra receta']
+        unique: [true, 'Este username ya se encuentra registrado'],
+        required: [true, 'El nombre de usuario es requerido']
     },
     name: {
         type: String,
@@ -21,9 +22,13 @@ const userSchema = Schema({
         type: String,
     },
     nit: {
-        type: Number,
+        type: String,
         required: [true, 'El número de identificacion es requerido'],
         unique: [true, 'El numero de identificacion está definido como unico']
+    },
+    typesDocument: {
+        type: String,
+        required: true,
     },
     email: {
         type: String,
@@ -36,16 +41,17 @@ const userSchema = Schema({
     },
     status: {
         type: Boolean,
+        default: true,
+    },
+    deleted: {
+        type: Boolean,
         default: false,
     },
-    roles: [{
+    roles: {
         ref: 'Role',
         type: Schema.Types.ObjectId
-    }],
-    typesDocument: {
-        ref: 'typesDocument',
-        type: Schema.Types.ObjectId
     },
+
 }, {
     timestamps: true,
     versionKey: false
@@ -60,6 +66,11 @@ userSchema.statics.encryptPassword = async (password) => {
 userSchema.statics.comparePassword = async (password, receivedPassword) => {
     return await bcrypt.compare(password, receivedPassword)
     // Return: False or True
+}
+
+userSchema.methods.toJSON = function () {
+    const { password, deleted, ...user } = this.toObject();
+    return user
 }
 
 module.exports = model('User', userSchema);

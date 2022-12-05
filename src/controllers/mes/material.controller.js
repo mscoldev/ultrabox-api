@@ -64,9 +64,15 @@ const deleteMaterialById = async (req = request, res = response) => {
                 msg: 'Material no encontrado, verifique el Id ingresado'
             })
         }
-    } catch (err) {
-        return res.status(500).json({ message: err.message })
-    }
+    } catch (error) { // Set custom error for unique keys
+        let errMsg;
+        if (error.code == 11000) {
+            errMsg = Object.keys(error.keyValue)[0] + " already exists.";
+        } else {
+            errMsg = error.message;
+        }
+        res.status(400).json({ statusText: "Bad Request", message: errMsg });
+    };
 }
 
 

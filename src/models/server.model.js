@@ -21,7 +21,7 @@ class Server {
         this.app = express();
         this.port = PORT;
         //*PATHS MES
-        this.userPath = '/api/users';
+
         this.generalPath = '/api/';
         this.authPath = '/api/auth';
         this.recipePath = '/api/recipe';
@@ -92,7 +92,7 @@ class Server {
 
     routes() {
         //*ROUTES APP MES
-        this.app.use(this.userPath, require('../routes/user.routes'));
+
         this.app.use(this.authPath, require('../routes/auth.routes'));
         this.app.use(this.recipePath, require('../routes/mes/recipe.routes'));
         this.app.use(this.materialPath, require('../routes/mes/material.routes'));
@@ -100,7 +100,7 @@ class Server {
         this.app.use(this.productionLinePath, require('../routes/mes/productionLine.routes'));
         this.app.use(this.rolePath, require('../routes/mes/role.routes'));
         this.app.use(this.typesDocumentPath, require('../routes/mes/typesDocument.routes'));
-        // this.app.use( this.generalPath, require('../routes/api.routes'));
+
 
         //*ROUTES APP SCALE
 
