@@ -169,6 +169,7 @@ var deleteMaterialById = /*#__PURE__*/function () {
         paramsId,
         body,
         deletedMaterial,
+        errMsg,
         _args4 = arguments;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
@@ -197,17 +198,29 @@ var deleteMaterialById = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 14;
+            _context4.next = 15;
             break;
 
           case 11:
             _context4.prev = 11;
             _context4.t0 = _context4["catch"](2);
-            return _context4.abrupt("return", res.status(500).json({
-              message: _context4.t0.message
-            }));
 
-          case 14:
+            // Set custom error for unique keys
+            if (_context4.t0.code == 11000) {
+              errMsg = Object.keys(_context4.t0.keyValue)[0] + " already exists.";
+            } else {
+              errMsg = _context4.t0.message;
+            }
+
+            res.status(400).json({
+              statusText: "Bad Request",
+              message: errMsg
+            });
+
+          case 15:
+            ;
+
+          case 16:
           case "end":
             return _context4.stop();
         }

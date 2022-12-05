@@ -34,7 +34,7 @@ var pgConnection = /*#__PURE__*/function () {
             _context.prev = 0;
             _context.next = 3;
             return sequelize.sync({
-              alter: true
+              alter: false
             });
 
           case 3:
