@@ -94,7 +94,6 @@ const register = sequelize.define('registers', {
                 this.setDataValue('dateNet', dateNow)
             }
         },
-        required: false
     },
     error: {
         type: DataTypes.STRING,

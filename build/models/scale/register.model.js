@@ -106,8 +106,7 @@ var register = sequelize.define('registers', {
       if (netWeigthNow != 0) {
         this.setDataValue('dateNet', dateNow);
       }
-    },
-    required: false
+    }
   },
   error: {
     type: DataTypes.STRING,
