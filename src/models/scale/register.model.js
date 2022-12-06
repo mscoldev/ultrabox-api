@@ -112,7 +112,7 @@ const register = sequelize.define('registers', {
         required: true
     },
     _idTruck: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         required: true
     },
     _idClient: {
