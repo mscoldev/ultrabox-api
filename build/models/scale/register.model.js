@@ -1,7 +1,5 @@
 "use strict";
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var _require = require('sequelize'),
     DataTypes = _require.DataTypes;
 
@@ -14,18 +12,11 @@ var register = sequelize.define('registers', {
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4
   },
-  date: _defineProperty({
+  date: {
     type: DataTypes.DATE,
     required: true,
-    set: function set() {
-      var dateNow = new Date().toISOString();
-      var grossNow = this.groosWeigth;
-
-      if (grossNow != 0) {
-        this.setDataValue('date', dateNow);
-      }
-    }
-  }, "required", false),
+    defaultValue: DataTypes.NOW
+  },
   serialScale: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -44,7 +35,7 @@ var register = sequelize.define('registers', {
       }
     }
   },
-  groosWeigth: {
+  groosWeight: {
     type: DataTypes.DECIMAL(10, 3),
     defaultValue: 0,
     required: true,
@@ -55,17 +46,17 @@ var register = sequelize.define('registers', {
       }
     }
   },
-  netWeigth: {
+  netWeight: {
     type: DataTypes.DECIMAL(10, 3),
     defaultValue: 0,
     allowNull: false,
     set: function set() {
       var tareNow = this.tare;
-      var groosWeigth = this.groosWeigth;
+      var groosWeight = this.groosWeight;
 
-      if (tareNow != 0 & groosWeigth != 0) {
-        var newNetWeigth = groosWeigth - tareNow;
-        this.setDataValue('netWeigth', newNetWeigth);
+      if (tareNow != 0 & groosWeight != 0) {
+        var newNetWeight = groosWeight - tareNow;
+        this.setDataValue('netWeight', newNetWeight);
       }
     },
     required: false
@@ -101,12 +92,58 @@ var register = sequelize.define('registers', {
     type: DataTypes.DATE,
     set: function set() {
       var dateNow = new Date().toISOString();
-      var netWeigthNow = this.netWeigth;
+      var netWeightNow = this.netWeight;
 
-      if (netWeigthNow != 0) {
+      if (netWeightNow != 0) {
         this.setDataValue('dateNet', dateNow);
       }
     }
+  },
+  weight: {
+    type: DataTypes.DECIMAL(10, 3),
+    defaultValue: 0,
+    required: true,
+    allowNull: false,
+    validate: {
+      isDecimal: {
+        msg: 'No es un numero decimal'
+      }
+    }
+  },
+  dateWeight: {
+    type: DataTypes.DATE,
+    set: function set() {
+      var dateNow = new Date().toISOString();
+      var weightNow = this.weight;
+
+      if (weightNow != 0) {
+        this.setDataValue('dateWeight', dateNow);
+      }
+    },
+    required: false
+  },
+  secondWeight: {
+    type: DataTypes.DECIMAL(10, 3),
+    defaultValue: 0,
+    required: true,
+    allowNull: false,
+    validate: {
+      isDecimal: {
+        msg: 'No es un numero decimal'
+      }
+    }
+  },
+  secondDateWeight: {
+    type: DataTypes.DATE,
+    set: function set() {
+      var dateNow = new Date().toISOString();
+      var secondDateWeightNow = this.secondDateWeight;
+
+      if (secondDateWeightNow != 0) {
+        this.setDataValue('secondDateWeight', dateNow);
+      }
+    },
+    required: false
   },
   error: {
     type: DataTypes.STRING,

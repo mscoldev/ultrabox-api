@@ -40,19 +40,22 @@ const getRegisterById = async (req = request, res = response) => {
 const updateRegisterById = async (req = request, res = response) => {
     try {
         const { id } = req.params;
-        const { tare, status, userRecorder } = req.body;
+        const { weight, status, userRecorder } = req.body;
         const newRegister = await Register.findByPk(id);
 
         if (newRegister != null) {
 
-            newRegister.tare = tare;
+            newRegister.secondWeight = weight;
+            newRegister.secondDateWeight = null; //trigger setValue
             newRegister.status = status;
             newRegister.userRecorder = userRecorder;
 
             //*Autocalcular
-            newRegister.netWeigth = "";
-            newRegister.dateTara = "";
-            newRegister.dateNet = "";
+            // newRegister.netWeigth = "";
+            // newRegister.dateTara = "";
+            // newRegister.dateNet = "";
+
+
 
             await newRegister.save();
 
@@ -96,7 +99,7 @@ const deleteRegisterById = async (req = request, res = response) => {
 const createRegister = async (req = request, res = response) => {
     try {
         const {
-            groosWeigth,
+            weight,
             status,
             userRecorder,
             _idProduct,
@@ -108,7 +111,8 @@ const createRegister = async (req = request, res = response) => {
             enabled } = req.body;
 
         const newRegister = await Register.create({
-            groosWeigth,
+            weight,
+            dateWeight: null,
             status,
             userRecorder,
             _idProduct,
@@ -122,7 +126,7 @@ const createRegister = async (req = request, res = response) => {
 
 
         res.status(201).json({
-            msg: 'Origen creado satisfactoriamente!',
+            msg: 'Registro creado satisfactoriamente!',
             newRegister
         })
     } catch (err) {

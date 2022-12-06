@@ -121,7 +121,7 @@ var updateRegisterById = /*#__PURE__*/function () {
         res,
         id,
         _req$body,
-        tare,
+        weight,
         status,
         userRecorder,
         newRegister,
@@ -135,7 +135,7 @@ var updateRegisterById = /*#__PURE__*/function () {
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
             _context3.prev = 2;
             id = req.params.id;
-            _req$body = req.body, tare = _req$body.tare, status = _req$body.status, userRecorder = _req$body.userRecorder;
+            _req$body = req.body, weight = _req$body.weight, status = _req$body.status, userRecorder = _req$body.userRecorder;
             _context3.next = 7;
             return Register.findByPk(id);
 
@@ -143,51 +143,53 @@ var updateRegisterById = /*#__PURE__*/function () {
             newRegister = _context3.sent;
 
             if (!(newRegister != null)) {
-              _context3.next = 20;
+              _context3.next = 18;
               break;
             }
 
-            newRegister.tare = tare;
+            newRegister.secondWeight = weight;
+            newRegister.secondDateWeight = null; //trigger setValue
+
             newRegister.status = status;
             newRegister.userRecorder = userRecorder; //*Autocalcular
+            // newRegister.netWeigth = "";
+            // newRegister.dateTara = "";
+            // newRegister.dateNet = "";
 
-            newRegister.netWeigth = "";
-            newRegister.dateTara = "";
-            newRegister.dateNet = "";
-            _context3.next = 17;
+            _context3.next = 15;
             return newRegister.save();
 
-          case 17:
+          case 15:
             res.status(200).json({
               msg: 'Registro actualizado con exito',
               newRegister: newRegister
             });
-            _context3.next = 22;
+            _context3.next = 20;
             break;
 
-          case 20:
+          case 18:
             console.log('Not found');
             res.status(200).json({
               msg: 'Registro con encontrado, verifique el Id ingresado'
             });
 
-          case 22:
-            _context3.next = 27;
+          case 20:
+            _context3.next = 25;
             break;
 
-          case 24:
-            _context3.prev = 24;
+          case 22:
+            _context3.prev = 22;
             _context3.t0 = _context3["catch"](2);
             return _context3.abrupt("return", res.status(500).json({
               message: "Se ha producido un error, ".concat(_context3.t0.message)
             }));
 
-          case 27:
+          case 25:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[2, 24]]);
+    }, _callee3, null, [[2, 22]]);
   }));
 
   return function updateRegisterById() {
@@ -259,7 +261,7 @@ var createRegister = /*#__PURE__*/function () {
     var req,
         res,
         _req$body2,
-        groosWeigth,
+        weight,
         status,
         userRecorder,
         _idProduct,
@@ -279,10 +281,11 @@ var createRegister = /*#__PURE__*/function () {
             req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
             res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
             _context5.prev = 2;
-            _req$body2 = req.body, groosWeigth = _req$body2.groosWeigth, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, _idDriver = _req$body2._idDriver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idProject = _req$body2._idProject, enabled = _req$body2.enabled;
+            _req$body2 = req.body, weight = _req$body2.weight, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, _idDriver = _req$body2._idDriver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idProject = _req$body2._idProject, enabled = _req$body2.enabled;
             _context5.next = 6;
             return Register.create({
-              groosWeigth: groosWeigth,
+              weight: weight,
+              dateWeight: null,
               status: status,
               userRecorder: userRecorder,
               _idProduct: _idProduct,
@@ -297,7 +300,7 @@ var createRegister = /*#__PURE__*/function () {
           case 6:
             newRegister = _context5.sent;
             res.status(201).json({
-              msg: 'Origen creado satisfactoriamente!',
+              msg: 'Registro creado satisfactoriamente!',
               newRegister: newRegister
             });
             _context5.next = 13;

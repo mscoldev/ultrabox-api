@@ -11,14 +11,7 @@ const register = sequelize.define('registers', {
     date: {
         type: DataTypes.DATE,
         required: true,
-        set() {
-            const dateNow = new Date().toISOString();
-            const grossNow = this.groosWeigth
-            if (grossNow != 0) {
-                this.setDataValue('date', dateNow)
-            }
-        },
-        required: false
+        defaultValue: DataTypes.NOW
     },
     serialScale: {
         type: DataTypes.INTEGER,
@@ -36,7 +29,7 @@ const register = sequelize.define('registers', {
             isDecimal: { msg: 'No es un numero decimal' }
         }
     },
-    groosWeigth: {
+    groosWeight: {
         type: DataTypes.DECIMAL(10, 3),
         defaultValue: 0,
         required: true,
@@ -45,17 +38,17 @@ const register = sequelize.define('registers', {
             isDecimal: { msg: 'No es un numero decimal' }
         }
     },
-    netWeigth: {
+    netWeight: {
         type: DataTypes.DECIMAL(10, 3),
         defaultValue: 0,
         allowNull: false,
         set() {
             const tareNow = this.tare;
-            const groosWeigth = this.groosWeigth;
+            const groosWeight = this.groosWeight;
 
-            if (tareNow != 0 & groosWeigth != 0) {
-                const newNetWeigth = groosWeigth - tareNow;
-                this.setDataValue('netWeigth', newNetWeigth);
+            if (tareNow != 0 & groosWeight != 0) {
+                const newNetWeight = groosWeight - tareNow;
+                this.setDataValue('netWeight', newNetWeight);
             }
         },
         required: false
@@ -89,11 +82,51 @@ const register = sequelize.define('registers', {
         type: DataTypes.DATE,
         set() {
             const dateNow = new Date().toISOString();
-            const netWeigthNow = this.netWeigth
-            if (netWeigthNow != 0) {
+            const netWeightNow = this.netWeight
+            if (netWeightNow != 0) {
                 this.setDataValue('dateNet', dateNow)
             }
         },
+    },
+    weight: {
+        type: DataTypes.DECIMAL(10, 3),
+        defaultValue: 0,
+        required: true,
+        allowNull: false,
+        validate: {
+            isDecimal: { msg: 'No es un numero decimal' }
+        }
+    },
+    dateWeight: {
+        type: DataTypes.DATE,
+        set() {
+            const dateNow = new Date().toISOString();
+            const weightNow = this.weight
+            if (weightNow != 0) {
+                this.setDataValue('dateWeight', dateNow)
+            }
+        },
+        required: false
+    },
+    secondWeight: {
+        type: DataTypes.DECIMAL(10, 3),
+        defaultValue: 0,
+        required: true,
+        allowNull: false,
+        validate: {
+            isDecimal: { msg: 'No es un numero decimal' }
+        }
+    },
+    secondDateWeight: {
+        type: DataTypes.DATE,
+        set() {
+            const dateNow = new Date().toISOString();
+            const secondDateWeightNow = this.secondDateWeight
+            if (secondDateWeightNow != 0) {
+                this.setDataValue('secondDateWeight', dateNow)
+            }
+        },
+        required: false
     },
     error: {
         type: DataTypes.STRING,
