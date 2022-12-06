@@ -11,30 +11,64 @@ const register = sequelize.define('registers', {
     date: {
         type: DataTypes.DATE,
         required: true,
+        set() {
+            const dateNow = new Date().toISOString();
+            const grossNow = this.groosWeigth
+            if (grossNow != 0) {
+                this.setDataValue('date', dateNow)
+            }
+        },
+        required: false
     },
     serialScale: {
         type: DataTypes.INTEGER,
-        required: true
+        autoIncrement: true,
+        unique: true
     },
     serialLog: {
         type: DataTypes.INTEGER,
-        required: true
+        required: true,
     },
     qty: {
         type: DataTypes.DECIMAL(10, 3),
-        required: true
+        allowNull: true,
+        validate: {
+            isDecimal: { msg: 'No es un numero decimal' }
+        }
     },
     groosWeigth: {
         type: DataTypes.DECIMAL(10, 3),
-        required: true
+        defaultValue: 0,
+        required: true,
+        allowNull: false,
+        validate: {
+            isDecimal: { msg: 'No es un numero decimal' }
+        }
     },
     netWeigth: {
         type: DataTypes.DECIMAL(10, 3),
-        required: true
+        defaultValue: 0,
+        allowNull: false,
+        set() {
+            const tareNow = this.tare;
+            const groosWeigth = this.groosWeigth;
+
+            if (tareNow != 0 & groosWeigth != 0) {
+                const newNetWeigth = groosWeigth - tareNow;
+                this.setDataValue('netWeigth', newNetWeigth);
+            }
+        },
+        required: false
+
     },
     tare: {
         type: DataTypes.DECIMAL(10, 3),
-        required: true
+        required: true,
+        defaultValue: 0,
+        allowNull: false,
+        validate: {
+            isDecimal: { msg: 'No es un numero decimal' }
+        }
     },
     status: {
         type: DataTypes.STRING,
@@ -42,11 +76,25 @@ const register = sequelize.define('registers', {
     },
     dateTara: {
         type: DataTypes.DATE,
-        required: true,
+        set() {
+            const dateNow = new Date().toISOString();
+            const tareNow = this.tare
+            if (tareNow != 0) {
+                this.setDataValue('dateTara', dateNow)
+            }
+        },
+        required: false
     },
-    dateNeto: {
+    dateNet: {
         type: DataTypes.DATE,
-        required: true,
+        set() {
+            const dateNow = new Date().toISOString();
+            const netWeigthNow = this.netWeigth
+            if (netWeigthNow != 0) {
+                this.setDataValue('dateNet', dateNow)
+            }
+        },
+        required: false
     },
     error: {
         type: DataTypes.STRING,
@@ -61,7 +109,7 @@ const register = sequelize.define('registers', {
         required: true
     },
     _idDriver: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         required: true
     },
     _idTruck: {
@@ -69,7 +117,7 @@ const register = sequelize.define('registers', {
         required: true
     },
     _idClient: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         required: true
     },
     _idOrigin: {
@@ -86,5 +134,6 @@ const register = sequelize.define('registers', {
         defaultValue: true
     }
 })
+
 
 module.exports = register;

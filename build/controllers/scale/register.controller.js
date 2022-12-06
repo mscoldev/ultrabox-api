@@ -33,7 +33,7 @@ var getRegisters = /*#__PURE__*/function () {
           case 5:
             registers = _context.sent;
             res.status(200).json({
-              msg: 'Lista de vehiculos',
+              msg: 'Lista de registros',
               registers: registers
             });
             _context.next = 12;
@@ -64,9 +64,8 @@ var getRegisterById = /*#__PURE__*/function () {
     var req,
         res,
         id,
-        _Register,
+        register,
         _args2 = arguments;
-
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -76,20 +75,20 @@ var getRegisterById = /*#__PURE__*/function () {
             _context2.prev = 2;
             id = req.params.id;
             _context2.next = 6;
-            return _Register.findByPk(id);
+            return Register.findByPk(id);
 
           case 6:
-            _Register = _context2.sent;
+            register = _context2.sent;
 
             if (register != null) {
               res.status(200).json({
-                msg: 'Información del Vehiculo',
+                msg: 'Información del Registro',
                 register: register
               });
             } else {
               console.log('Not found');
               res.status(200).json({
-                msg: 'Vehiculo no encontrado, verifique id'
+                msg: 'Registro no encontrado, verifique el Id ingresado'
               });
             }
 
@@ -122,11 +121,9 @@ var updateRegisterById = /*#__PURE__*/function () {
         res,
         id,
         _req$body,
-        numberPlate,
-        model,
-        color,
-        RegisterName,
-        enable,
+        tare,
+        status,
+        userRecorder,
         newRegister,
         _args3 = arguments;
 
@@ -138,7 +135,7 @@ var updateRegisterById = /*#__PURE__*/function () {
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
             _context3.prev = 2;
             id = req.params.id;
-            _req$body = req.body, numberPlate = _req$body.numberPlate, model = _req$body.model, color = _req$body.color, RegisterName = _req$body.RegisterName, enable = _req$body.enable;
+            _req$body = req.body, tare = _req$body.tare, status = _req$body.status, userRecorder = _req$body.userRecorder;
             _context3.next = 7;
             return Register.findByPk(id);
 
@@ -150,18 +147,19 @@ var updateRegisterById = /*#__PURE__*/function () {
               break;
             }
 
-            console.log('found');
-            newRegister.numberPlate = numberPlate;
-            newRegister.model = model;
-            newRegister.color = color;
-            newRegister.RegisterName = RegisterName;
-            newRegister.enable = enable;
+            newRegister.tare = tare;
+            newRegister.status = status;
+            newRegister.userRecorder = userRecorder; //*Autocalcular
+
+            newRegister.netWeigth = "";
+            newRegister.dateTara = "";
+            newRegister.dateNet = "";
             _context3.next = 17;
             return newRegister.save();
 
           case 17:
             res.status(200).json({
-              msg: 'Origen actualizado',
+              msg: 'Registro actualizado con exito',
               newRegister: newRegister
             });
             _context3.next = 22;
@@ -170,7 +168,7 @@ var updateRegisterById = /*#__PURE__*/function () {
           case 20:
             console.log('Not found');
             res.status(200).json({
-              msg: 'Registero no encontrado, verifique id'
+              msg: 'Registro con encontrado, verifique el Id ingresado'
             });
 
           case 22:
@@ -261,17 +259,8 @@ var createRegister = /*#__PURE__*/function () {
     var req,
         res,
         _req$body2,
-        date,
-        serialScale,
-        serialLog,
-        qty,
         groosWeigth,
-        netWeigth,
-        tare,
         status,
-        dateTara,
-        dateNeto,
-        error,
         userRecorder,
         _idProduct,
         _idDriver,
@@ -290,20 +279,11 @@ var createRegister = /*#__PURE__*/function () {
             req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
             res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
             _context5.prev = 2;
-            _req$body2 = req.body, date = _req$body2.date, serialScale = _req$body2.serialScale, serialLog = _req$body2.serialLog, qty = _req$body2.qty, groosWeigth = _req$body2.groosWeigth, netWeigth = _req$body2.netWeigth, tare = _req$body2.tare, status = _req$body2.status, dateTara = _req$body2.dateTara, dateNeto = _req$body2.dateNeto, error = _req$body2.error, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, _idDriver = _req$body2._idDriver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idProject = _req$body2._idProject, enabled = _req$body2.enabled;
+            _req$body2 = req.body, groosWeigth = _req$body2.groosWeigth, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, _idDriver = _req$body2._idDriver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idProject = _req$body2._idProject, enabled = _req$body2.enabled;
             _context5.next = 6;
             return Register.create({
-              date: date,
-              serialScale: serialScale,
-              serialLog: serialLog,
-              qty: qty,
               groosWeigth: groosWeigth,
-              netWeigth: netWeigth,
-              tare: tare,
               status: status,
-              dateTara: dateTara,
-              dateNeto: dateNeto,
-              error: error,
               userRecorder: userRecorder,
               _idProduct: _idProduct,
               _idDriver: _idDriver,

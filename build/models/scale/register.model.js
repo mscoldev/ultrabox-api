@@ -1,5 +1,7 @@
 "use strict";
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var _require = require('sequelize'),
     DataTypes = _require.DataTypes;
 
@@ -12,13 +14,22 @@ var register = sequelize.define('registers', {
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4
   },
-  date: {
+  date: _defineProperty({
     type: DataTypes.DATE,
-    required: true
-  },
+    required: true,
+    set: function set() {
+      var dateNow = new Date().toISOString();
+      var grossNow = this.groosWeigth;
+
+      if (grossNow != 0) {
+        this.setDataValue('date', dateNow);
+      }
+    }
+  }, "required", false),
   serialScale: {
     type: DataTypes.INTEGER,
-    required: true
+    autoIncrement: true,
+    unique: true
   },
   serialLog: {
     type: DataTypes.INTEGER,
@@ -26,19 +37,49 @@ var register = sequelize.define('registers', {
   },
   qty: {
     type: DataTypes.DECIMAL(10, 3),
-    required: true
+    allowNull: true,
+    validate: {
+      isDecimal: {
+        msg: 'No es un numero decimal'
+      }
+    }
   },
   groosWeigth: {
     type: DataTypes.DECIMAL(10, 3),
-    required: true
+    defaultValue: 0,
+    required: true,
+    allowNull: false,
+    validate: {
+      isDecimal: {
+        msg: 'No es un numero decimal'
+      }
+    }
   },
   netWeigth: {
     type: DataTypes.DECIMAL(10, 3),
-    required: true
+    defaultValue: 0,
+    allowNull: false,
+    set: function set() {
+      var tareNow = this.tare;
+      var groosWeigth = this.groosWeigth;
+
+      if (tareNow != 0 & groosWeigth != 0) {
+        var newNetWeigth = groosWeigth - tareNow;
+        this.setDataValue('netWeigth', newNetWeigth);
+      }
+    },
+    required: false
   },
   tare: {
     type: DataTypes.DECIMAL(10, 3),
-    required: true
+    required: true,
+    defaultValue: 0,
+    allowNull: false,
+    validate: {
+      isDecimal: {
+        msg: 'No es un numero decimal'
+      }
+    }
   },
   status: {
     type: DataTypes.STRING,
@@ -46,11 +87,27 @@ var register = sequelize.define('registers', {
   },
   dateTara: {
     type: DataTypes.DATE,
-    required: true
+    set: function set() {
+      var dateNow = new Date().toISOString();
+      var tareNow = this.tare;
+
+      if (tareNow != 0) {
+        this.setDataValue('dateTara', dateNow);
+      }
+    },
+    required: false
   },
-  dateNeto: {
+  dateNet: {
     type: DataTypes.DATE,
-    required: true
+    set: function set() {
+      var dateNow = new Date().toISOString();
+      var netWeigthNow = this.netWeigth;
+
+      if (netWeigthNow != 0) {
+        this.setDataValue('dateNet', dateNow);
+      }
+    },
+    required: false
   },
   error: {
     type: DataTypes.STRING,
@@ -65,7 +122,7 @@ var register = sequelize.define('registers', {
     required: true
   },
   _idDriver: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     required: true
   },
   _idTruck: {
@@ -73,7 +130,7 @@ var register = sequelize.define('registers', {
     required: true
   },
   _idClient: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     required: true
   },
   _idOrigin: {

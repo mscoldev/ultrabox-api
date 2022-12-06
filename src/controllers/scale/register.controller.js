@@ -6,7 +6,7 @@ const getRegisters = async (req = request, res = response) => {
     try {
         const registers = await Register.findAll();
         res.status(200).json({
-            msg: 'Lista de vehiculos',
+            msg: 'Lista de registros',
             registers
         })
     } catch (err) {
@@ -18,16 +18,16 @@ const getRegisters = async (req = request, res = response) => {
 const getRegisterById = async (req = request, res = response) => {
     try {
         const { id } = req.params;
-        const Register = await Register.findByPk(id);
+        const register = await Register.findByPk(id);
         if (register != null) {
             res.status(200).json({
-                msg: 'Información del Vehiculo',
+                msg: 'Información del Registro',
                 register
             });
         } else {
             console.log('Not found');
             res.status(200).json({
-                msg: 'Vehiculo no encontrado, verifique id'
+                msg: 'Registro no encontrado, verifique el Id ingresado'
             });
         }
 
@@ -40,28 +40,30 @@ const getRegisterById = async (req = request, res = response) => {
 const updateRegisterById = async (req = request, res = response) => {
     try {
         const { id } = req.params;
-        const { numberPlate, model, color, RegisterName, enable } = req.body;
+        const { tare, status, userRecorder } = req.body;
         const newRegister = await Register.findByPk(id);
 
         if (newRegister != null) {
-            console.log('found');
 
-            newRegister.numberPlate = numberPlate;
-            newRegister.model = model;
-            newRegister.color = color;
-            newRegister.RegisterName = RegisterName;
-            newRegister.enable = enable;
+            newRegister.tare = tare;
+            newRegister.status = status;
+            newRegister.userRecorder = userRecorder;
+
+            //*Autocalcular
+            newRegister.netWeigth = "";
+            newRegister.dateTara = "";
+            newRegister.dateNet = "";
 
             await newRegister.save();
 
             res.status(200).json({
-                msg: 'Origen actualizado',
+                msg: 'Registro actualizado con exito',
                 newRegister
             });
         } else {
             console.log('Not found');
             res.status(200).json({
-                msg: 'Registero no encontrado, verifique id'
+                msg: 'Registro con encontrado, verifique el Id ingresado'
             });
         }
 
@@ -93,17 +95,9 @@ const deleteRegisterById = async (req = request, res = response) => {
 
 const createRegister = async (req = request, res = response) => {
     try {
-        const { date,
-            serialScale,
-            serialLog,
-            qty,
+        const {
             groosWeigth,
-            netWeigth,
-            tare,
             status,
-            dateTara,
-            dateNeto,
-            error,
             userRecorder,
             _idProduct,
             _idDriver,
@@ -114,17 +108,8 @@ const createRegister = async (req = request, res = response) => {
             enabled } = req.body;
 
         const newRegister = await Register.create({
-            date,
-            serialScale,
-            serialLog,
-            qty,
             groosWeigth,
-            netWeigth,
-            tare,
             status,
-            dateTara,
-            dateNeto,
-            error,
             userRecorder,
             _idProduct,
             _idDriver,
@@ -134,6 +119,7 @@ const createRegister = async (req = request, res = response) => {
             _idProject,
             enabled
         });
+
 
         res.status(201).json({
             msg: 'Origen creado satisfactoriamente!',
