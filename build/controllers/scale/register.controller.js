@@ -269,7 +269,7 @@ var createRegister = /*#__PURE__*/function () {
         _idTruck,
         _idClient,
         _idOrigin,
-        _idProject,
+        _idSite,
         enabled,
         newRegister,
         _args5 = arguments;
@@ -281,7 +281,7 @@ var createRegister = /*#__PURE__*/function () {
             req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
             res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
             _context5.prev = 2;
-            _req$body2 = req.body, weight = _req$body2.weight, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, _idDriver = _req$body2._idDriver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idProject = _req$body2._idProject, enabled = _req$body2.enabled;
+            _req$body2 = req.body, weight = _req$body2.weight, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, _idDriver = _req$body2._idDriver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idSite = _req$body2._idSite, enabled = _req$body2.enabled;
             _context5.next = 6;
             return Register.create({
               weight: weight,
@@ -293,7 +293,7 @@ var createRegister = /*#__PURE__*/function () {
               _idTruck: _idTruck,
               _idClient: _idClient,
               _idOrigin: _idOrigin,
-              _idProject: _idProject,
+              _idSite: _idSite,
               enabled: enabled
             });
 
