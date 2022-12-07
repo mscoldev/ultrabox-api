@@ -1,13 +1,13 @@
 const { response, request } = require('express');
-const Project = require('../../models/scale/project.model');
+const Site = require('../../models/scale/site.model');
 
 
-const getProjects = async (req = request, res = response) => {
+const getSites = async (req = request, res = response) => {
     try {
-        const projects = await Project.findAll();
+        const site = await Site.findAll();
         res.status(200).json({
             msg: 'Lista de Proyectos',
-            projects
+            site
         })
     } catch (err) {
         return res.status(500).json({ message: err.message });
@@ -15,14 +15,14 @@ const getProjects = async (req = request, res = response) => {
 }
 
 
-const getProjectById = async (req = request, res = response) => {
+const getSiteById = async (req = request, res = response) => {
     try {
         const { id } = req.params;
-        const project = await Project.findByPk(id);
-        if (project != null) {
+        const site = await Site.findByPk(id);
+        if (site != null) {
             res.status(200).json({
                 msg: 'Información del Proyecto',
-                project
+                site
             });
         } else {
             console.log('Not found');
@@ -37,22 +37,22 @@ const getProjectById = async (req = request, res = response) => {
 }
 
 
-const updateProjectById = async (req = request, res = response) => {
+const updateSiteById = async (req = request, res = response) => {
     try {
         const { id } = req.params;
-        const { projectName, enable } = req.body;
-        const projectUpdated = await Project.findByPk(id);
+        const { name, enable } = req.body;
+        const siteUpdated = await Site.findByPk(id);
 
-        if (projectUpdated != null) {
+        if (siteUpdated != null) {
             console.log('found');
-            projectUpdated.projectName = projectName;
-            projectUpdated.enable = enable;
+            siteUpdated.name = name;
+            siteUpdated.enable = enable;
 
-            await projectUpdated.save();
+            await siteUpdated.save();
 
             res.status(200).json({
                 msg: 'Origen actualizado',
-                projectUpdated
+                siteUpdated
             });
         } else {
             console.log('Not found');
@@ -67,12 +67,12 @@ const updateProjectById = async (req = request, res = response) => {
 }
 
 //TODO: Pendiente Implementar
-const deleteProjectById = async (req = request, res = response) => {
+const deleteSiteById = async (req = request, res = response) => {
     try {
         const paramsId = req.params.ProjectId;
         const body = { deleted: true }
-        const deletedProject = await Project.findByIdAndUpdate(paramsId, body);
-        if (deletedProject != null) {
+        const deletedSite = await Site.findByIdAndUpdate(paramsId, body);
+        if (deletedSite != null) {
             res.status(200).json({
                 msg: 'Projects eliminado Id:' + paramsId
             });
@@ -88,16 +88,16 @@ const deleteProjectById = async (req = request, res = response) => {
 
 
 
-const createProject = async (req = request, res = response) => {
+const createSite = async (req = request, res = response) => {
     try {
-        const { projectName } = req.body
-        const newProject = await Project.create({
-            projectName
+        const { name } = req.body
+        const newSite = await Site.create({
+            name
         });
 
         res.status(201).json({
             msg: 'Origen creado satisfactoriamente!',
-            newProject
+            newSite
         })
     } catch (err) {
         return res.status(500).json({ message: `Se ha producido un error, ${err.message}` })
@@ -108,9 +108,9 @@ const createProject = async (req = request, res = response) => {
 
 
 module.exports = {
-    getProjects,
-    getProjectById,
-    updateProjectById,
-    deleteProjectById,
-    createProject
+    getSites,
+    getSiteById,
+    updateSiteById,
+    deleteSiteById,
+    createSite
 }

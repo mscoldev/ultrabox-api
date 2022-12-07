@@ -37,9 +37,10 @@ class Server {
         this.driverPath = '/api/scale/driver';
         this.originPath = '/api/scale/origin';
         this.productPath = '/api/scale/product';
-        this.projectPath = '/api/scale/project';
+        this.sitePath = '/api/scale/site';
         this.truckPath = '/api/scale/truck';
         this.registerPath = '/api/scale/register';
+        this.destinationPath = '/api/scale/destination';
 
 
         //Conectar a la base de datos
@@ -108,9 +109,10 @@ class Server {
         this.app.use(this.driverPath, require('../routes/scale/driver.routes'));
         this.app.use(this.originPath, require('../routes/scale/origin.routes'));
         this.app.use(this.productPath, require('../routes/scale/product.routes'));
-        this.app.use(this.projectPath, require('../routes/scale/project.routes'));
+        this.app.use(this.sitePath, require('../routes/scale/site.routes'));
         this.app.use(this.truckPath, require('../routes/scale/truck.routes'));
         this.app.use(this.registerPath, require('../routes/scale/register.routes'));
+        this.app.use(this.destinationPath, require('../routes/scale/destination.routes'));
 
     }
 

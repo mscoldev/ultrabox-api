@@ -156,7 +156,7 @@ const register = sequelize.define('registers', {
         type: DataTypes.INTEGER,
         required: true
     },
-    _idProject: {
+    _idSite: {
         type: DataTypes.INTEGER,
         required: true
     },

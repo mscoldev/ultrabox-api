@@ -2,13 +2,13 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../database/config.databasepg');
 
 
-const project = sequelize.define('projects', {
+const site = sequelize.define('sites', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    projectName: {
+    name: {
         type: DataTypes.STRING,
         required: true
     },
@@ -19,4 +19,4 @@ const project = sequelize.define('projects', {
     }
 })
 
-module.exports = project;
+module.exports = site;
