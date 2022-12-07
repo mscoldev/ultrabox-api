@@ -107,7 +107,7 @@ const createRegister = async (req = request, res = response) => {
             _idTruck,
             _idClient,
             _idOrigin,
-            _idProject,
+            _idSite,
             enabled } = req.body;
 
         const newRegister = await Register.create({
@@ -120,7 +120,7 @@ const createRegister = async (req = request, res = response) => {
             _idTruck,
             _idClient,
             _idOrigin,
-            _idProject,
+            _idSite,
             enabled
         });
 
