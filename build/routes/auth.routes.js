@@ -16,13 +16,15 @@ var _require4 = require('../controllers/auth.controller'),
     signIn = _require4.signIn,
     signUp = _require4.signUp,
     getUsers = _require4.getUsers,
-    updateUser = _require4.updateUser; //Importacion de Router express
+    updateUser = _require4.updateUser,
+    login = _require4.login; //Importacion de Router express
 
 
 var router = Router(); //Aqui las rutas necesarias --->
 
 router.get('/users', getUsers);
 router.post('/signup', signUp);
+router.post('/login', [check('username', 'El nombre de usuario es obligatorio').not().isEmpty(), check('password', 'El password es obligatorio').not().isEmpty(), validateFields], login);
 router.post('/signin', signIn);
 router.put('/user/:id', updateUser); // [
 //     check('email', 'el correo no es valido').isEmail(),

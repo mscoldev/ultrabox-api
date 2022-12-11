@@ -1,7 +1,11 @@
 const { response, request } = require('express');
-const User = require("../models/user.model");
-const Role = require("../models/role.model");
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
+const bcryptjs = require('bcryptjs');
+const { generateJWT } = require('../helpers/generateJWT')
+const User = require('../models/user.model');
+const Role = require('../models/role.model');
+
+
 require("dotenv").config();
 
 const getUsers = async (req = request, res = response) => {
@@ -112,14 +116,18 @@ const updateUser = async (req = request, res = response) => {
 
     try {
         const paramsId = req.params.id;
-        const body = req.body;
+        const { password, ...body } = req.body;
 
-        //TODO: Validar contra la base de datos.
+        //* Update password - If receive password, encrypt and add in body 
+
+        if (password) {
+            body.password = await User.encryptPassword(password)
+        }
 
         const userUpdated = await User.findByIdAndUpdate(paramsId, body, { new: true })
         if (userUpdated != null) {
             res.status(200).json({
-                msg: '_id de usuario no encontrado',
+                msg: 'Datos de usuario actualizados',
                 userUpdated
             });
         } else {
@@ -135,9 +143,55 @@ const updateUser = async (req = request, res = response) => {
 
 };
 
+const login = async (req = request, res = response) => {
+    const { username, password } = req.body;
+    try {
+
+        //*verify if exist user
+
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(400).json({
+                msg: 'El username no existe'
+            })
+        }
+
+        //*Verify user active
+        if (!user.status) {
+            return res.status(400).json({
+                msg: 'El username no se encuentra activo'
+            })
+        }
+
+        //*Verify password
+        const validPassword = bcryptjs.compareSync(password, user.password);
+        console.log(validPassword);
+        if (!validPassword) {
+            return res.status(400).json({
+                msg: 'El password es incorrecto'
+            })
+
+        }
+        //Generar JWT
+        const token = await generateJWT(user.id);
+        res.json({
+            msg: 'Login OK',
+            user,
+            token
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Error interno, Hable con el administrador'
+        });
+    }
+
+}
+
 module.exports = {
     signUp,
     signIn,
     getUsers,
-    updateUser
+    updateUser,
+    login
 };

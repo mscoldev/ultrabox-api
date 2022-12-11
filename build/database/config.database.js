@@ -17,7 +17,7 @@ var clc = require('cli-color');
 var localDatabase = process.env.MONGODB_LOCAL_CNN;
 var remoteDatabase = process.env.MONGODB_CNN;
 var config = {
-  serverSelectionTimeoutMS: 3000
+  serverSelectionTimeoutMS: 7000
 };
 
 var dbConnection = /*#__PURE__*/function () {
@@ -42,8 +42,8 @@ var dbConnection = /*#__PURE__*/function () {
             _context.prev = 8;
             _context.t0 = _context["catch"](0);
             console.error(clc.red('No fue posible conectar a la base de datos local'));
-            console.error(_context.t0.reason);
-            _context.prev = 12;
+            _context.prev = 11;
+            console.log(clc.green('Intentando conectar a la base datos remota...>'));
             _context.next = 15;
             return mongoose.connect(remoteDatabase, config);
 
@@ -55,7 +55,7 @@ var dbConnection = /*#__PURE__*/function () {
 
           case 19:
             _context.prev = 19;
-            _context.t1 = _context["catch"](12);
+            _context.t1 = _context["catch"](11);
             console.error(_context.t1.reason);
 
           case 22:
@@ -63,7 +63,7 @@ var dbConnection = /*#__PURE__*/function () {
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 8], [12, 19]]);
+    }, _callee, null, [[0, 8], [11, 19]]);
   }));
 
   return function dbConnection() {

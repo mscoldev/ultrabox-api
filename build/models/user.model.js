@@ -2,7 +2,7 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
-var _excluded = ["password", "deleted"];
+var _excluded = ["password", "deleted", "_id"];
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
@@ -135,8 +135,10 @@ userSchema.methods.toJSON = function () {
   var _this$toObject = this.toObject(),
       password = _this$toObject.password,
       deleted = _this$toObject.deleted,
+      _id = _this$toObject._id,
       user = _objectWithoutProperties(_this$toObject, _excluded);
 
+  user.uid = _id;
   return user;
 };
 
