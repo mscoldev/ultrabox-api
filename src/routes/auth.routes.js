@@ -4,10 +4,14 @@ const { check } = require('express-validator');
 const Role = require('../models/role.model');
 
 const { validateFields } = require('../middlewares/validateFields');
+const { validateJWT } = require('../middlewares/validateJWT');
+const { getUserRol, validateAccessModule, addNameModule } = require('../middlewares/validateRol');
 
 
 // Funciones desde el controlador
 const { signIn, signUp, getUsers, updateUser, login } = require('../controllers/auth.controller');
+
+const NAME_MODULE = 'auth';
 
 //Importacion de Router express
 const router = Router();
@@ -17,14 +21,25 @@ const router = Router();
 
 
 router.get('/users', getUsers);
+
 router.post('/signup', signUp);
+
 router.post('/login', [
     check('username', 'El nombre de usuario es obligatorio').not().isEmpty(),
     check('password', 'El password es obligatorio').not().isEmpty(),
     validateFields
 ], login);
+
 router.post('/signin', signIn);
-router.put('/user/:id', updateUser);
+
+router.put('/user/:id', [
+    validateJWT,
+    addNameModule(NAME_MODULE),
+    getUserRol,
+    validateAccessModule,
+    //TODO Validar acceso al modulo de usuarios.
+    //TODO Validar acceso a edicion - Posibles (Lectura, edicion, eliminacion, root)
+], updateUser);
 
 // [
 //     check('email', 'el correo no es valido').isEmail(),

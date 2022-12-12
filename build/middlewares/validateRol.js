@@ -8,147 +8,161 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _require = require('express'),
+    request = _require.request,
+    response = _require.response;
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+var jsonata = require('jsonata');
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+var Role = require('../models/role.model');
 
-require('dotenv').config();
+var getUserRol = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var req,
+        res,
+        next,
+        roles,
+        _args = arguments;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
+            res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
+            next = _args.length > 2 ? _args[2] : undefined;
 
-var express = require('express');
-
-var cors = require('cors');
-
-var morgan = require('morgan');
-
-var _require = require('../database/config.database'),
-    dbConnection = _require.dbConnection;
-
-var _require2 = require('../database/config.databasepg'),
-    pgConnection = _require2.pgConnection;
-
-var _require3 = require('../libs/initialSetupDatabase'),
-    createRoles = _require3.createRoles;
-
-var PORT = process.env.PORT || 3000;
-var corsOptions = {
-  credentials: false,
-  preflightContinue: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  origin: "*"
-};
-
-var Server = /*#__PURE__*/function () {
-  function Server() {
-    _classCallCheck(this, Server);
-
-    this.app = express();
-    this.port = PORT; //*PATHS MES
-
-    this.generalPath = '/api/';
-    this.authPath = '/api/auth';
-    this.recipePath = '/api/recipe';
-    this.materialPath = '/api/material';
-    this.productionPath = '/api/production';
-    this.productionLinePath = '/api/productionline';
-    this.rolePath = '/api/role';
-    this.typesDocumentPath = '/api/typesDocument'; //*PATHS SCALE
-
-    this.clientPath = '/api/scale/client';
-    this.driverPath = '/api/scale/driver';
-    this.originPath = '/api/scale/origin';
-    this.productPath = '/api/scale/product';
-    this.sitePath = '/api/scale/site';
-    this.truckPath = '/api/scale/truck';
-    this.registerPath = '/api/scale/register';
-    this.destinationPath = '/api/scale/destination'; //Conectar a la base de datos
-
-    this.dbInitialize(); // Middlewares
-
-    this.middlewares(); // Rutas de mi aplicación
-
-    this.routes();
-  } //* Connect & Initialize Database
-
-
-  _createClass(Server, [{
-    key: "dbInitialize",
-    value: function () {
-      var _dbInitialize = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return Promise.all([// pgConnection(),
-                dbConnection(), createRoles()]);
-
-              case 2:
-              case "end":
-                return _context.stop();
+            if (req.user) {
+              _context.next = 5;
+              break;
             }
-          }
-        }, _callee);
-      }));
 
-      function dbInitialize() {
-        return _dbInitialize.apply(this, arguments);
+            return _context.abrupt("return", res.status(500).json({
+              msg: 'Se quiere verificar el rol sin validar el token primero'
+            }));
+
+          case 5:
+            roles = req.user.roles;
+            console.log("El id del rol de usuario es: ".concat(roles));
+            next();
+
+          case 8:
+          case "end":
+            return _context.stop();
+        }
       }
+    }, _callee);
+  }));
 
-      return dbInitialize;
-    }() // async connectToDatabase (){
-    //     await dbConnection();
-    // }
-    // async initialSetupDatabase (){
-    //     await createRoles();
-    // }
-
-  }, {
-    key: "middlewares",
-    value: function middlewares() {
-      // CORS
-      this.app.use(cors(corsOptions)); //Morgan
-
-      this.app.use(morgan('dev')); // Lectura y parseo del body
-
-      this.app.use(express.json()); // Directorio Público
-
-      this.app.use(express["static"]('public'));
-    }
-  }, {
-    key: "routes",
-    value: function routes() {
-      //*ROUTES APP MES
-      this.app.use(this.authPath, require('../routes/auth.routes'));
-      this.app.use(this.recipePath, require('../routes/mes/recipe.routes'));
-      this.app.use(this.materialPath, require('../routes/mes/material.routes'));
-      this.app.use(this.productionPath, require('../routes/mes/production.routes'));
-      this.app.use(this.productionLinePath, require('../routes/mes/productionLine.routes'));
-      this.app.use(this.rolePath, require('../routes/mes/role.routes'));
-      this.app.use(this.typesDocumentPath, require('../routes/mes/typesDocument.routes')); //*ROUTES APP SCALE
-
-      this.app.use(this.clientPath, require('../routes/scale/client.routes'));
-      this.app.use(this.driverPath, require('../routes/scale/driver.routes'));
-      this.app.use(this.originPath, require('../routes/scale/origin.routes'));
-      this.app.use(this.productPath, require('../routes/scale/product.routes'));
-      this.app.use(this.sitePath, require('../routes/scale/site.routes'));
-      this.app.use(this.truckPath, require('../routes/scale/truck.routes'));
-      this.app.use(this.registerPath, require('../routes/scale/register.routes'));
-      this.app.use(this.destinationPath, require('../routes/scale/destination.routes'));
-    }
-  }, {
-    key: "listen",
-    value: function listen() {
-      var _this = this;
-
-      this.app.listen(this.port, function () {
-        console.log('Server running on port: ', _this.port);
-      });
-    }
-  }]);
-
-  return Server;
+  return function getUserRol() {
+    return _ref.apply(this, arguments);
+  };
 }();
 
-module.exports = Server;
+var validateAccessModule = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var req,
+        res,
+        next,
+        roles,
+        _yield$Role$findById,
+        permissions,
+        expression,
+        result,
+        _args2 = arguments;
+
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
+            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            next = _args2.length > 2 ? _args2[2] : undefined;
+            roles = req.user.roles;
+            _context2.prev = 4;
+            _context2.next = 7;
+            return Role.findById(roles);
+
+          case 7:
+            _yield$Role$findById = _context2.sent;
+            permissions = _yield$Role$findById.permissions;
+
+            if (permissions) {
+              _context2.next = 11;
+              break;
+            }
+
+            return _context2.abrupt("return", res.status(404).json({
+              msg: 'No se encontraron permisos asignados al rol'
+            }));
+
+          case 11:
+            console.log(permissions);
+            expression = jsonata('module');
+            result = expression.evaluate(permissions);
+            console.log(result);
+            next();
+            _context2.next = 21;
+            break;
+
+          case 18:
+            _context2.prev = 18;
+            _context2.t0 = _context2["catch"](4);
+            return _context2.abrupt("return", res.status(500).json({
+              msg: 'Error interno',
+              error: _context2.t0.message
+            }));
+
+          case 21:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[4, 18]]);
+  }));
+
+  return function validateAccessModule() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var addNameModule = function addNameModule(nameModule) {
+  return function () {
+    var req = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : request;
+    var res = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : response;
+    var next = arguments.length > 2 ? arguments[2] : undefined;
+    req.module = nameModule;
+    console.log("El nombre de este modulo es: ".concat(nameModule));
+    next();
+  };
+};
+
+var JSONataExpression = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(dataPromise) {
+    var queryJSONata, expression, result;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            queryJSONata = 'module';
+            expression = jsonata(queryJSONata);
+            result = expression.evaluate(dataPromise);
+            return _context3.abrupt("return", result);
+
+          case 4:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function JSONataExpression(_x) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+module.exports = {
+  getUserRol: getUserRol,
+  validateAccessModule: validateAccessModule,
+  addNameModule: addNameModule
+};

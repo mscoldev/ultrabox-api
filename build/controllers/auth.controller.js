@@ -27,8 +27,6 @@ var _require2 = require('../helpers/generateJWT'),
 
 var User = require('../models/user.model');
 
-var Role = require('../models/role.model');
-
 require("dotenv").config();
 
 var getUsers = /*#__PURE__*/function () {
@@ -95,8 +93,6 @@ var signUp = /*#__PURE__*/function () {
         deleted,
         roles,
         newUser,
-        foundRoles,
-        role,
         savedUser,
         errMsg,
         _args2 = arguments;
@@ -141,54 +137,20 @@ var signUp = /*#__PURE__*/function () {
               password: _context2.t12
             };
             newUser = new _context2.t0(_context2.t13);
-
-            if (!roles) {
-              _context2.next = 28;
-              break;
-            }
-
-            _context2.next = 24;
-            return Role.find({
-              name: {
-                $in: roles
-              }
-            });
-
-          case 24:
-            foundRoles = _context2.sent;
-            newUser.roles = foundRoles.map(function (role) {
-              return role._id;
-            });
-            _context2.next = 32;
-            break;
-
-          case 28:
-            _context2.next = 30;
-            return Role.findOne({
-              name: {
-                $in: "user"
-              }
-            });
-
-          case 30:
-            role = _context2.sent;
-            newUser.roles = [role._id];
-
-          case 32:
-            _context2.next = 34;
+            _context2.next = 23;
             return newUser.save();
 
-          case 34:
+          case 23:
             savedUser = _context2.sent;
             res.status(200).json({
               msg: 'Alta de usuario',
               savedUser: savedUser
             });
-            _context2.next = 42;
+            _context2.next = 31;
             break;
 
-          case 38:
-            _context2.prev = 38;
+          case 27:
+            _context2.prev = 27;
             _context2.t14 = _context2["catch"](2);
 
             // Set custom error for unique keys
@@ -203,12 +165,12 @@ var signUp = /*#__PURE__*/function () {
               message: errMsg
             });
 
-          case 42:
+          case 31:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[2, 38]]);
+    }, _callee2, null, [[2, 27]]);
   }));
 
   return function signUp() {
@@ -401,10 +363,9 @@ var login = /*#__PURE__*/function () {
           case 11:
             //*Verify password
             validPassword = bcryptjs.compareSync(password, user.password);
-            console.log(validPassword);
 
             if (validPassword) {
-              _context5.next = 15;
+              _context5.next = 14;
               break;
             }
 
@@ -412,33 +373,33 @@ var login = /*#__PURE__*/function () {
               msg: 'El password es incorrecto'
             }));
 
-          case 15:
-            _context5.next = 17;
+          case 14:
+            _context5.next = 16;
             return generateJWT(user.id);
 
-          case 17:
+          case 16:
             token = _context5.sent;
             res.json({
               msg: 'Login OK',
               user: user,
               token: token
             });
-            _context5.next = 24;
+            _context5.next = 23;
             break;
 
-          case 21:
-            _context5.prev = 21;
+          case 20:
+            _context5.prev = 20;
             _context5.t0 = _context5["catch"](3);
             return _context5.abrupt("return", res.status(500).json({
               msg: 'Error interno, Hable con el administrador'
             }));
 
-          case 24:
+          case 23:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[3, 21]]);
+    }, _callee5, null, [[3, 20]]);
   }));
 
   return function login() {

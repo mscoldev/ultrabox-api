@@ -15,7 +15,7 @@ const getRoles = async (req = request, res = response) => {
 }
 
 const getRoleById = async (req = request, res = response) => {
-    const role = await Role.findById(req.params.RoleId);
+    const role = await Role.findById(req.params._id);
     if (role != null) {
         res.status(200).json({
             msg: 'Role por Id',

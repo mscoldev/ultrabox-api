@@ -2,8 +2,9 @@ const { response, request } = require('express');
 const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../helpers/generateJWT')
+
 const User = require('../models/user.model');
-const Role = require('../models/role.model');
+
 
 
 require("dotenv").config();
@@ -52,13 +53,13 @@ const signUp = async (req = request, res = response) => {
         });
         //* assign roles - if roles == null default roles is user.
 
-        if (roles) {
-            const foundRoles = await Role.find({ name: { $in: roles } });
-            newUser.roles = foundRoles.map((role) => role._id);
-        } else {
-            const role = await Role.findOne({ name: { $in: "user" } });
-            newUser.roles = [role._id];
-        }
+        // if (roles) {
+        //     const foundRoles = await Role.find({ name: { $in: roles } });
+        //     newUser.roles = foundRoles.map((role) => role._id);
+        // } else {
+        //     const role = await Role.findOne({ name: { $in: "user" } });
+        //     newUser.roles = [role._id];
+        // }
 
         // //*Return TOKEN to FRONTEND
         // const token = jwt.sign({ id: savedUser._id }, process.env.SECRET_KEY, {
@@ -117,7 +118,6 @@ const updateUser = async (req = request, res = response) => {
     try {
         const paramsId = req.params.id;
         const { password, ...body } = req.body;
-
         //* Update password - If receive password, encrypt and add in body 
 
         if (password) {
@@ -165,7 +165,6 @@ const login = async (req = request, res = response) => {
 
         //*Verify password
         const validPassword = bcryptjs.compareSync(password, user.password);
-        console.log(validPassword);
         if (!validPassword) {
             return res.status(400).json({
                 msg: 'El password es incorrecto'

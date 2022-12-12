@@ -11,6 +11,11 @@ const roleSchema = Schema({
         required: [true, 'Debe definir un nombre para el Esquema'],
         default: ""
     },
+    permissions: {
+        type: [Map],
+        required: [true, 'Debe definir permisos minimos para este rol'],
+        default: ""
+    },
     deleted: {
         type: Boolean,
         default: false

@@ -74,7 +74,7 @@ var getRoleById = /*#__PURE__*/function () {
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
             _context2.next = 4;
-            return Role.findById(req.params.RoleId);
+            return Role.findById(req.params._id);
 
           case 4:
             role = _context2.sent;
