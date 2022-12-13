@@ -45,7 +45,7 @@ var userSchema = Schema({
     required: [true, 'El número de identificacion es requerido'],
     unique: [true, 'El numero de identificacion está definido como unico']
   },
-  typesDocument: {
+  typeDocument: {
     type: String,
     required: true
   },
@@ -66,7 +66,7 @@ var userSchema = Schema({
     type: Boolean,
     "default": false
   },
-  roles: {
+  role: {
     ref: 'Role',
     type: Schema.Types.ObjectId
   }

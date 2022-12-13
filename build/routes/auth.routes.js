@@ -35,7 +35,10 @@ router.get('/users', getUsers);
 router.post('/signup', signUp);
 router.post('/login', [check('username', 'El nombre de usuario es obligatorio').not().isEmpty(), check('password', 'El password es obligatorio').not().isEmpty(), validateFields], login);
 router.post('/signin', signIn);
-router.put('/user/:id', [validateJWT, addNameModule(NAME_MODULE), getUserRol, validateAccessModule //TODO Validar acceso al modulo de usuarios.
+router.put('/user/:id', [validateJWT // addNameModule(NAME_MODULE),
+// getUserRol,
+// validateAccessModule,
+//TODO Validar acceso al modulo de usuarios.
 //TODO Validar acceso a edicion - Posibles (Lectura, edicion, eliminacion, root)
 ], updateUser); // [
 //     check('email', 'el correo no es valido').isEmail(),

@@ -33,13 +33,15 @@ router.post('/login', [
 router.post('/signin', signIn);
 
 router.put('/user/:id', [
-    validateJWT,
-    addNameModule(NAME_MODULE),
-    getUserRol,
-    validateAccessModule,
+    validateJWT
+    // addNameModule(NAME_MODULE),
+    // getUserRol,
+    // validateAccessModule,
     //TODO Validar acceso al modulo de usuarios.
     //TODO Validar acceso a edicion - Posibles (Lectura, edicion, eliminacion, root)
 ], updateUser);
+
+
 
 // [
 //     check('email', 'el correo no es valido').isEmail(),

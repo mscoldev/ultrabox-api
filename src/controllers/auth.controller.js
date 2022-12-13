@@ -30,12 +30,12 @@ const signUp = async (req = request, res = response) => {
             firstSurname,
             secondSurname,
             nit,
-            typesDocument,
+            typeDocument,
             email,
             password,
             status,
             deleted,
-            roles } = req.body;
+            role } = req.body;
 
         const newUser = new User({
             username,
@@ -44,21 +44,21 @@ const signUp = async (req = request, res = response) => {
             firstSurname,
             secondSurname,
             nit,
-            typesDocument,
+            typeDocument,
             email,
             status,
             deleted,
-            roles,
+            role,
             password: await User.encryptPassword(password)
         });
-        //* assign roles - if roles == null default roles is user.
+        //* assign role - if role == null default role is user.
 
-        // if (roles) {
-        //     const foundRoles = await Role.find({ name: { $in: roles } });
-        //     newUser.roles = foundRoles.map((role) => role._id);
+        // if (role) {
+        //     const foundrole = await Role.find({ name: { $in: role } });
+        //     newUser.role = foundrole.map((role) => role._id);
         // } else {
         //     const role = await Role.findOne({ name: { $in: "user" } });
-        //     newUser.roles = [role._id];
+        //     newUser.role = [role._id];
         // }
 
         // //*Return TOKEN to FRONTEND
@@ -84,7 +84,7 @@ const signUp = async (req = request, res = response) => {
 };
 
 const signIn = async (req = request, res = response) => {
-    const usernameFound = await User.findOne({ username: req.body.username }).populate('roles');
+    const usernameFound = await User.findOne({ username: req.body.username }).populate('role');
     if (!usernameFound) {
         return res.status(400).json({
             msg: "Usuario o password incorrectos - Username",
@@ -92,14 +92,14 @@ const signIn = async (req = request, res = response) => {
     } else {
         console.log("Usuario encontrado");
         console.log(usernameFound);
-        console.log("ROLES: " + usernameFound.roles);
-        const roles = usernameFound.roles
+        console.log("role: " + usernameFound.role);
+        const role = usernameFound.role
 
         const token = jwt.sign({ id: usernameFound._id }, process.env.SECRET_KEY, {
             expiresIn: 86400, //*24 Hours
         });
 
-        res.status(200).json({ token, roles });
+        res.status(200).json({ token, role });
 
     }
 

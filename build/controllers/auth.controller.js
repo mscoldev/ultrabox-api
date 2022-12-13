@@ -86,12 +86,12 @@ var signUp = /*#__PURE__*/function () {
         firstSurname,
         secondSurname,
         nit,
-        typesDocument,
+        typeDocument,
         email,
         password,
         status,
         deleted,
-        roles,
+        role,
         newUser,
         savedUser,
         errMsg,
@@ -104,7 +104,7 @@ var signUp = /*#__PURE__*/function () {
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
             _context2.prev = 2;
-            _req$body = req.body, username = _req$body.username, name = _req$body.name, middleName = _req$body.middleName, firstSurname = _req$body.firstSurname, secondSurname = _req$body.secondSurname, nit = _req$body.nit, typesDocument = _req$body.typesDocument, email = _req$body.email, password = _req$body.password, status = _req$body.status, deleted = _req$body.deleted, roles = _req$body.roles;
+            _req$body = req.body, username = _req$body.username, name = _req$body.name, middleName = _req$body.middleName, firstSurname = _req$body.firstSurname, secondSurname = _req$body.secondSurname, nit = _req$body.nit, typeDocument = _req$body.typeDocument, email = _req$body.email, password = _req$body.password, status = _req$body.status, deleted = _req$body.deleted, role = _req$body.role;
             _context2.t0 = User;
             _context2.t1 = username;
             _context2.t2 = name;
@@ -112,11 +112,11 @@ var signUp = /*#__PURE__*/function () {
             _context2.t4 = firstSurname;
             _context2.t5 = secondSurname;
             _context2.t6 = nit;
-            _context2.t7 = typesDocument;
+            _context2.t7 = typeDocument;
             _context2.t8 = email;
             _context2.t9 = status;
             _context2.t10 = deleted;
-            _context2.t11 = roles;
+            _context2.t11 = role;
             _context2.next = 18;
             return User.encryptPassword(password);
 
@@ -129,11 +129,11 @@ var signUp = /*#__PURE__*/function () {
               firstSurname: _context2.t4,
               secondSurname: _context2.t5,
               nit: _context2.t6,
-              typesDocument: _context2.t7,
+              typeDocument: _context2.t7,
               email: _context2.t8,
               status: _context2.t9,
               deleted: _context2.t10,
-              roles: _context2.t11,
+              role: _context2.t11,
               password: _context2.t12
             };
             newUser = new _context2.t0(_context2.t13);
@@ -183,7 +183,7 @@ var signIn = /*#__PURE__*/function () {
     var req,
         res,
         usernameFound,
-        roles,
+        role,
         token,
         _args3 = arguments;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -195,7 +195,7 @@ var signIn = /*#__PURE__*/function () {
             _context3.next = 4;
             return User.findOne({
               username: req.body.username
-            }).populate('roles');
+            }).populate('role');
 
           case 4:
             usernameFound = _context3.sent;
@@ -212,8 +212,8 @@ var signIn = /*#__PURE__*/function () {
           case 9:
             console.log("Usuario encontrado");
             console.log(usernameFound);
-            console.log("ROLES: " + usernameFound.roles);
-            roles = usernameFound.roles;
+            console.log("role: " + usernameFound.role);
+            role = usernameFound.role;
             token = jwt.sign({
               id: usernameFound._id
             }, process.env.SECRET_KEY, {
@@ -222,7 +222,7 @@ var signIn = /*#__PURE__*/function () {
             });
             res.status(200).json({
               token: token,
-              roles: roles
+              role: role
             });
 
           case 15:
