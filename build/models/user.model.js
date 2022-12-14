@@ -132,9 +132,7 @@ userSchema.statics.comparePassword = /*#__PURE__*/function () {
 }();
 
 userSchema.methods.toJSON = function () {
-  var _this$toObject = this.toObject({
-    transform: true
-  }),
+  var _this$toObject = this.toObject(),
       password = _this$toObject.password,
       deleted = _this$toObject.deleted,
       _id = _this$toObject._id,

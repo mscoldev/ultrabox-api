@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const Register = require('../../models/scale/register.model');
+const Truck = require('../../models/scale/truck.model')
 
 
 const getRegisters = async (req = request, res = response) => {
@@ -31,6 +32,41 @@ const getRegisterById = async (req = request, res = response) => {
             });
         }
 
+    } catch (err) {
+        return res.status(500).json({ message: `Se ha producido un error, ${err.message}` });
+    }
+}
+
+const getLastRegisterByNumberPlate = async (req = request, res = response) => {
+
+    try {
+        const { numberPlate } = req.params
+        const { limit, order, status, ...query } = req.query;
+
+        const truckData = await Truck.findOne({ where: { numberPlate: numberPlate } });
+
+        if (!truckData) {
+            return res.status(404).json({ msg: 'Vehiculo no existe' })
+        }
+        const { count, rows } = await Register.findAndCountAll({
+            where: {
+                _idTruck: truckData.id,
+                status: status,
+                enabled: true
+            },
+            order: [['createdAt', order]],
+            limit: limit
+        });
+
+        if (count != 0) {
+            console.log(rows);
+            const registers = rows
+            return res.status(200).json({
+                msg: `Registro(s) activos para el vehiculo ${numberPlate}:`,
+                registers
+            })
+        }
+        res.status(404).json({ msg: `No se encontraron registros activos en estado ${status} para el vehiculo de placas ${numberPlate}` })
     } catch (err) {
         return res.status(500).json({ message: `Se ha producido un error, ${err.message}` });
     }
@@ -140,6 +176,7 @@ const createRegister = async (req = request, res = response) => {
 module.exports = {
     getRegisters,
     getRegisterById,
+    getLastRegisterByNumberPlate,
     updateRegisterById,
     deleteRegisterById,
     createRegister

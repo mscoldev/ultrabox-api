@@ -69,7 +69,7 @@ userSchema.statics.comparePassword = async (password, receivedPassword) => {
 }
 
 userSchema.methods.toJSON = function () {
-    const { password, deleted, _id, ...user } = this.toObject({ transform: true });
+    const { password, deleted, _id, ...user } = this.toObject();
     user.uid = _id;
     return user
 }

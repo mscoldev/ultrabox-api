@@ -61,7 +61,7 @@ class Server {
 
     async dbInitialize() {
         await Promise.all([
-            // pgConnection(),
+            pgConnection(),
             dbConnection(),
             createRoles(),
         ])

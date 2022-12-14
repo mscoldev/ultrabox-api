@@ -15,7 +15,6 @@ const register = sequelize.define('registers', {
     },
     serialScale: {
         type: DataTypes.INTEGER,
-        autoIncrement: true,
         unique: true
     },
     serialLog: {

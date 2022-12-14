@@ -6,6 +6,7 @@ var _require = require('express'),
 var _require2 = require('../../controllers/scale/register.controller'),
     getRegisters = _require2.getRegisters,
     getRegisterById = _require2.getRegisterById,
+    getLastRegisterByNumberPlate = _require2.getLastRegisterByNumberPlate,
     updateRegisterById = _require2.updateRegisterById,
     deleteRegisterById = _require2.deleteRegisterById,
     createRegister = _require2.createRegister;
@@ -13,6 +14,7 @@ var _require2 = require('../../controllers/scale/register.controller'),
 var router = Router();
 router.get('/', getRegisters);
 router.get('/:id', getRegisterById);
+router.get('/truck/:numberPlate', getLastRegisterByNumberPlate);
 router.put('/:id', updateRegisterById);
 router.post('/', createRegister);
 router["delete"]('/:id', deleteRegisterById);
