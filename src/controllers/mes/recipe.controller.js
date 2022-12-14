@@ -8,6 +8,7 @@ const getRecipe = async (req = request, res = response) => {
         // const recipes = await getRecipesToDatabase()
         const recipes = await JSONataExpression(await getRecipesToDatabase());
         res.status(200).json({
+            msg: 'Lista de recetas',
             recipes
         })
     } catch (err) {

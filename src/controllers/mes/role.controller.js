@@ -71,8 +71,6 @@ const deleteRoleById = async (req = request, res = response) => {
     }
 }
 
-
-
 const createRole = async (req = request, res = response) => {
     //TODO: Usar desestructuracion de objetos
     try {

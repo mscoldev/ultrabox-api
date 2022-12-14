@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../helpers/generateJWT')
 
+
 const User = require('../models/user.model');
 
 
@@ -11,7 +12,14 @@ require("dotenv").config();
 
 const getUsers = async (req = request, res = response) => {
     try {
-        const users = await User.find({});
+        const users = await User.find({ "deleted": false })
+            .populate([{
+                path: 'role',
+                model: 'Role',
+                options: { lean: true },
+                select: { name: 1, menu: 1 }
+            }]).exec();
+
         res.status(200).json({
             msg: 'Lista de usuarios',
             users

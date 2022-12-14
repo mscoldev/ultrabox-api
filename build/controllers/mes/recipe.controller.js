@@ -47,6 +47,7 @@ var getRecipe = /*#__PURE__*/function () {
           case 9:
             recipes = _context.sent;
             res.status(200).json({
+              msg: 'Lista de recetas',
               recipes: recipes
             });
             _context.next = 16;

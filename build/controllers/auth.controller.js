@@ -43,7 +43,19 @@ var getUsers = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
             _context.next = 5;
-            return User.find({});
+            return User.find({
+              "deleted": false
+            }).populate([{
+              path: 'role',
+              model: 'Role',
+              options: {
+                lean: true
+              },
+              select: {
+                name: 1,
+                menu: 1
+              }
+            }]).exec();
 
           case 5:
             users = _context.sent;
