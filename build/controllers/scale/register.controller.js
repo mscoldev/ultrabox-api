@@ -165,7 +165,7 @@ var getLastRegisterByNumberPlate = /*#__PURE__*/function () {
             }
 
             return _context3.abrupt("return", res.status(404).json({
-              msg: 'Vehiculo no existe'
+              msg: 'El vehiculo ${numberPlate} no se ecuentra registrado'
             }));
 
           case 10:
@@ -186,37 +186,34 @@ var getLastRegisterByNumberPlate = /*#__PURE__*/function () {
             rows = _yield$Register$findA.rows;
 
             if (!(count != 0)) {
-              _context3.next = 19;
+              _context3.next = 18;
               break;
             }
 
-            console.log(rows);
             registers = rows;
             return _context3.abrupt("return", res.status(200).json({
               msg: "Registro(s) activos para el vehiculo ".concat(numberPlate, ":"),
               registers: registers
             }));
 
-          case 19:
-            res.status(404).json({
-              msg: "No se encontraron registros activos en estado ".concat(status, " para el vehiculo de placas ").concat(numberPlate)
-            });
-            _context3.next = 25;
-            break;
+          case 18:
+            return _context3.abrupt("return", res.status(404).json({
+              msg: "No se encontraron registros activos en estado \"".concat(status, "\" para el vehiculo de placas ").concat(numberPlate, ".\n            Verifique los valores de la consulta o compruebe si \"status\" es valido.")
+            }));
 
-          case 22:
-            _context3.prev = 22;
+          case 21:
+            _context3.prev = 21;
             _context3.t0 = _context3["catch"](2);
             return _context3.abrupt("return", res.status(500).json({
               message: "Se ha producido un error, ".concat(_context3.t0.message)
             }));
 
-          case 25:
+          case 24:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[2, 22]]);
+    }, _callee3, null, [[2, 21]]);
   }));
 
   return function getLastRegisterByNumberPlate() {

@@ -46,7 +46,7 @@ const getLastRegisterByNumberPlate = async (req = request, res = response) => {
         const truckData = await Truck.findOne({ where: { numberPlate: numberPlate } });
 
         if (!truckData) {
-            return res.status(404).json({ msg: 'Vehiculo no existe' })
+            return res.status(404).json({ msg: 'El vehiculo ${numberPlate} no se ecuentra registrado' })
         }
         const { count, rows } = await Register.findAndCountAll({
             where: {
@@ -59,14 +59,15 @@ const getLastRegisterByNumberPlate = async (req = request, res = response) => {
         });
 
         if (count != 0) {
-            console.log(rows);
             const registers = rows
             return res.status(200).json({
                 msg: `Registro(s) activos para el vehiculo ${numberPlate}:`,
                 registers
             })
         }
-        res.status(404).json({ msg: `No se encontraron registros activos en estado ${status} para el vehiculo de placas ${numberPlate}` })
+        return res.status(404).json({
+            msg: `No se encontraron registros activos en estado "${status}" para el vehiculo de placas ${numberPlate}.
+            Verifique los valores de la consulta o compruebe si "status" es valido.` })
     } catch (err) {
         return res.status(500).json({ message: `Se ha producido un error, ${err.message}` });
     }
