@@ -35,6 +35,9 @@ const userSchema = Schema({
         unique: [true, 'Este email ya se encuentra registrado, registre un nuevo correo.'],
         required: [true, 'El correo es requerido, debe definir uno.'],
     },
+    mobile: {
+        type: String
+    },
     password: {
         type: String,
         required: true,

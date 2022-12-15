@@ -100,6 +100,7 @@ var signUp = /*#__PURE__*/function () {
         nit,
         typeDocument,
         email,
+        mobile,
         password,
         status,
         deleted,
@@ -116,7 +117,7 @@ var signUp = /*#__PURE__*/function () {
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
             _context2.prev = 2;
-            _req$body = req.body, username = _req$body.username, name = _req$body.name, middleName = _req$body.middleName, firstSurname = _req$body.firstSurname, secondSurname = _req$body.secondSurname, nit = _req$body.nit, typeDocument = _req$body.typeDocument, email = _req$body.email, password = _req$body.password, status = _req$body.status, deleted = _req$body.deleted, role = _req$body.role;
+            _req$body = req.body, username = _req$body.username, name = _req$body.name, middleName = _req$body.middleName, firstSurname = _req$body.firstSurname, secondSurname = _req$body.secondSurname, nit = _req$body.nit, typeDocument = _req$body.typeDocument, email = _req$body.email, mobile = _req$body.mobile, password = _req$body.password, status = _req$body.status, deleted = _req$body.deleted, role = _req$body.role;
             _context2.t0 = User;
             _context2.t1 = username;
             _context2.t2 = name;
@@ -126,15 +127,16 @@ var signUp = /*#__PURE__*/function () {
             _context2.t6 = nit;
             _context2.t7 = typeDocument;
             _context2.t8 = email;
-            _context2.t9 = status;
-            _context2.t10 = deleted;
-            _context2.t11 = role;
-            _context2.next = 18;
+            _context2.t9 = mobile;
+            _context2.t10 = status;
+            _context2.t11 = deleted;
+            _context2.t12 = role;
+            _context2.next = 19;
             return User.encryptPassword(password);
 
-          case 18:
-            _context2.t12 = _context2.sent;
-            _context2.t13 = {
+          case 19:
+            _context2.t13 = _context2.sent;
+            _context2.t14 = {
               username: _context2.t1,
               name: _context2.t2,
               middleName: _context2.t3,
@@ -143,33 +145,34 @@ var signUp = /*#__PURE__*/function () {
               nit: _context2.t6,
               typeDocument: _context2.t7,
               email: _context2.t8,
-              status: _context2.t9,
-              deleted: _context2.t10,
-              role: _context2.t11,
-              password: _context2.t12
+              mobile: _context2.t9,
+              status: _context2.t10,
+              deleted: _context2.t11,
+              role: _context2.t12,
+              password: _context2.t13
             };
-            newUser = new _context2.t0(_context2.t13);
-            _context2.next = 23;
+            newUser = new _context2.t0(_context2.t14);
+            _context2.next = 24;
             return newUser.save();
 
-          case 23:
+          case 24:
             savedUser = _context2.sent;
             res.status(200).json({
               msg: 'Alta de usuario',
               savedUser: savedUser
             });
-            _context2.next = 31;
+            _context2.next = 32;
             break;
 
-          case 27:
-            _context2.prev = 27;
-            _context2.t14 = _context2["catch"](2);
+          case 28:
+            _context2.prev = 28;
+            _context2.t15 = _context2["catch"](2);
 
             // Set custom error for unique keys
-            if (_context2.t14.code == 11000) {
-              errMsg = "Uno o mas datos del usuario existen se encuentran registrados: ".concat(_context2.t14.message, " Objeto: ") + Object.keys(_context2.t14.keyValue)[0];
+            if (_context2.t15.code == 11000) {
+              errMsg = "Uno o mas datos del usuario existen se encuentran registrados: ".concat(_context2.t15.message, " Objeto: ") + Object.keys(_context2.t15.keyValue)[0];
             } else {
-              errMsg = _context2.t14.message;
+              errMsg = _context2.t15.message;
             }
 
             res.status(400).json({
@@ -177,12 +180,12 @@ var signUp = /*#__PURE__*/function () {
               message: errMsg
             });
 
-          case 31:
+          case 32:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[2, 27]]);
+    }, _callee2, null, [[2, 28]]);
   }));
 
   return function signUp() {
