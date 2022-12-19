@@ -29,6 +29,36 @@ const getUsers = async (req = request, res = response) => {
     }
 }
 
+const getUserByUid = async (req = request, res = response) => {
+
+    try {
+        const paramsId = req.params.id;
+        const findUser = await User.findById(paramsId)
+            .populate([{
+                path: 'role',
+                model: 'Role',
+                options: { lean: true },
+                select: { name: 1, menu: 1 }
+            }]).exec();
+
+        if (findUser != null) {
+            res.status(200).json({
+                msg: 'Datos de usuario',
+                findUser
+            });
+        } else {
+            res.status(404).json({
+                msg: 'Usuario no encontrado, verifique el Id ingresado'
+            })
+        }
+    } catch (err) {
+        return res.status(500).json({
+            message: err.message
+        })
+    }
+
+}
+
 //*DAR DE ALTA UN NUEVO USUARIO - NO DEVUELVE TOKEN
 const signUp = async (req = request, res = response) => {
     try {
@@ -134,11 +164,11 @@ const updateUser = async (req = request, res = response) => {
             body.password = await User.encryptPassword(password)
         }
 
-        const userUpdated = await User.findByIdAndUpdate(paramsId, body, { new: true })
-        if (userUpdated != null) {
+        const findUser = await User.findByIdAndUpdate(paramsId, body, { new: true })
+        if (findUser != null) {
             res.status(200).json({
                 msg: 'Datos de usuario actualizados',
-                userUpdated
+                findUser
             });
         } else {
             res.status(404).json({
@@ -159,7 +189,14 @@ const login = async (req = request, res = response) => {
 
         //*verify if exist user
 
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username })
+            .populate([{
+                path: 'role',
+                model: 'Role',
+                options: { lean: true },
+                select: { name: 1, menu: 1 }
+            }]).exec();
+
         if (!user) {
             return res.status(400).json({
                 msg: 'El username no existe'
@@ -201,6 +238,7 @@ module.exports = {
     signUp,
     signIn,
     getUsers,
+    getUserByUid,
     updateUser,
     login
 };

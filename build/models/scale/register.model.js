@@ -6,6 +6,8 @@ var _require = require('sequelize'),
 var _require2 = require('../../database/config.databasepg'),
     sequelize = _require2.sequelize;
 
+var Truck = require('../../models/scale/truck.model');
+
 var register = sequelize.define('registers', {
   id: {
     type: DataTypes.UUID,
@@ -181,5 +183,11 @@ var register = sequelize.define('registers', {
     required: true,
     defaultValue: true
   }
+});
+Truck.hasMany(register, {
+  foreignKey: '_idTruck'
+});
+register.belongsTo(Truck, {
+  foreignKey: '_idTruck'
 });
 module.exports = register;

@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../database/config.databasepg');
 
+const Truck = require('../../models/scale/truck.model')
 
 const register = sequelize.define('registers', {
     id: {
@@ -166,5 +167,12 @@ const register = sequelize.define('registers', {
     }
 })
 
+
+Truck.hasMany(register, {
+    foreignKey: '_idTruck'
+});
+register.belongsTo(Truck, {
+    foreignKey: '_idTruck'
+})
 
 module.exports = register;

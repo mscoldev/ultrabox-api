@@ -36,7 +36,9 @@ var getRegisters = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
             _context.next = 5;
-            return Register.findAll();
+            return Register.findAll({
+              include: Truck
+            });
 
           case 5:
             registers = _context.sent;

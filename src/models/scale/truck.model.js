@@ -27,4 +27,5 @@ const truck = sequelize.define('trucks', {
     }
 })
 
+
 module.exports = truck;

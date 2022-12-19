@@ -24,6 +24,7 @@ var _require6 = require('../controllers/auth.controller'),
     signIn = _require6.signIn,
     signUp = _require6.signUp,
     getUsers = _require6.getUsers,
+    getUserByUid = _require6.getUserByUid,
     updateUser = _require6.updateUser,
     login = _require6.login;
 
@@ -32,6 +33,7 @@ var NAME_MODULE = 'auth'; //Importacion de Router express
 var router = Router(); //Aqui las rutas necesarias --->
 
 router.get('/users', getUsers);
+router.get('/user/:id', getUserByUid);
 router.post('/signup', signUp);
 router.post('/login', [check('username', 'El nombre de usuario es obligatorio').not().isEmpty(), check('password', 'El password es obligatorio').not().isEmpty(), validateFields], login);
 router.post('/signin', signIn);

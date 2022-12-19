@@ -55,7 +55,8 @@ var userSchema = Schema({
     required: [true, 'El correo es requerido, debe definir uno.']
   },
   mobile: {
-    type: String
+    type: String,
+    "default": ""
   },
   password: {
     type: String,

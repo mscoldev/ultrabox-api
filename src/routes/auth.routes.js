@@ -9,7 +9,7 @@ const { getUserRol, validateAccessModule, addNameModule } = require('../middlewa
 
 
 // Funciones desde el controlador
-const { signIn, signUp, getUsers, updateUser, login } = require('../controllers/auth.controller');
+const { signIn, signUp, getUsers, getUserByUid, updateUser, login } = require('../controllers/auth.controller');
 
 const NAME_MODULE = 'auth';
 
@@ -21,6 +21,7 @@ const router = Router();
 
 
 router.get('/users', getUsers);
+router.get('/user/:id', getUserByUid);
 
 router.post('/signup', signUp);
 

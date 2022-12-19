@@ -5,7 +5,9 @@ const Truck = require('../../models/scale/truck.model')
 
 const getRegisters = async (req = request, res = response) => {
     try {
-        const registers = await Register.findAll();
+        const registers = await Register.findAll({
+            include: Truck
+        });
         res.status(200).json({
             msg: 'Lista de registros',
             registers
