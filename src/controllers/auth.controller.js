@@ -123,35 +123,35 @@ const signUp = async (req = request, res = response) => {
     }
 };
 
-const signIn = async (req = request, res = response) => {
-    const usernameFound = await User.findOne({ username: req.body.username }).populate('role');
-    if (!usernameFound) {
-        return res.status(400).json({
-            msg: "Usuario o password incorrectos - Username",
-        });
-    } else {
-        console.log("Usuario encontrado");
-        console.log(usernameFound);
-        console.log("role: " + usernameFound.role);
-        const role = usernameFound.role
+// const signIn = async (req = request, res = response) => {
+//     const usernameFound = await User.findOne({ username: req.body.username }).populate('role');
+//     if (!usernameFound) {
+//         return res.status(400).json({
+//             msg: "Usuario o password incorrectos - Username",
+//         });
+//     } else {
+//         console.log("Usuario encontrado");
+//         console.log(usernameFound);
+//         console.log("role: " + usernameFound.role);
+//         const role = usernameFound.role
 
-        const token = jwt.sign({ id: usernameFound._id }, process.env.SECRET_KEY, {
-            expiresIn: 86400, //*24 Hours
-        });
+//         const token = jwt.sign({ id: usernameFound._id }, process.env.SECRET_KEY, {
+//             expiresIn: 86400, //*24 Hours
+//         });
 
-        res.status(200).json({ token, role });
+//         res.status(200).json({ token, role });
 
-    }
+//     }
 
-    //TODO: Verificar si el usuario esta activo
-    // if (!User.status) {
-    //     return res.status(400).json({
-    //         msg: 'Usuario o password incorrectos - Inactivo'
-    //     });
-    // }
+//     //TODO: Verificar si el usuario esta activo
+//     // if (!User.status) {
+//     //     return res.status(400).json({
+//     //         msg: 'Usuario o password incorrectos - Inactivo'
+//     //     });
+//     // }
 
-    //TODO: Verificar la contrasena
-};
+//     //TODO: Verificar la contrasena
+// };
 
 const updateUser = async (req = request, res = response) => {
 
@@ -192,9 +192,7 @@ const login = async (req = request, res = response) => {
         const user = await User.findOne({ username })
             .populate([{
                 path: 'role',
-                model: 'Role',
-                options: { lean: true },
-                select: { name: 1, menu: 1 }
+                options: { lean: true }
             }]).exec();
 
         if (!user) {
@@ -236,7 +234,6 @@ const login = async (req = request, res = response) => {
 
 module.exports = {
     signUp,
-    signIn,
     getUsers,
     getUserByUid,
     updateUser,

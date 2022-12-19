@@ -9,7 +9,7 @@ var generateJWT = function generateJWT() {
       uid: uid
     };
     jwt.sign(payload, process.env.SECRETORPRIVATEKEY, {
-      expiresIn: '4h'
+      expiresIn: '12h'
     }, function (err, token) {
       if (err) {
         console.log(err);

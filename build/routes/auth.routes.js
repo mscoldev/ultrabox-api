@@ -36,7 +36,6 @@ router.get('/users', getUsers);
 router.get('/user/:id', getUserByUid);
 router.post('/signup', signUp);
 router.post('/login', [check('username', 'El nombre de usuario es obligatorio').not().isEmpty(), check('password', 'El password es obligatorio').not().isEmpty(), validateFields], login);
-router.post('/signin', signIn);
 router.put('/user/:id', [validateJWT // addNameModule(NAME_MODULE),
 // getUserRol,
 // validateAccessModule,

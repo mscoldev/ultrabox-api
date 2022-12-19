@@ -256,70 +256,34 @@ var signUp = /*#__PURE__*/function () {
   return function signUp() {
     return _ref3.apply(this, arguments);
   };
-}();
+}(); // const signIn = async (req = request, res = response) => {
+//     const usernameFound = await User.findOne({ username: req.body.username }).populate('role');
+//     if (!usernameFound) {
+//         return res.status(400).json({
+//             msg: "Usuario o password incorrectos - Username",
+//         });
+//     } else {
+//         console.log("Usuario encontrado");
+//         console.log(usernameFound);
+//         console.log("role: " + usernameFound.role);
+//         const role = usernameFound.role
+//         const token = jwt.sign({ id: usernameFound._id }, process.env.SECRET_KEY, {
+//             expiresIn: 86400, //*24 Hours
+//         });
+//         res.status(200).json({ token, role });
+//     }
+//     //TODO: Verificar si el usuario esta activo
+//     // if (!User.status) {
+//     //     return res.status(400).json({
+//     //         msg: 'Usuario o password incorrectos - Inactivo'
+//     //     });
+//     // }
+//     //TODO: Verificar la contrasena
+// };
 
-var signIn = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-    var req,
-        res,
-        usernameFound,
-        role,
-        token,
-        _args4 = arguments;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
-            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
-            _context4.next = 4;
-            return User.findOne({
-              username: req.body.username
-            }).populate('role');
-
-          case 4:
-            usernameFound = _context4.sent;
-
-            if (usernameFound) {
-              _context4.next = 9;
-              break;
-            }
-
-            return _context4.abrupt("return", res.status(400).json({
-              msg: "Usuario o password incorrectos - Username"
-            }));
-
-          case 9:
-            console.log("Usuario encontrado");
-            console.log(usernameFound);
-            console.log("role: " + usernameFound.role);
-            role = usernameFound.role;
-            token = jwt.sign({
-              id: usernameFound._id
-            }, process.env.SECRET_KEY, {
-              expiresIn: 86400 //*24 Hours
-
-            });
-            res.status(200).json({
-              token: token,
-              role: role
-            });
-
-          case 15:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4);
-  }));
-
-  return function signIn() {
-    return _ref4.apply(this, arguments);
-  };
-}();
 
 var updateUser = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
         paramsId,
@@ -327,37 +291,37 @@ var updateUser = /*#__PURE__*/function () {
         password,
         body,
         findUser,
-        _args5 = arguments;
+        _args4 = arguments;
 
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
-            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
-            _context5.prev = 2;
+            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
+            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
+            _context4.prev = 2;
             paramsId = req.params.id;
             _req$body2 = req.body, password = _req$body2.password, body = _objectWithoutProperties(_req$body2, _excluded); //* Update password - If receive password, encrypt and add in body 
 
             if (!password) {
-              _context5.next = 9;
+              _context4.next = 9;
               break;
             }
 
-            _context5.next = 8;
+            _context4.next = 8;
             return User.encryptPassword(password);
 
           case 8:
-            body.password = _context5.sent;
+            body.password = _context4.sent;
 
           case 9:
-            _context5.next = 11;
+            _context4.next = 11;
             return User.findByIdAndUpdate(paramsId, body, {
               "new": true
             });
 
           case 11:
-            findUser = _context5.sent;
+            findUser = _context4.sent;
 
             if (findUser != null) {
               res.status(200).json({
@@ -370,31 +334,31 @@ var updateUser = /*#__PURE__*/function () {
               });
             }
 
-            _context5.next = 18;
+            _context4.next = 18;
             break;
 
           case 15:
-            _context5.prev = 15;
-            _context5.t0 = _context5["catch"](2);
-            return _context5.abrupt("return", res.status(500).json({
-              message: _context5.t0.message
+            _context4.prev = 15;
+            _context4.t0 = _context4["catch"](2);
+            return _context4.abrupt("return", res.status(500).json({
+              message: _context4.t0.message
             }));
 
           case 18:
           case "end":
-            return _context5.stop();
+            return _context4.stop();
         }
       }
-    }, _callee5, null, [[2, 15]]);
+    }, _callee4, null, [[2, 15]]);
   }));
 
   return function updateUser() {
-    return _ref5.apply(this, arguments);
+    return _ref4.apply(this, arguments);
   };
 }();
 
 var login = /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
     var req,
         res,
         _req$body3,
@@ -403,50 +367,45 @@ var login = /*#__PURE__*/function () {
         user,
         validPassword,
         token,
-        _args6 = arguments;
+        _args5 = arguments;
 
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
-            res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
+            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
+            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
             _req$body3 = req.body, username = _req$body3.username, password = _req$body3.password;
-            _context6.prev = 3;
-            _context6.next = 6;
+            _context5.prev = 3;
+            _context5.next = 6;
             return User.findOne({
               username: username
             }).populate([{
               path: 'role',
-              model: 'Role',
               options: {
                 lean: true
-              },
-              select: {
-                name: 1,
-                menu: 1
               }
             }]).exec();
 
           case 6:
-            user = _context6.sent;
+            user = _context5.sent;
 
             if (user) {
-              _context6.next = 9;
+              _context5.next = 9;
               break;
             }
 
-            return _context6.abrupt("return", res.status(400).json({
+            return _context5.abrupt("return", res.status(400).json({
               msg: 'El username no existe'
             }));
 
           case 9:
             if (user.status) {
-              _context6.next = 11;
+              _context5.next = 11;
               break;
             }
 
-            return _context6.abrupt("return", res.status(400).json({
+            return _context5.abrupt("return", res.status(400).json({
               msg: 'El username no se encuentra activo'
             }));
 
@@ -455,51 +414,50 @@ var login = /*#__PURE__*/function () {
             validPassword = bcryptjs.compareSync(password, user.password);
 
             if (validPassword) {
-              _context6.next = 14;
+              _context5.next = 14;
               break;
             }
 
-            return _context6.abrupt("return", res.status(400).json({
+            return _context5.abrupt("return", res.status(400).json({
               msg: 'El password es incorrecto'
             }));
 
           case 14:
-            _context6.next = 16;
+            _context5.next = 16;
             return generateJWT(user.id);
 
           case 16:
-            token = _context6.sent;
+            token = _context5.sent;
             res.json({
               msg: 'Login OK',
               user: user,
               token: token
             });
-            _context6.next = 23;
+            _context5.next = 23;
             break;
 
           case 20:
-            _context6.prev = 20;
-            _context6.t0 = _context6["catch"](3);
-            return _context6.abrupt("return", res.status(500).json({
+            _context5.prev = 20;
+            _context5.t0 = _context5["catch"](3);
+            return _context5.abrupt("return", res.status(500).json({
               msg: 'Error interno, Hable con el administrador'
             }));
 
           case 23:
           case "end":
-            return _context6.stop();
+            return _context5.stop();
         }
       }
-    }, _callee6, null, [[3, 20]]);
+    }, _callee5, null, [[3, 20]]);
   }));
 
   return function login() {
-    return _ref6.apply(this, arguments);
+    return _ref5.apply(this, arguments);
   };
 }();
 
 module.exports = {
   signUp: signUp,
-  signIn: signIn,
   getUsers: getUsers,
   getUserByUid: getUserByUid,
   updateUser: updateUser,

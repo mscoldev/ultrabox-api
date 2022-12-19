@@ -31,8 +31,6 @@ router.post('/login', [
     validateFields
 ], login);
 
-router.post('/signin', signIn);
-
 router.put('/user/:id', [
     validateJWT
     // addNameModule(NAME_MODULE),
