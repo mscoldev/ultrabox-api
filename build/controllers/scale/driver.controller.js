@@ -158,7 +158,7 @@ var updateDriverById = /*#__PURE__*/function () {
           case 15:
             res.status(200).json({
               msg: 'Conductor actualizado',
-              clientUpdated: clientUpdated
+              driverUpdated: driverUpdated
             });
             _context3.next = 20;
             break;

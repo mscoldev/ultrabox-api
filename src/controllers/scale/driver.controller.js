@@ -54,7 +54,7 @@ const updateDriverById = async (req = request, res = response) => {
 
             res.status(200).json({
                 msg: 'Conductor actualizado',
-                clientUpdated
+                driverUpdated
             });
         } else {
             console.log('Not found');
