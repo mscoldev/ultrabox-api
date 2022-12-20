@@ -211,7 +211,7 @@ var deleteDriverById = /*#__PURE__*/function () {
             req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
             _context4.prev = 2;
-            paramsId = req.params.driversId;
+            paramsId = req.params.id;
             body = {
               enable: false
             };

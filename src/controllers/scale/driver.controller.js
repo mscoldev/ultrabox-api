@@ -71,7 +71,7 @@ const updateDriverById = async (req = request, res = response) => {
 //TODO: Pendiente Implementar
 const deleteDriverById = async (req = request, res = response) => {
     try {
-        const paramsId = req.params.driversId;
+        const paramsId = req.params.id;
         const body = { enable: false }
         const deletedDriver = await drivers.findByIdAndUpdate(paramsId, body);
         if (deletedDriver != null) {
