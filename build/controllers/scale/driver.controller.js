@@ -29,7 +29,9 @@ var getDrivers = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
             _context.next = 5;
-            return Driver.findAll();
+            return Driver.findAll({
+              enabled: true
+            });
 
           case 5:
             _drivers = _context.sent;
@@ -200,7 +202,7 @@ var deleteDriverById = /*#__PURE__*/function () {
         res,
         paramsId,
         body,
-        deleteddrivers,
+        deletedDriver,
         _args4 = arguments;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
@@ -211,15 +213,15 @@ var deleteDriverById = /*#__PURE__*/function () {
             _context4.prev = 2;
             paramsId = req.params.driversId;
             body = {
-              deleted: true
+              enable: false
             };
             _context4.next = 7;
             return drivers.findByIdAndUpdate(paramsId, body);
 
           case 7:
-            deleteddrivers = _context4.sent;
+            deletedDriver = _context4.sent;
 
-            if (deleteddrivers != null) {
+            if (deletedDriver != null) {
               res.status(200).json({
                 msg: 'drivers eliminado Id:' + paramsId
               });

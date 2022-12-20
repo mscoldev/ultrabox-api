@@ -4,7 +4,7 @@ const Driver = require('../../models/scale/driver.model');
 
 const getDrivers = async (req = request, res = response) => {
     try {
-        const drivers = await Driver.findAll();
+        const drivers = await Driver.findAll({ enabled: true });
         res.status(200).json({
             msg: 'Lista de conductores',
             drivers
@@ -72,9 +72,9 @@ const updateDriverById = async (req = request, res = response) => {
 const deleteDriverById = async (req = request, res = response) => {
     try {
         const paramsId = req.params.driversId;
-        const body = { deleted: true }
-        const deleteddrivers = await drivers.findByIdAndUpdate(paramsId, body);
-        if (deleteddrivers != null) {
+        const body = { enable: false }
+        const deletedDriver = await drivers.findByIdAndUpdate(paramsId, body);
+        if (deletedDriver != null) {
             res.status(200).json({
                 msg: 'drivers eliminado Id:' + paramsId
             });
