@@ -4,9 +4,9 @@ const Origin = require('../../models/scale/origin.model');
 
 const getOrigins = async (req = request, res = response) => {
     try {
-        const origins = await Origin.findAll();
+        const origins = await Origin.findAll({ where: { enabled: true } });
         res.status(200).json({
-            msg: 'Lista de origines',
+            msg: 'Lista de origenes',
             origins
         })
     } catch (err) {
@@ -68,19 +68,23 @@ const updateOriginById = async (req = request, res = response) => {
     }
 }
 
-//TODO: Pendiente Implementar
+
 const deleteOriginById = async (req = request, res = response) => {
     try {
-        const paramsId = req.params.originId;
-        const body = { deleted: true }
-        const deletedorigin = await Origin.findByIdAndUpdate(paramsId, body);
-        if (deletedorigin != null) {
+        const { id } = req.params;
+
+        const deletedOrigin = await Origin.findByPk(id)
+        if (deletedOrigin != null) {
+
+            deletedOrigin.enabled = false;
+            await deletedOrigin.save();
+
             res.status(200).json({
-                msg: 'origins eliminado Id:' + paramsId
+                msg: `El origen con Id: ${id}, ha sido eliminado.`
             });
         } else {
             res.status(404).json({
-                msg: 'origins no encontrado, verifique el Id ingresado'
+                msg: `El origen con Id: ${id}, no ha sido encontrado, verifique el Id ingresado nuevamente`
             })
         }
     } catch (err) {

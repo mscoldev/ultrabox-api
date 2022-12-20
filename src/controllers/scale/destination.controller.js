@@ -4,9 +4,9 @@ const Destination = require('../../models/scale/destination.model');
 
 const getDestinations = async (req = request, res = response) => {
     try {
-        const destinations = await Destination.findAll();
+        const destinations = await Destination.findAll({ where: { enabled: true } });
         res.status(200).json({
-            msg: 'Lista de Destinationes',
+            msg: 'Lista de destinos',
             destinations
         })
     } catch (err) {
@@ -67,19 +67,22 @@ const updateDestinationById = async (req = request, res = response) => {
     }
 }
 
-//TODO: Pendiente Implementar
+
 const deleteDestinationById = async (req = request, res = response) => {
     try {
-        const paramsId = req.params.DestinationId;
-        const body = { deleted: true }
-        const deletedDestination = await Destination.findByIdAndUpdate(paramsId, body);
+        const { id } = req.params;
+        const deletedDestination = await Destination.findByPk(id);
         if (deletedDestination != null) {
+
+            deletedDestination.enabled = false;
+            deletedDestination.save();
+
             res.status(200).json({
-                msg: 'Destino eliminado Id:' + paramsId
+                msg: `Destino con Id: ${id}, ha sido eliminado.`
             });
         } else {
             res.status(404).json({
-                msg: 'Destino no encontrado, verifique el Id ingresado'
+                msg: `El destino Id: ${id} no encontrado, favor verifique el Id.`
             })
         }
     } catch (err) {

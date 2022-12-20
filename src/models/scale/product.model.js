@@ -11,6 +11,7 @@ const product = sequelize.define('products', {
     productName: {
         type: DataTypes.STRING,
         required: true,
+        unique: { args: true, msg: 'En nombre del producto ya se encuentra registrado, debe ser unico' }
     },
     enabled: {
         type: DataTypes.BOOLEAN,

@@ -1,12 +1,15 @@
 const { response, request } = require('express');
+const { Client } = require('pg');
+
 const Register = require('../../models/scale/register.model');
-const Truck = require('../../models/scale/truck.model')
+
 
 
 const getRegisters = async (req = request, res = response) => {
     try {
         const registers = await Register.findAll({
-            include: Truck
+            where: { enabled: true },
+            include: { all: true }
         });
         res.status(200).json({
             msg: 'Lista de registros',
@@ -114,19 +117,24 @@ const updateRegisterById = async (req = request, res = response) => {
     }
 }
 
-//TODO: Pendiente Implementar
+
 const deleteRegisterById = async (req = request, res = response) => {
     try {
-        const paramsId = req.params.RegisterId;
-        const body = { deleted: true }
-        const deletedRegister = await Register.findByIdAndUpdate(paramsId, body);
+        const { id } = req.params;
+
+        const deletedRegister = await Register.findByPk(id)
         if (deletedRegister != null) {
+
+            deletedRegister.enabled = false;
+            deletedRegister.save();
+
+
             res.status(200).json({
-                msg: 'Registers eliminado Id:' + paramsId
+                msg: `Registro con Id: ${id}, eliminado`
             });
         } else {
             res.status(404).json({
-                msg: 'Registers no encontrado, verifique el Id ingresado'
+                msg: `Registro con Id: ${id}, no encontrado, verifique el Id ingresado.`
             })
         }
     } catch (err) {

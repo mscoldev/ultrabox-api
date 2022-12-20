@@ -4,7 +4,7 @@ const Client = require('../../models/scale/client.model');
 
 const getClients = async (req = request, res = response) => {
     try {
-        const clients = await Client.findAll({ "enabled": false });
+        const clients = await Client.findAll({ where: { enabled: true } });
         res.status(200).json({
             msg: 'Lista de clientes',
             clients
@@ -68,15 +68,18 @@ const updateClientById = async (req = request, res = response) => {
     }
 }
 
-//TODO: Pendiente Implementar
+
 const deleteClientById = async (req = request, res = response) => {
     try {
-        const paramsId = req.params.driversId;
-        const body = { deleted: true }
-        const deleteddrivers = await drivers.findByIdAndUpdate(paramsId, body);
-        if (deleteddrivers != null) {
+        const { id } = req.params;
+        const clientDeleted = await Client.findByPk(id);
+
+        if (clientDeleted != null) {
+            clientDeleted.enabled = false;
+            await clientDeleted.save();
+
             res.status(200).json({
-                msg: 'drivers eliminado Id:' + paramsId
+                msg: `El cliente con Id: ${id}, ha sido eliminado`
             });
         } else {
             res.status(404).json({

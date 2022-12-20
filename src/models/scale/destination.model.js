@@ -10,8 +10,8 @@ const destination = sequelize.define('destinations', {
     },
     name: {
         type: DataTypes.STRING,
-        required: true,
-        unique: true
+        required: { args: true, msg: 'El nombre del destino es requerido.' },
+        unique: { args: true, msg: 'El nombre de destino ya se encuentra registrado. El nombre de destino debe se unico' }
     },
     enabled: {
         type: DataTypes.BOOLEAN,

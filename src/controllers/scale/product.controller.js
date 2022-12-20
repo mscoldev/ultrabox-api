@@ -4,7 +4,7 @@ const Product = require('../../models/scale/product.model');
 
 const getProducts = async (req = request, res = response) => {
     try {
-        const products = await Product.findAll();
+        const products = await Product.findAll({ where: { enabled: true } });
         res.status(200).json({
             msg: 'Lista de Productos',
             products
@@ -66,19 +66,22 @@ const updateProductById = async (req = request, res = response) => {
     }
 }
 
-//TODO: Pendiente Implementar
 const deleteProductById = async (req = request, res = response) => {
     try {
-        const paramsId = req.params.ProductId;
-        const body = { deleted: true }
-        const deletedProduct = await Product.findByIdAndUpdate(paramsId, body);
+        const { id } = req.params
+
+        const deletedProduct = await Product.findByPk(id);
         if (deletedProduct != null) {
+            deletedProduct.enabled = false;
+
+            await deletedProduct.save();
+
             res.status(200).json({
-                msg: 'Products eliminado Id:' + paramsId
+                msg: 'Producto eliminado Id:' + id
             });
         } else {
             res.status(404).json({
-                msg: 'Products no encontrado, verifique el Id ingresado'
+                msg: 'Producto no encontrado, verifique el Id ingresado'
             })
         }
     } catch (err) {

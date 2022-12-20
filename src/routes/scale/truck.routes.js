@@ -1,6 +1,8 @@
 
 const { Router } = require('express');
 
+const { validateJWT } = require('../../middlewares/validateJWT');
+
 const { getTrucks,
     getTruckById,
     updateTruckById,
@@ -14,11 +16,11 @@ router.get('/', getTrucks);
 
 router.get('/:id', getTruckById);
 
-router.put('/:id', updateTruckById);
+router.put('/:id', [validateJWT], updateTruckById);
 
-router.post('/', createTruck);
+router.post('/', [validateJWT], createTruck);
 
-router.delete('/:id', deleteTruckById);
+router.delete('/:id', [validateJWT], deleteTruckById);
 
 
 

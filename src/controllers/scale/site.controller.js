@@ -4,9 +4,9 @@ const Site = require('../../models/scale/site.model');
 
 const getSites = async (req = request, res = response) => {
     try {
-        const site = await Site.findAll();
+        const site = await Site.findAll({ where: { enabled: true } });
         res.status(200).json({
-            msg: 'Lista de Proyectos',
+            msg: 'Lista de Sitios',
             site
         })
     } catch (err) {
@@ -21,7 +21,7 @@ const getSiteById = async (req = request, res = response) => {
         const site = await Site.findByPk(id);
         if (site != null) {
             res.status(200).json({
-                msg: 'Información del Proyecto',
+                msg: 'Informacion del sitio',
                 site
             });
         } else {
@@ -51,13 +51,13 @@ const updateSiteById = async (req = request, res = response) => {
             await siteUpdated.save();
 
             res.status(200).json({
-                msg: 'Origen actualizado',
+                msg: 'Sitio actializado',
                 siteUpdated
             });
         } else {
             console.log('Not found');
             res.status(200).json({
-                msg: 'Projecto no encontrado, verifique id'
+                msg: 'El sitio no se ha encontrado, verifique el Id.'
             });
         }
 
@@ -66,19 +66,21 @@ const updateSiteById = async (req = request, res = response) => {
     }
 }
 
-//TODO: Pendiente Implementar
+
 const deleteSiteById = async (req = request, res = response) => {
     try {
-        const paramsId = req.params.ProjectId;
-        const body = { deleted: true }
-        const deletedSite = await Site.findByIdAndUpdate(paramsId, body);
+        const { id } = req.params;
+        const deletedSite = await Site.findByPk(id);
         if (deletedSite != null) {
+
+            deletedSite.enabled = false;
+            await deletedSite.save();
             res.status(200).json({
-                msg: 'Projects eliminado Id:' + paramsId
+                msg: `El sitio con Id: ${id}, ha sido eliminado.`
             });
         } else {
             res.status(404).json({
-                msg: 'Projects no encontrado, verifique el Id ingresado'
+                msg: `El sitio con Id: ${id} no encontrado, verifique el Id.`
             })
         }
     } catch (err) {

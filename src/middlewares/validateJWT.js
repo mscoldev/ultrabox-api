@@ -8,7 +8,7 @@ const validateJWT = async (req = request, res = response, next) => {
     const token = req.header('x-token');
 
     if (!token) {
-        return res.status(401).json({ msg: 'Sin autorización' });
+        return res.status(401).json({ msg: 'Sin autorización: Su Token no es valido o debe registrarse antes de realizar la operacion.' });
     }
 
     try {

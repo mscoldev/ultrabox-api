@@ -10,11 +10,12 @@ const client = sequelize.define('clients', {
     },
     name: {
         type: DataTypes.STRING,
-        required: true,
+        required: { args: true, msg: 'El nombre del cliente es requerido.' }
     },
     nit: {
         type: DataTypes.STRING,
-        required: true
+        required: true,
+        unique: { args: true, msg: 'El numero de identificacion debe ser unico. El numero ingresado ya se encuentra registrado.' }
     },
     enabled: {
         type: DataTypes.BOOLEAN,

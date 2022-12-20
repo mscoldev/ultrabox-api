@@ -1,6 +1,8 @@
 
 const { Router } = require('express');
 
+const { validateJWT } = require('../../middlewares/validateJWT');
+
 const { getDrivers,
     getDriverById,
     updateDriverById,
@@ -14,11 +16,11 @@ router.get('/', getDrivers);
 
 router.get('/:id', getDriverById);
 
-router.put('/:id', updateDriverById);
+router.put('/:id', [validateJWT], updateDriverById);
 
-router.post('/', createDriver);
+router.post('/', [validateJWT], createDriver);
 
-router.delete('/:id', deleteDriverById);
+router.delete('/:id', [validateJWT], deleteDriverById);
 
 
 

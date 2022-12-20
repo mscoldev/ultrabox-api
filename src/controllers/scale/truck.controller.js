@@ -4,7 +4,7 @@ const Truck = require('../../models/scale/truck.model');
 
 const getTrucks = async (req = request, res = response) => {
     try {
-        const trucks = await Truck.findAll();
+        const trucks = await Truck.findAll({ where: { enabled: true } });
         res.status(200).json({
             msg: 'Lista de vehiculos',
             trucks
@@ -70,19 +70,22 @@ const updateTruckById = async (req = request, res = response) => {
     }
 }
 
-//TODO: Pendiente Implementar
+
 const deleteTruckById = async (req = request, res = response) => {
     try {
-        const paramsId = req.params.TruckId;
-        const body = { deleted: true }
-        const deletedTruck = await Truck.findByIdAndUpdate(paramsId, body);
+        const { id } = req.params;
+        const deletedTruck = await Truck.findByPk(id);
         if (deletedTruck != null) {
+
+            deletedTruck.enabled = false;
+            deletedTruck.save();
+
             res.status(200).json({
-                msg: 'Trucks eliminado Id:' + paramsId
+                msg: `Vehiculo con Id: ${id}, eliminado.`
             });
         } else {
             res.status(404).json({
-                msg: 'Trucks no encontrado, verifique el Id ingresado'
+                msg: `El vehiculo con Id: ${id}, no encontrado, verifique el Id.`
             })
         }
     } catch (err) {

@@ -1,6 +1,8 @@
 
 const { Router } = require('express');
 
+const { validateJWT } = require('../../middlewares/validateJWT');
+
 const { getOrigins,
     getOriginById,
     updateOriginById,
@@ -14,11 +16,11 @@ router.get('/', getOrigins);
 
 router.get('/:id', getOriginById);
 
-router.put('/:id', updateOriginById);
+router.put('/:id', [validateJWT], updateOriginById);
 
-router.post('/', createOrigin);
+router.post('/', [validateJWT], createOrigin);
 
-router.delete('/:id', deleteOriginById);
+router.delete('/:id', [validateJWT], deleteOriginById);
 
 
 
