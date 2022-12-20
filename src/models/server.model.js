@@ -41,6 +41,7 @@ class Server {
         this.truckPath = '/api/scale/truck';
         this.registerPath = '/api/scale/register';
         this.destinationPath = '/api/scale/destination';
+        this.weightPath = '/api/scale/weight';
 
 
         //Conectar a la base de datos
@@ -113,6 +114,8 @@ class Server {
         this.app.use(this.truckPath, require('../routes/scale/truck.routes'));
         this.app.use(this.registerPath, require('../routes/scale/register.routes'));
         this.app.use(this.destinationPath, require('../routes/scale/destination.routes'));
+        this.app.use(this.weightPath, require('../routes/scale/weight.routes'));
+
 
     }
 

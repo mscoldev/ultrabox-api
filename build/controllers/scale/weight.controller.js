@@ -8,148 +8,53 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _require = require('express'),
+    response = _require.response,
+    request = _require.request;
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+var getWeight = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var req,
+        res,
+        weight,
+        _args = arguments;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
+            res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
+            _context.prev = 2;
+            weight = {
+              weight: 1679
+            };
+            res.status(200).json({
+              msg: 'Valor de peso actual en bascula',
+              weight: weight
+            });
+            _context.next = 10;
+            break;
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+          case 7:
+            _context.prev = 7;
+            _context.t0 = _context["catch"](2);
+            return _context.abrupt("return", res.status(500).json({
+              message: _context.t0.message
+            }));
 
-require('dotenv').config();
-
-var express = require('express');
-
-var cors = require('cors');
-
-var morgan = require('morgan');
-
-var _require = require('../database/config.database'),
-    dbConnection = _require.dbConnection;
-
-var _require2 = require('../database/config.databasepg'),
-    pgConnection = _require2.pgConnection;
-
-var _require3 = require('../libs/initialSetupDatabase'),
-    createRoles = _require3.createRoles;
-
-var PORT = process.env.PORT || 3000;
-var corsOptions = {
-  credentials: false,
-  preflightContinue: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  origin: "*"
-};
-
-var Server = /*#__PURE__*/function () {
-  function Server() {
-    _classCallCheck(this, Server);
-
-    this.app = express();
-    this.port = PORT; //*PATHS MES
-
-    this.generalPath = '/api/';
-    this.authPath = '/api/auth';
-    this.recipePath = '/api/recipe';
-    this.materialPath = '/api/material';
-    this.productionPath = '/api/production';
-    this.productionLinePath = '/api/productionline';
-    this.rolePath = '/api/role';
-    this.typesDocumentPath = '/api/typesDocument'; //*PATHS SCALE
-
-    this.clientPath = '/api/scale/client';
-    this.driverPath = '/api/scale/driver';
-    this.originPath = '/api/scale/origin';
-    this.productPath = '/api/scale/product';
-    this.sitePath = '/api/scale/site';
-    this.truckPath = '/api/scale/truck';
-    this.registerPath = '/api/scale/register';
-    this.destinationPath = '/api/scale/destination';
-    this.weightPath = '/api/scale/weight'; //Conectar a la base de datos
-
-    this.dbInitialize(); // Middlewares
-
-    this.middlewares(); // Rutas de mi aplicación
-
-    this.routes();
-  } //* Connect & Initialize Database
-
-
-  _createClass(Server, [{
-    key: "dbInitialize",
-    value: function () {
-      var _dbInitialize = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return Promise.all([pgConnection(), dbConnection(), createRoles()]);
-
-              case 2:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function dbInitialize() {
-        return _dbInitialize.apply(this, arguments);
+          case 10:
+          case "end":
+            return _context.stop();
+        }
       }
+    }, _callee, null, [[2, 7]]);
+  }));
 
-      return dbInitialize;
-    }() // async connectToDatabase (){
-    //     await dbConnection();
-    // }
-    // async initialSetupDatabase (){
-    //     await createRoles();
-    // }
-
-  }, {
-    key: "middlewares",
-    value: function middlewares() {
-      // CORS
-      this.app.use(cors(corsOptions)); //Morgan
-
-      this.app.use(morgan('dev')); // Lectura y parseo del body
-
-      this.app.use(express.json()); // Directorio Público
-
-      this.app.use(express["static"]('public'));
-    }
-  }, {
-    key: "routes",
-    value: function routes() {
-      //*ROUTES APP MES
-      this.app.use(this.authPath, require('../routes/auth.routes'));
-      this.app.use(this.recipePath, require('../routes/mes/recipe.routes'));
-      this.app.use(this.materialPath, require('../routes/mes/material.routes'));
-      this.app.use(this.productionPath, require('../routes/mes/production.routes'));
-      this.app.use(this.productionLinePath, require('../routes/mes/productionLine.routes'));
-      this.app.use(this.rolePath, require('../routes/mes/role.routes'));
-      this.app.use(this.typesDocumentPath, require('../routes/mes/typesDocument.routes')); //*ROUTES APP SCALE
-
-      this.app.use(this.clientPath, require('../routes/scale/client.routes'));
-      this.app.use(this.driverPath, require('../routes/scale/driver.routes'));
-      this.app.use(this.originPath, require('../routes/scale/origin.routes'));
-      this.app.use(this.productPath, require('../routes/scale/product.routes'));
-      this.app.use(this.sitePath, require('../routes/scale/site.routes'));
-      this.app.use(this.truckPath, require('../routes/scale/truck.routes'));
-      this.app.use(this.registerPath, require('../routes/scale/register.routes'));
-      this.app.use(this.destinationPath, require('../routes/scale/destination.routes'));
-      this.app.use(this.weightPath, require('../routes/scale/weight.routes'));
-    }
-  }, {
-    key: "listen",
-    value: function listen() {
-      var _this = this;
-
-      this.app.listen(this.port, function () {
-        console.log('Server running on port: ', _this.port);
-      });
-    }
-  }]);
-
-  return Server;
+  return function getWeight() {
+    return _ref.apply(this, arguments);
+  };
 }();
 
-module.exports = Server;
+module.exports = {
+  getWeight: getWeight
+};
