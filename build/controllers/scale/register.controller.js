@@ -18,9 +18,10 @@ var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
-var Register = require('../../models/scale/register.model');
+var _require2 = require('pg'),
+    Client = _require2.Client;
 
-var Truck = require('../../models/scale/truck.model');
+var Register = require('../../models/scale/register.model');
 
 var getRegisters = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -37,7 +38,12 @@ var getRegisters = /*#__PURE__*/function () {
             _context.prev = 2;
             _context.next = 5;
             return Register.findAll({
-              include: Truck
+              where: {
+                enabled: true
+              },
+              include: {
+                all: true
+              }
             });
 
           case 5:
@@ -303,15 +309,13 @@ var updateRegisterById = /*#__PURE__*/function () {
   return function updateRegisterById() {
     return _ref4.apply(this, arguments);
   };
-}(); //TODO: Pendiente Implementar
-
+}();
 
 var deleteRegisterById = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
     var req,
         res,
-        paramsId,
-        body,
+        id,
         deletedRegister,
         _args5 = arguments;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
@@ -321,42 +325,41 @@ var deleteRegisterById = /*#__PURE__*/function () {
             req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
             res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
             _context5.prev = 2;
-            paramsId = req.params.RegisterId;
-            body = {
-              deleted: true
-            };
-            _context5.next = 7;
-            return Register.findByIdAndUpdate(paramsId, body);
+            id = req.params.id;
+            _context5.next = 6;
+            return Register.findByPk(id);
 
-          case 7:
+          case 6:
             deletedRegister = _context5.sent;
 
             if (deletedRegister != null) {
+              deletedRegister.enabled = false;
+              deletedRegister.save();
               res.status(200).json({
-                msg: 'Registers eliminado Id:' + paramsId
+                msg: "Registro con Id: ".concat(id, ", eliminado")
               });
             } else {
               res.status(404).json({
-                msg: 'Registers no encontrado, verifique el Id ingresado'
+                msg: "Registro con Id: ".concat(id, ", no encontrado, verifique el Id ingresado.")
               });
             }
 
-            _context5.next = 14;
+            _context5.next = 13;
             break;
 
-          case 11:
-            _context5.prev = 11;
+          case 10:
+            _context5.prev = 10;
             _context5.t0 = _context5["catch"](2);
             return _context5.abrupt("return", res.status(500).json({
               message: _context5.t0.message
             }));
 
-          case 14:
+          case 13:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 11]]);
+    }, _callee5, null, [[2, 10]]);
   }));
 
   return function deleteRegisterById() {

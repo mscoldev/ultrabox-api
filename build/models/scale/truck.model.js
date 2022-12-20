@@ -14,7 +14,14 @@ var truck = sequelize.define('trucks', {
   },
   numberPlate: {
     type: DataTypes.STRING,
-    required: true
+    required: {
+      args: true,
+      msg: 'El numero de placa es requerido.'
+    },
+    unique: {
+      args: true,
+      msg: 'El numero de placa debe ser unico, el numero de placa ya se encuentra registrado.'
+    }
   },
   model: {
     type: DataTypes.STRING,

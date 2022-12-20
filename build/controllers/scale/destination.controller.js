@@ -28,12 +28,16 @@ var getDestinations = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
             _context.next = 5;
-            return Destination.findAll();
+            return Destination.findAll({
+              where: {
+                enabled: true
+              }
+            });
 
           case 5:
             destinations = _context.sent;
             res.status(200).json({
-              msg: 'Lista de Destinationes',
+              msg: 'Lista de destinos',
               destinations: destinations
             });
             _context.next = 12;
@@ -188,15 +192,13 @@ var updateDestinationById = /*#__PURE__*/function () {
   return function updateDestinationById() {
     return _ref3.apply(this, arguments);
   };
-}(); //TODO: Pendiente Implementar
-
+}();
 
 var deleteDestinationById = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
-        paramsId,
-        body,
+        id,
         deletedDestination,
         _args4 = arguments;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -206,42 +208,41 @@ var deleteDestinationById = /*#__PURE__*/function () {
             req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
             _context4.prev = 2;
-            paramsId = req.params.DestinationId;
-            body = {
-              deleted: true
-            };
-            _context4.next = 7;
-            return Destination.findByIdAndUpdate(paramsId, body);
+            id = req.params.id;
+            _context4.next = 6;
+            return Destination.findByPk(id);
 
-          case 7:
+          case 6:
             deletedDestination = _context4.sent;
 
             if (deletedDestination != null) {
+              deletedDestination.enabled = false;
+              deletedDestination.save();
               res.status(200).json({
-                msg: 'Destino eliminado Id:' + paramsId
+                msg: "Destino con Id: ".concat(id, ", ha sido eliminado.")
               });
             } else {
               res.status(404).json({
-                msg: 'Destino no encontrado, verifique el Id ingresado'
+                msg: "El destino Id: ".concat(id, " no encontrado, favor verifique el Id.")
               });
             }
 
-            _context4.next = 14;
+            _context4.next = 13;
             break;
 
-          case 11:
-            _context4.prev = 11;
+          case 10:
+            _context4.prev = 10;
             _context4.t0 = _context4["catch"](2);
             return _context4.abrupt("return", res.status(500).json({
               message: _context4.t0.message
             }));
 
-          case 14:
+          case 13:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 11]]);
+    }, _callee4, null, [[2, 10]]);
   }));
 
   return function deleteDestinationById() {

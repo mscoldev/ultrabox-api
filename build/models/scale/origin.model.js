@@ -15,7 +15,10 @@ var origin = sequelize.define('origins', {
   originName: {
     type: DataTypes.STRING,
     required: true,
-    unique: true
+    unique: {
+      args: true,
+      msg: 'El nombre del origen ya se encuentra registrado. El nombre de origen debe ser unico'
+    }
   },
   enabled: {
     type: DataTypes.BOOLEAN,

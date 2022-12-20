@@ -18,9 +18,8 @@ var getDrivers = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
-        _drivers,
+        drivers,
         _args = arguments;
-
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -30,14 +29,16 @@ var getDrivers = /*#__PURE__*/function () {
             _context.prev = 2;
             _context.next = 5;
             return Driver.findAll({
-              enabled: true
+              where: {
+                enabled: true
+              }
             });
 
           case 5:
-            _drivers = _context.sent;
+            drivers = _context.sent;
             res.status(200).json({
               msg: 'Lista de conductores',
-              drivers: _drivers
+              drivers: drivers
             });
             _context.next = 12;
             break;
@@ -193,15 +194,13 @@ var updateDriverById = /*#__PURE__*/function () {
   return function updateDriverById() {
     return _ref3.apply(this, arguments);
   };
-}(); //TODO: Pendiente Implementar
-
+}();
 
 var deleteDriverById = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
-        paramsId,
-        body,
+        id,
         deletedDriver,
         _args4 = arguments;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -211,42 +210,51 @@ var deleteDriverById = /*#__PURE__*/function () {
             req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
             _context4.prev = 2;
-            paramsId = req.params.id;
-            body = {
-              enable: false
-            };
-            _context4.next = 7;
-            return drivers.findByIdAndUpdate(paramsId, body);
+            id = req.params.id;
+            _context4.next = 6;
+            return Driver.findByPk(id);
 
-          case 7:
+          case 6:
             deletedDriver = _context4.sent;
 
-            if (deletedDriver != null) {
-              res.status(200).json({
-                msg: 'drivers eliminado Id:' + paramsId
-              });
-            } else {
-              res.status(404).json({
-                msg: 'drivers no encontrado, verifique el Id ingresado'
-              });
+            if (!(deletedDriver != null)) {
+              _context4.next = 14;
+              break;
             }
 
-            _context4.next = 14;
-            break;
+            deletedDriver.enabled = true;
+            _context4.next = 11;
+            return deletedDriver.save();
 
           case 11:
-            _context4.prev = 11;
+            res.status(200).json({
+              msg: "El conductor con Id: ".concat(id, ", ha sido eliminado")
+            });
+            _context4.next = 15;
+            break;
+
+          case 14:
+            res.status(404).json({
+              msg: "El conductor con Id: ".concat(id, ", no ha sido encontrado verifique el Id nuevamente")
+            });
+
+          case 15:
+            _context4.next = 20;
+            break;
+
+          case 17:
+            _context4.prev = 17;
             _context4.t0 = _context4["catch"](2);
             return _context4.abrupt("return", res.status(500).json({
               message: _context4.t0.message
             }));
 
-          case 14:
+          case 20:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 11]]);
+    }, _callee4, null, [[2, 17]]);
   }));
 
   return function deleteDriverById() {

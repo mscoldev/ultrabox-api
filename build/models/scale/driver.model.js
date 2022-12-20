@@ -14,16 +14,23 @@ var driver = sequelize.define('drivers', {
   },
   name: {
     type: DataTypes.STRING,
-    required: true
+    required: {
+      args: true,
+      msg: 'El nombre del conductor es requerido.'
+    }
   },
   nit: {
     type: DataTypes.STRING,
-    required: true
+    required: true,
+    unique: {
+      args: true,
+      msg: 'El numero de identificacion debe ser unico. El numero ingresado ya se encuentra registrado.'
+    }
   },
   enabled: {
     type: DataTypes.BOOLEAN,
     required: true,
-    "default": true
+    defaultValue: true
   }
 });
 module.exports = driver;

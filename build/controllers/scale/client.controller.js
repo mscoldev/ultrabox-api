@@ -29,7 +29,9 @@ var getClients = /*#__PURE__*/function () {
             _context.prev = 2;
             _context.next = 5;
             return Client.findAll({
-              "enabled": false
+              where: {
+                enabled: true
+              }
             });
 
           case 5:
@@ -192,16 +194,14 @@ var updateClientById = /*#__PURE__*/function () {
   return function updateClientById() {
     return _ref3.apply(this, arguments);
   };
-}(); //TODO: Pendiente Implementar
-
+}();
 
 var deleteClientById = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
-        paramsId,
-        body,
-        deleteddrivers,
+        id,
+        clientDeleted,
         _args4 = arguments;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
@@ -210,42 +210,51 @@ var deleteClientById = /*#__PURE__*/function () {
             req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
             _context4.prev = 2;
-            paramsId = req.params.driversId;
-            body = {
-              deleted: true
-            };
-            _context4.next = 7;
-            return drivers.findByIdAndUpdate(paramsId, body);
+            id = req.params.id;
+            _context4.next = 6;
+            return Client.findByPk(id);
 
-          case 7:
-            deleteddrivers = _context4.sent;
+          case 6:
+            clientDeleted = _context4.sent;
 
-            if (deleteddrivers != null) {
-              res.status(200).json({
-                msg: 'drivers eliminado Id:' + paramsId
-              });
-            } else {
-              res.status(404).json({
-                msg: 'drivers no encontrado, verifique el Id ingresado'
-              });
+            if (!(clientDeleted != null)) {
+              _context4.next = 14;
+              break;
             }
 
-            _context4.next = 14;
-            break;
+            clientDeleted.enabled = false;
+            _context4.next = 11;
+            return clientDeleted.save();
 
           case 11:
-            _context4.prev = 11;
+            res.status(200).json({
+              msg: "El cliente con Id: ".concat(id, ", ha sido eliminado")
+            });
+            _context4.next = 15;
+            break;
+
+          case 14:
+            res.status(404).json({
+              msg: 'drivers no encontrado, verifique el Id ingresado'
+            });
+
+          case 15:
+            _context4.next = 20;
+            break;
+
+          case 17:
+            _context4.prev = 17;
             _context4.t0 = _context4["catch"](2);
             return _context4.abrupt("return", res.status(500).json({
               message: _context4.t0.message
             }));
 
-          case 14:
+          case 20:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 11]]);
+    }, _callee4, null, [[2, 17]]);
   }));
 
   return function deleteClientById() {

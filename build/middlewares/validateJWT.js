@@ -42,7 +42,7 @@ var validateJWT = /*#__PURE__*/function () {
             }
 
             return _context.abrupt("return", res.status(401).json({
-              msg: 'Sin autorización'
+              msg: 'Sin autorización: Su Token no es valido o debe registrarse antes de realizar la operacion.'
             }));
 
           case 6:

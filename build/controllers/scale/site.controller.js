@@ -28,12 +28,16 @@ var getSites = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
             _context.next = 5;
-            return Site.findAll();
+            return Site.findAll({
+              where: {
+                enabled: true
+              }
+            });
 
           case 5:
             site = _context.sent;
             res.status(200).json({
-              msg: 'Lista de Proyectos',
+              msg: 'Lista de Sitios',
               site: site
             });
             _context.next = 12;
@@ -82,7 +86,7 @@ var getSiteById = /*#__PURE__*/function () {
 
             if (site != null) {
               res.status(200).json({
-                msg: 'Información del Proyecto',
+                msg: 'Informacion del sitio',
                 site: site
               });
             } else {
@@ -154,7 +158,7 @@ var updateSiteById = /*#__PURE__*/function () {
 
           case 14:
             res.status(200).json({
-              msg: 'Origen actualizado',
+              msg: 'Sitio actializado',
               siteUpdated: siteUpdated
             });
             _context3.next = 19;
@@ -163,7 +167,7 @@ var updateSiteById = /*#__PURE__*/function () {
           case 17:
             console.log('Not found');
             res.status(200).json({
-              msg: 'Projecto no encontrado, verifique id'
+              msg: 'El sitio no se ha encontrado, verifique el Id.'
             });
 
           case 19:
@@ -188,15 +192,13 @@ var updateSiteById = /*#__PURE__*/function () {
   return function updateSiteById() {
     return _ref3.apply(this, arguments);
   };
-}(); //TODO: Pendiente Implementar
-
+}();
 
 var deleteSiteById = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
-        paramsId,
-        body,
+        id,
         deletedSite,
         _args4 = arguments;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -206,42 +208,51 @@ var deleteSiteById = /*#__PURE__*/function () {
             req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
             _context4.prev = 2;
-            paramsId = req.params.ProjectId;
-            body = {
-              deleted: true
-            };
-            _context4.next = 7;
-            return Site.findByIdAndUpdate(paramsId, body);
+            id = req.params.id;
+            _context4.next = 6;
+            return Site.findByPk(id);
 
-          case 7:
+          case 6:
             deletedSite = _context4.sent;
 
-            if (deletedSite != null) {
-              res.status(200).json({
-                msg: 'Projects eliminado Id:' + paramsId
-              });
-            } else {
-              res.status(404).json({
-                msg: 'Projects no encontrado, verifique el Id ingresado'
-              });
+            if (!(deletedSite != null)) {
+              _context4.next = 14;
+              break;
             }
 
-            _context4.next = 14;
-            break;
+            deletedSite.enabled = false;
+            _context4.next = 11;
+            return deletedSite.save();
 
           case 11:
-            _context4.prev = 11;
+            res.status(200).json({
+              msg: "El sitio con Id: ".concat(id, ", ha sido eliminado.")
+            });
+            _context4.next = 15;
+            break;
+
+          case 14:
+            res.status(404).json({
+              msg: "El sitio con Id: ".concat(id, " no encontrado, verifique el Id.")
+            });
+
+          case 15:
+            _context4.next = 20;
+            break;
+
+          case 17:
+            _context4.prev = 17;
             _context4.t0 = _context4["catch"](2);
             return _context4.abrupt("return", res.status(500).json({
               message: _context4.t0.message
             }));
 
-          case 14:
+          case 20:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 11]]);
+    }, _callee4, null, [[2, 17]]);
   }));
 
   return function deleteSiteById() {

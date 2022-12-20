@@ -8,6 +8,16 @@ var _require2 = require('../../database/config.databasepg'),
 
 var Truck = require('../../models/scale/truck.model');
 
+var Product = require('../../models/scale/product.model');
+
+var Driver = require('../../models/scale/driver.model');
+
+var Client = require('../../models/scale/client.model');
+
+var Origin = require('../../models/scale/origin.model');
+
+var Site = require('../../models/scale/site.model');
+
 var register = sequelize.define('registers', {
   id: {
     type: DataTypes.UUID,
@@ -183,11 +193,59 @@ var register = sequelize.define('registers', {
     required: true,
     defaultValue: true
   }
-});
+}); //*Trucks - registers
+
 Truck.hasMany(register, {
-  foreignKey: '_idTruck'
+  foreignKey: '_idTruck',
+  sourceKey: 'id'
 });
 register.belongsTo(Truck, {
-  foreignKey: '_idTruck'
+  foreignKey: '_idTruck',
+  targetId: 'id'
+}); //*Products - registers
+
+Product.hasMany(register, {
+  foreignKey: '_idProduct',
+  sourceKey: 'id'
+});
+register.belongsTo(Product, {
+  foreignKey: '_idProduct',
+  targetId: 'id'
+}); //*Driverss - registers
+
+Driver.hasMany(register, {
+  foreignKey: '_idDriver',
+  sourceKey: 'id'
+});
+register.belongsTo(Driver, {
+  foreignKey: '_idDriver',
+  targetId: 'id'
+}); //*Client- registers
+
+Client.hasMany(register, {
+  foreignKey: '_idClient',
+  sourceKey: 'id'
+});
+register.belongsTo(Client, {
+  foreignKey: '_idClient',
+  targetId: 'id'
+}); //*Origin- registers
+
+Origin.hasMany(register, {
+  foreignKey: '_idOrigin',
+  sourceKey: 'id'
+});
+register.belongsTo(Origin, {
+  foreignKey: '_idOrigin',
+  targetId: 'id'
+}); //*Origin- registers
+
+Site.hasMany(register, {
+  foreignKey: '_idSite',
+  sourceKey: 'id'
+});
+register.belongsTo(Site, {
+  foreignKey: '_idSite',
+  targetId: 'id'
 });
 module.exports = register;

@@ -14,7 +14,14 @@ var site = sequelize.define('sites', {
   },
   name: {
     type: DataTypes.STRING,
-    required: true
+    required: {
+      args: true,
+      msg: 'El nombre del sitio es requerido.'
+    },
+    unique: {
+      args: true,
+      msg: 'El nombre del sitio ya se encuentra registrado. El nombre de sitio debe ser unico'
+    }
   },
   enabled: {
     type: DataTypes.BOOLEAN,

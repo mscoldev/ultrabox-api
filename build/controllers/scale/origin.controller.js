@@ -28,12 +28,16 @@ var getOrigins = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
             _context.next = 5;
-            return Origin.findAll();
+            return Origin.findAll({
+              where: {
+                enabled: true
+              }
+            });
 
           case 5:
             origins = _context.sent;
             res.status(200).json({
-              msg: 'Lista de origines',
+              msg: 'Lista de origenes',
               origins: origins
             });
             _context.next = 12;
@@ -190,16 +194,14 @@ var updateOriginById = /*#__PURE__*/function () {
   return function updateOriginById() {
     return _ref3.apply(this, arguments);
   };
-}(); //TODO: Pendiente Implementar
-
+}();
 
 var deleteOriginById = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
-        paramsId,
-        body,
-        deletedorigin,
+        id,
+        deletedOrigin,
         _args4 = arguments;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
@@ -208,42 +210,51 @@ var deleteOriginById = /*#__PURE__*/function () {
             req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
             _context4.prev = 2;
-            paramsId = req.params.originId;
-            body = {
-              deleted: true
-            };
-            _context4.next = 7;
-            return Origin.findByIdAndUpdate(paramsId, body);
+            id = req.params.id;
+            _context4.next = 6;
+            return Origin.findByPk(id);
 
-          case 7:
-            deletedorigin = _context4.sent;
+          case 6:
+            deletedOrigin = _context4.sent;
 
-            if (deletedorigin != null) {
-              res.status(200).json({
-                msg: 'origins eliminado Id:' + paramsId
-              });
-            } else {
-              res.status(404).json({
-                msg: 'origins no encontrado, verifique el Id ingresado'
-              });
+            if (!(deletedOrigin != null)) {
+              _context4.next = 14;
+              break;
             }
 
-            _context4.next = 14;
-            break;
+            deletedOrigin.enabled = false;
+            _context4.next = 11;
+            return deletedOrigin.save();
 
           case 11:
-            _context4.prev = 11;
+            res.status(200).json({
+              msg: "El origen con Id: ".concat(id, ", ha sido eliminado.")
+            });
+            _context4.next = 15;
+            break;
+
+          case 14:
+            res.status(404).json({
+              msg: "El origen con Id: ".concat(id, ", no ha sido encontrado, verifique el Id ingresado nuevamente")
+            });
+
+          case 15:
+            _context4.next = 20;
+            break;
+
+          case 17:
+            _context4.prev = 17;
             _context4.t0 = _context4["catch"](2);
             return _context4.abrupt("return", res.status(500).json({
               message: _context4.t0.message
             }));
 
-          case 14:
+          case 20:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 11]]);
+    }, _callee4, null, [[2, 17]]);
   }));
 
   return function deleteOriginById() {
