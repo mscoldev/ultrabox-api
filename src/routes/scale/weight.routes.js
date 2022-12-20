@@ -1,7 +1,7 @@
 
 const { Router } = require('express');
 
-const { getWeight } = require('../../controllers/scale/client.controller');
+const { getWeight } = require('../../controllers/scale/weight.controller');
 
 const router = Router();
 

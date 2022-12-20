@@ -16,7 +16,7 @@ var getWeight = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
-        weight,
+        scale,
         _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -25,12 +25,12 @@ var getWeight = /*#__PURE__*/function () {
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
-            weight = {
+            scale = {
               weight: 1679
             };
             res.status(200).json({
               msg: 'Valor de peso actual en bascula',
-              weight: weight
+              scale: scale
             });
             _context.next = 10;
             break;
