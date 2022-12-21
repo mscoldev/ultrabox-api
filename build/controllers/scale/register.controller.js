@@ -23,6 +23,8 @@ var _require2 = require('pg'),
 
 var Register = require('../../models/scale/register.model');
 
+var Truck = require('../../models/scale/truck.model');
+
 var getRegisters = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,

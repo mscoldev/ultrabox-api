@@ -2,6 +2,7 @@ const { response, request } = require('express');
 const { Client } = require('pg');
 
 const Register = require('../../models/scale/register.model');
+const Truck = require('../../models/scale/truck.model');
 
 
 
