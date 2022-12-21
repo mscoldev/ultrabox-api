@@ -29,7 +29,7 @@ var register = sequelize.define('registers', {
   date: {
     type: DataTypes.DATE,
     get: function get() {
-      var hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:MM');
+      var hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:mm');
       return hdate;
     },
     required: true,
