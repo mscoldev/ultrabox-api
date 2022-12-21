@@ -21,6 +21,8 @@ var _require = require('express'),
 var _require2 = require('pg'),
     Client = _require2.Client;
 
+var register = require('../../models/scale/register.model');
+
 var Register = require('../../models/scale/register.model');
 
 var Truck = require('../../models/scale/truck.model');
@@ -91,8 +93,9 @@ var getRegisterById = /*#__PURE__*/function () {
     var req,
         res,
         id,
-        register,
+        _register,
         _args2 = arguments;
+
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -105,12 +108,12 @@ var getRegisterById = /*#__PURE__*/function () {
             return Register.findByPk(id);
 
           case 6:
-            register = _context2.sent;
+            _register = _context2.sent;
 
-            if (register != null) {
+            if (_register != null) {
               res.status(200).json({
                 msg: 'Información del Registro',
-                register: register
+                register: _register
               });
             } else {
               console.log('Not found');

@@ -73,7 +73,7 @@ const deleteDriverById = async (req = request, res = response) => {
         const { id } = req.params;
         const deletedDriver = await Driver.findByPk(id);
         if (deletedDriver != null) {
-            deletedDriver.enabled = true;
+            deletedDriver.enabled = false;
 
             await deletedDriver.save();
 

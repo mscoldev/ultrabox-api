@@ -3,6 +3,8 @@
 var _require = require('sequelize'),
     DataTypes = _require.DataTypes;
 
+var moment = require('moment');
+
 var _require2 = require('../../database/config.databasepg'),
     sequelize = _require2.sequelize;
 
@@ -26,6 +28,10 @@ var register = sequelize.define('registers', {
   },
   date: {
     type: DataTypes.DATE,
+    get: function get() {
+      var hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:MM');
+      return hdate;
+    },
     required: true,
     defaultValue: DataTypes.NOW
   },

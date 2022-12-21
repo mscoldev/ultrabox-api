@@ -1,5 +1,8 @@
 const { response, request } = require('express');
+
+
 const { Client } = require('pg');
+const register = require('../../models/scale/register.model');
 
 const Register = require('../../models/scale/register.model');
 const Truck = require('../../models/scale/truck.model');
@@ -16,6 +19,7 @@ const getRegisters = async (req = request, res = response) => {
             limit: limit,
             offset: offset
         });
+
         res.status(200).json({
             msg: 'Lista de registros',
             registers

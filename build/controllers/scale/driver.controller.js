@@ -222,7 +222,7 @@ var deleteDriverById = /*#__PURE__*/function () {
               break;
             }
 
-            deletedDriver.enabled = true;
+            deletedDriver.enabled = false;
             _context4.next = 11;
             return deletedDriver.save();
 

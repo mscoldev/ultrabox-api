@@ -1,4 +1,6 @@
 const { DataTypes } = require('sequelize');
+const moment = require('moment');
+
 const { sequelize } = require('../../database/config.databasepg');
 
 const Truck = require('../../models/scale/truck.model');
@@ -17,6 +19,10 @@ const register = sequelize.define('registers', {
     },
     date: {
         type: DataTypes.DATE,
+        get() {
+            const hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:MM');
+            return hdate
+        },
         required: true,
         defaultValue: DataTypes.NOW
     },
@@ -235,8 +241,5 @@ register.belongsTo(Site, {
     foreignKey: '_idSite',
     targetId: 'id'
 });
-
-
-
 
 module.exports = register;
