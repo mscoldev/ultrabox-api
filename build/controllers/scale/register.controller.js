@@ -29,8 +29,13 @@ var getRegisters = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
+        _req$query,
+        limit,
+        order,
+        offset,
         registers,
         _args = arguments;
+
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -38,38 +43,42 @@ var getRegisters = /*#__PURE__*/function () {
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
-            _context.next = 5;
+            _req$query = req.query, limit = _req$query.limit, order = _req$query.order, offset = _req$query.offset;
+            _context.next = 6;
             return Register.findAll({
               where: {
                 enabled: true
               },
               include: {
                 all: true
-              }
+              },
+              order: [['createdAt', order]],
+              limit: limit,
+              offset: offset
             });
 
-          case 5:
+          case 6:
             registers = _context.sent;
             res.status(200).json({
               msg: 'Lista de registros',
               registers: registers
             });
-            _context.next = 12;
+            _context.next = 13;
             break;
 
-          case 9:
-            _context.prev = 9;
+          case 10:
+            _context.prev = 10;
             _context.t0 = _context["catch"](2);
             return _context.abrupt("return", res.status(500).json({
               message: _context.t0.message
             }));
 
-          case 12:
+          case 13:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[2, 9]]);
+    }, _callee, null, [[2, 10]]);
   }));
 
   return function getRegisters() {
@@ -138,15 +147,12 @@ var getLastRegisterByNumberPlate = /*#__PURE__*/function () {
     var req,
         res,
         numberPlate,
-        _req$query,
+        _req$query2,
         limit,
         order,
         status,
         query,
         truckData,
-        _yield$Register$findA,
-        count,
-        rows,
         registers,
         _args3 = arguments;
 
@@ -158,7 +164,7 @@ var getLastRegisterByNumberPlate = /*#__PURE__*/function () {
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
             _context3.prev = 2;
             numberPlate = req.params.numberPlate;
-            _req$query = req.query, limit = _req$query.limit, order = _req$query.order, status = _req$query.status, query = _objectWithoutProperties(_req$query, _excluded);
+            _req$query2 = req.query, limit = _req$query2.limit, order = _req$query2.order, status = _req$query2.status, query = _objectWithoutProperties(_req$query2, _excluded);
             _context3.next = 7;
             return Truck.findOne({
               where: {
@@ -180,50 +186,50 @@ var getLastRegisterByNumberPlate = /*#__PURE__*/function () {
 
           case 10:
             _context3.next = 12;
-            return Register.findAndCountAll({
+            return Register.findOne({
               where: {
                 _idTruck: truckData.id,
                 status: status,
                 enabled: true
+              },
+              include: {
+                all: true
               },
               order: [['createdAt', order]],
               limit: limit
             });
 
           case 12:
-            _yield$Register$findA = _context3.sent;
-            count = _yield$Register$findA.count;
-            rows = _yield$Register$findA.rows;
+            registers = _context3.sent;
 
-            if (!(count != 0)) {
-              _context3.next = 18;
+            if (!(registers != null)) {
+              _context3.next = 15;
               break;
             }
 
-            registers = rows;
             return _context3.abrupt("return", res.status(200).json({
               msg: "Registro(s) activos para el vehiculo ".concat(numberPlate, ":"),
               registers: registers
             }));
 
-          case 18:
+          case 15:
             return _context3.abrupt("return", res.status(404).json({
               msg: "No se encontraron registros activos en estado \"".concat(status, "\" para el vehiculo de placas ").concat(numberPlate, ".\n            Verifique los valores de la consulta o compruebe si \"status\" es valido.")
             }));
 
-          case 21:
-            _context3.prev = 21;
+          case 18:
+            _context3.prev = 18;
             _context3.t0 = _context3["catch"](2);
             return _context3.abrupt("return", res.status(500).json({
               message: "Se ha producido un error, ".concat(_context3.t0.message)
             }));
 
-          case 24:
+          case 21:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[2, 21]]);
+    }, _callee3, null, [[2, 18]]);
   }));
 
   return function getLastRegisterByNumberPlate() {

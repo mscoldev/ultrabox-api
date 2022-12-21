@@ -8,9 +8,13 @@ const Truck = require('../../models/scale/truck.model');
 
 const getRegisters = async (req = request, res = response) => {
     try {
+        const { limit, order, offset } = req.query;
         const registers = await Register.findAll({
             where: { enabled: true },
-            include: { all: true }
+            include: { all: true },
+            order: [['createdAt', order]],
+            limit: limit,
+            offset: offset
         });
         res.status(200).json({
             msg: 'Lista de registros',
@@ -54,7 +58,7 @@ const getLastRegisterByNumberPlate = async (req = request, res = response) => {
         if (!truckData) {
             return res.status(404).json({ msg: 'El vehiculo ${numberPlate} no se ecuentra registrado' })
         }
-        const { count, rows } = await Register.findAndCountAll({
+        const registers = await Register.findOne({
             where: {
                 _idTruck: truckData.id,
                 status: status,
@@ -65,8 +69,7 @@ const getLastRegisterByNumberPlate = async (req = request, res = response) => {
             limit: limit
         });
 
-        if (count != 0) {
-            const registers = rows
+        if (registers != null) {
             return res.status(200).json({
                 msg: `Registro(s) activos para el vehiculo ${numberPlate}:`,
                 registers
