@@ -60,6 +60,7 @@ const getLastRegisterByNumberPlate = async (req = request, res = response) => {
                 status: status,
                 enabled: true
             },
+            include: { all: true },
             order: [['createdAt', order]],
             limit: limit
         });
