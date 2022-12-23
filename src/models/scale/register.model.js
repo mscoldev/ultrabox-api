@@ -28,18 +28,23 @@ const register = sequelize.define('registers', {
     },
     serialScale: {
         type: DataTypes.INTEGER,
-        unique: true
+        unique: true,
+        required: true,
+        autoIncrement: true
     },
     serialLog: {
         type: DataTypes.INTEGER,
+        unique: true,
         required: true,
+        allowNull: false,
     },
     qty: {
         type: DataTypes.DECIMAL(10, 3),
         allowNull: true,
         validate: {
             isDecimal: { msg: 'No es un numero decimal' }
-        }
+        },
+        defaultValue: 0,
     },
     groosWeight: {
         type: DataTypes.DECIMAL(10, 3),
@@ -88,6 +93,10 @@ const register = sequelize.define('registers', {
                 this.setDataValue('dateTara', dateNow)
             }
         },
+        get() {
+            const hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:mm');
+            return hdate
+        },
         required: false
     },
     dateNet: {
@@ -98,6 +107,10 @@ const register = sequelize.define('registers', {
             if (netWeightNow != 0) {
                 this.setDataValue('dateNet', dateNow)
             }
+        },
+        get() {
+            const hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:mm');
+            return hdate
         },
     },
     weight: {
@@ -142,11 +155,12 @@ const register = sequelize.define('registers', {
     },
     error: {
         type: DataTypes.STRING,
-        required: true
+        required: true,
+        defaultValue: 'Sin error'
     },
     userRecorder: {
         type: DataTypes.STRING,
-        required: true
+        required: true,
     },
     _idProduct: {
         type: DataTypes.INTEGER,

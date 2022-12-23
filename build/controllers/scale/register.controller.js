@@ -382,6 +382,7 @@ var createRegister = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
     var req,
         res,
+        getLastSerialLog,
         _req$body2,
         weight,
         status,
@@ -403,9 +404,15 @@ var createRegister = /*#__PURE__*/function () {
             req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
             res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
             _context6.prev = 2;
+            _context6.next = 5;
+            return Register.max('serialLog');
+
+          case 5:
+            getLastSerialLog = _context6.sent;
             _req$body2 = req.body, weight = _req$body2.weight, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, _idDriver = _req$body2._idDriver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idSite = _req$body2._idSite, enabled = _req$body2.enabled;
-            _context6.next = 6;
+            _context6.next = 9;
             return Register.create({
+              serialLog: getLastSerialLog + 1,
               weight: weight,
               dateWeight: null,
               status: status,
@@ -419,28 +426,28 @@ var createRegister = /*#__PURE__*/function () {
               enabled: enabled
             });
 
-          case 6:
+          case 9:
             newRegister = _context6.sent;
             res.status(201).json({
               msg: 'Registro creado satisfactoriamente!',
               newRegister: newRegister
             });
-            _context6.next = 13;
+            _context6.next = 16;
             break;
 
-          case 10:
-            _context6.prev = 10;
+          case 13:
+            _context6.prev = 13;
             _context6.t0 = _context6["catch"](2);
             return _context6.abrupt("return", res.status(500).json({
               message: "Se ha producido un error, ".concat(_context6.t0.message)
             }));
 
-          case 13:
+          case 16:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[2, 10]]);
+    }, _callee6, null, [[2, 13]]);
   }));
 
   return function createRegister() {

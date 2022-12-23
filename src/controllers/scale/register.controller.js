@@ -154,6 +154,9 @@ const deleteRegisterById = async (req = request, res = response) => {
 
 const createRegister = async (req = request, res = response) => {
     try {
+
+        const getLastSerialLog = await Register.max('serialLog');
+
         const {
             weight,
             status,
@@ -167,6 +170,7 @@ const createRegister = async (req = request, res = response) => {
             enabled } = req.body;
 
         const newRegister = await Register.create({
+            serialLog: getLastSerialLog + 1,
             weight,
             dateWeight: null,
             status,
