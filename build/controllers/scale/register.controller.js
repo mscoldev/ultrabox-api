@@ -283,6 +283,7 @@ var updateRegisterById = /*#__PURE__*/function () {
               newRegister.tare = newRegister.weight;
               newRegister.groosWeight = newRegister.secondWeight;
               newRegister.netWeight = newRegister.groosWeight - newRegister.tare;
+              newRegister.operation = 'Cargando';
               console.log("Primera Medida: ".concat(newRegister.weight));
               console.log("Segunda Medida: ".concat(newRegister.secondWeight));
               console.log('####Cargando...');
@@ -291,6 +292,7 @@ var updateRegisterById = /*#__PURE__*/function () {
               console.log('####Descargando...');
               console.log("Primera Medida: ".concat(newRegister.weight));
               console.log("Segunda Medida: ".concat(newRegister.secondWeight));
+              newRegister.operation = 'Descargando';
               newRegister.tare = newRegister.secondWeight;
               newRegister.groosWeight = newRegister.weight;
               newRegister.netWeight = newRegister.groosWeight - newRegister.tare;
