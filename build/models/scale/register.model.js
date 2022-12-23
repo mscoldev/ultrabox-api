@@ -98,6 +98,10 @@ var register = sequelize.define('registers', {
     type: DataTypes.STRING,
     required: true
   },
+  operation: {
+    type: DataTypes.STRING,
+    required: true
+  },
   dateTara: {
     type: DataTypes.DATE,
     set: function set() {

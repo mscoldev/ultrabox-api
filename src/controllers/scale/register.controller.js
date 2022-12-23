@@ -101,7 +101,34 @@ const updateRegisterById = async (req = request, res = response) => {
             newRegister.status = status;
             newRegister.userRecorder = userRecorder;
 
+
+            //*Identificar Cargando o Descargando
+
+
+            if (newRegister.secondWeight > newRegister.weight) {
+                //Estaba Cargando
+                newRegister.tare = newRegister.weight;
+                newRegister.groosWeight = newRegister.secondWeight;
+                newRegister.netWeight = newRegister.groosWeight - newRegister.tare
+
+                console.log(`Primera Medida: ${newRegister.weight}`);
+                console.log(`Segunda Medida: ${newRegister.secondWeight}`);
+                console.log('####Cargando...');
+            } else {
+                //Estaba Descarnado
+                console.log('####Descargando...');
+                console.log(`Primera Medida: ${newRegister.weight}`);
+                console.log(`Segunda Medida: ${newRegister.secondWeight}`);
+                newRegister.tare = newRegister.secondWeight;
+                newRegister.groosWeight = newRegister.weight;
+                newRegister.netWeight = newRegister.groosWeight - newRegister.tare
+            }
+
+
             //*Autocalcular
+
+
+
             // newRegister.netWeigth = "";
             // newRegister.dateTara = "";
             // newRegister.dateNet = "";

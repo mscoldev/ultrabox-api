@@ -268,7 +268,7 @@ var updateRegisterById = /*#__PURE__*/function () {
             newRegister = _context4.sent;
 
             if (!(newRegister != null)) {
-              _context4.next = 18;
+              _context4.next = 19;
               break;
             }
 
@@ -276,45 +276,64 @@ var updateRegisterById = /*#__PURE__*/function () {
             newRegister.secondDateWeight = null; //trigger setValue
 
             newRegister.status = status;
-            newRegister.userRecorder = userRecorder; //*Autocalcular
+            newRegister.userRecorder = userRecorder; //*Identificar Cargando o Descargando
+
+            if (newRegister.secondWeight > newRegister.weight) {
+              //Estaba Cargando
+              newRegister.tare = newRegister.weight;
+              newRegister.groosWeight = newRegister.secondWeight;
+              newRegister.netWeight = newRegister.groosWeight - newRegister.tare;
+              console.log("Primera Medida: ".concat(newRegister.weight));
+              console.log("Segunda Medida: ".concat(newRegister.secondWeight));
+              console.log('####Cargando...');
+            } else {
+              //Estaba Descarnado
+              console.log('####Descargando...');
+              console.log("Primera Medida: ".concat(newRegister.weight));
+              console.log("Segunda Medida: ".concat(newRegister.secondWeight));
+              newRegister.tare = newRegister.secondWeight;
+              newRegister.groosWeight = newRegister.weight;
+              newRegister.netWeight = newRegister.groosWeight - newRegister.tare;
+            } //*Autocalcular
             // newRegister.netWeigth = "";
             // newRegister.dateTara = "";
             // newRegister.dateNet = "";
 
-            _context4.next = 15;
+
+            _context4.next = 16;
             return newRegister.save();
 
-          case 15:
+          case 16:
             res.status(200).json({
               msg: 'Registro actualizado con exito',
               newRegister: newRegister
             });
-            _context4.next = 20;
+            _context4.next = 21;
             break;
 
-          case 18:
+          case 19:
             console.log('Not found');
             res.status(200).json({
               msg: 'Registro con encontrado, verifique el Id ingresado'
             });
 
-          case 20:
-            _context4.next = 25;
+          case 21:
+            _context4.next = 26;
             break;
 
-          case 22:
-            _context4.prev = 22;
+          case 23:
+            _context4.prev = 23;
             _context4.t0 = _context4["catch"](2);
             return _context4.abrupt("return", res.status(500).json({
               message: "Se ha producido un error, ".concat(_context4.t0.message)
             }));
 
-          case 25:
+          case 26:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 22]]);
+    }, _callee4, null, [[2, 23]]);
   }));
 
   return function updateRegisterById() {

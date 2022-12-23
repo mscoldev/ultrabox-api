@@ -33,9 +33,7 @@ var pgConnection = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return sequelize.sync({
-              alter: false
-            });
+            return sequelize.sync();
 
           case 3:
             console.log('Conectado a la base de datos postgres');
