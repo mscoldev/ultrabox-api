@@ -110,6 +110,7 @@ const updateRegisterById = async (req = request, res = response) => {
                 newRegister.tare = newRegister.weight;
                 newRegister.groosWeight = newRegister.secondWeight;
                 newRegister.netWeight = newRegister.groosWeight - newRegister.tare
+                newRegister.operation = 'Cargando'
 
                 console.log(`Primera Medida: ${newRegister.weight}`);
                 console.log(`Segunda Medida: ${newRegister.secondWeight}`);
@@ -119,6 +120,7 @@ const updateRegisterById = async (req = request, res = response) => {
                 console.log('####Descargando...');
                 console.log(`Primera Medida: ${newRegister.weight}`);
                 console.log(`Segunda Medida: ${newRegister.secondWeight}`);
+                newRegister.operation = 'Descargando'
                 newRegister.tare = newRegister.secondWeight;
                 newRegister.groosWeight = newRegister.weight;
                 newRegister.netWeight = newRegister.groosWeight - newRegister.tare
