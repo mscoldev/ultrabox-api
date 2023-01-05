@@ -117,7 +117,7 @@ var Server = /*#__PURE__*/function () {
   }, {
     key: "middlewares",
     value: function middlewares() {
-      this.app.use(validateJWT);
+      // this.app.use(validateJWT);
       this.app.use(cacheSuccess); // CORS
 
       this.app.use(cors(corsOptions)); //Morgan

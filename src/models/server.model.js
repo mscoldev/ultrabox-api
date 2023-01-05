@@ -83,7 +83,7 @@ class Server {
 
     middlewares() {
 
-        this.app.use(validateJWT);
+        // this.app.use(validateJWT);
 
         this.app.use(cacheSuccess);
 
