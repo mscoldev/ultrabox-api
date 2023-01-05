@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 
-const { cacheSuccess } = require('../middlewares/cacheResponse');
+// const { cache, cacheSuccess } = require('../middlewares/cacheResponse');
 const { validateJWT } = require('../middlewares/validateJWT');
 
 const { dbConnection } = require('../database/config.database');
@@ -83,9 +83,9 @@ class Server {
 
     middlewares() {
 
-        // this.app.use(validateJWT);
+        this.app.use(validateJWT);
 
-        this.app.use(cacheSuccess);
+        // this.app.use(cache('1 minute', ((req, res) => req.method === "GET")));
 
         // CORS
         this.app.use(cors(corsOptions));

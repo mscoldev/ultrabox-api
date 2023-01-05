@@ -32,6 +32,7 @@ const updateMaterialById = async (req = request, res = response) => {
     try {
         const paramsId = req.params.materialId;
         const body = req.body;
+
         const updatedMaterial = await Material.findByIdAndUpdate(paramsId, body, { new: true });
         if (updatedMaterial != null) {
             res.status(200).json({
