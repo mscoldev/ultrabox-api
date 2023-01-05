@@ -80,7 +80,7 @@ const deleteTruckById = async (req = request, res = response) => {
             deletedTruck.enabled = false;
             deletedTruck.save();
 
-            res.status(200).json({
+            res.status(202).json({
                 msg: `Vehiculo con Id: ${id}, eliminado.`
             });
         } else {

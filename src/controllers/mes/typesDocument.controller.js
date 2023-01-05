@@ -57,7 +57,7 @@ const deleteTypesDocumentById = async (req = request, res = response) => {
         const body = { deleted: true }
         const deletedTypesDocument = await TypesDocument.findByIdAndUpdate(paramsId, body);
         if (deletedTypesDocument != null) {
-            res.status(200).json({
+            res.status(202).json({
                 msg: 'TypesDocument eliminado Id:' + paramsId
             });
         } else {

@@ -225,7 +225,7 @@ var deleteProductById = /*#__PURE__*/function () {
             return deletedProduct.save();
 
           case 11:
-            res.status(200).json({
+            res.status(202).json({
               msg: 'Producto eliminado Id:' + id
             });
             _context4.next = 15;

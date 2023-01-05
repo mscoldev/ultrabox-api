@@ -227,7 +227,7 @@ var deleteOriginById = /*#__PURE__*/function () {
             return deletedOrigin.save();
 
           case 11:
-            res.status(200).json({
+            res.status(202).json({
               msg: "El origen con Id: ".concat(id, ", ha sido eliminado.")
             });
             _context4.next = 15;

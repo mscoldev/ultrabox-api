@@ -18,11 +18,6 @@ var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
-var _require2 = require('pg'),
-    Client = _require2.Client;
-
-var register = require('../../models/scale/register.model');
-
 var Register = require('../../models/scale/register.model');
 
 var Truck = require('../../models/scale/truck.model');
@@ -93,9 +88,8 @@ var getRegisterById = /*#__PURE__*/function () {
     var req,
         res,
         id,
-        _register,
+        register,
         _args2 = arguments;
-
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -108,12 +102,12 @@ var getRegisterById = /*#__PURE__*/function () {
             return Register.findByPk(id);
 
           case 6:
-            _register = _context2.sent;
+            register = _context2.sent;
 
-            if (_register != null) {
+            if (register != null) {
               res.status(200).json({
                 msg: 'Información del Registro',
-                register: _register
+                register: register
               });
             } else {
               console.log('Not found');
@@ -367,7 +361,7 @@ var deleteRegisterById = /*#__PURE__*/function () {
             if (deletedRegister != null) {
               deletedRegister.enabled = false;
               deletedRegister.save();
-              res.status(200).json({
+              res.status(202).json({
                 msg: "Registro con Id: ".concat(id, ", eliminado")
               });
             } else {

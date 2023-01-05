@@ -227,7 +227,7 @@ var deleteClientById = /*#__PURE__*/function () {
             return clientDeleted.save();
 
           case 11:
-            res.status(200).json({
+            res.status(202).json({
               msg: "El cliente con Id: ".concat(id, ", ha sido eliminado")
             });
             _context4.next = 15;

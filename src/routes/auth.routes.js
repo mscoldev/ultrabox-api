@@ -8,6 +8,7 @@ const { validateJWT } = require('../middlewares/validateJWT');
 const { getUserRol, validateAccessModule, addNameModule } = require('../middlewares/validateRol');
 
 
+
 // Funciones desde el controlador
 const { signIn, signUp, getUsers, getUserByUid, updateUser, login } = require('../controllers/auth.controller');
 

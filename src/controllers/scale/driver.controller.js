@@ -77,7 +77,7 @@ const deleteDriverById = async (req = request, res = response) => {
 
             await deletedDriver.save();
 
-            res.status(200).json({
+            res.status(202).json({
                 msg: `El conductor con Id: ${id}, ha sido eliminado`
             });
         } else {

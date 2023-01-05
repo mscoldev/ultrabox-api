@@ -79,7 +79,7 @@ const deleteOriginById = async (req = request, res = response) => {
             deletedOrigin.enabled = false;
             await deletedOrigin.save();
 
-            res.status(200).json({
+            res.status(202).json({
                 msg: `El origen con Id: ${id}, ha sido eliminado.`
             });
         } else {

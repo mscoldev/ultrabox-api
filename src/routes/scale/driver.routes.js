@@ -3,6 +3,7 @@ const { Router } = require('express');
 
 const { validateJWT } = require('../../middlewares/validateJWT');
 
+
 const { getDrivers,
     getDriverById,
     updateDriverById,

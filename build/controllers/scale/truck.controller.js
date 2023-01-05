@@ -224,7 +224,7 @@ var deleteTruckById = /*#__PURE__*/function () {
             if (deletedTruck != null) {
               deletedTruck.enabled = false;
               deletedTruck.save();
-              res.status(200).json({
+              res.status(202).json({
                 msg: "Vehiculo con Id: ".concat(id, ", eliminado.")
               });
             } else {

@@ -76,7 +76,7 @@ const deleteProductById = async (req = request, res = response) => {
 
             await deletedProduct.save();
 
-            res.status(200).json({
+            res.status(202).json({
                 msg: 'Producto eliminado Id:' + id
             });
         } else {

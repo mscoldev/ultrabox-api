@@ -4,6 +4,7 @@ const { check } = require('express-validator');
 
 const { validateJWT } = require('../../middlewares/validateJWT');
 
+
 const { getProducts,
     getProductById,
     updateProductById,

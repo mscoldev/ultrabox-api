@@ -246,7 +246,7 @@ var deleteProductionById = /*#__PURE__*/function () {
             deletedProduction = _context5.sent;
 
             if (deletedProduction != null) {
-              res.status(200).json({
+              res.status(202).json({
                 msg: 'Material eliminado Id:' + paramsId
               });
             } else {

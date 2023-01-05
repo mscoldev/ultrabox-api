@@ -75,7 +75,7 @@ const deleteSiteById = async (req = request, res = response) => {
 
             deletedSite.enabled = false;
             await deletedSite.save();
-            res.status(200).json({
+            res.status(202).json({
                 msg: `El sitio con Id: ${id}, ha sido eliminado.`
             });
         } else {

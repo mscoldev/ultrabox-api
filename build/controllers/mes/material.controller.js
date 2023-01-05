@@ -189,7 +189,7 @@ var deleteMaterialById = /*#__PURE__*/function () {
             deletedMaterial = _context4.sent;
 
             if (deletedMaterial != null) {
-              res.status(200).json({
+              res.status(202).json({
                 msg: 'Material eliminado Id:' + paramsId
               });
             } else {

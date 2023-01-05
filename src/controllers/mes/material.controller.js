@@ -56,7 +56,7 @@ const deleteMaterialById = async (req = request, res = response) => {
         const body = { deleted: true }
         const deletedMaterial = await Material.findByIdAndUpdate(paramsId, body);
         if (deletedMaterial != null) {
-            res.status(200).json({
+            res.status(202).json({
                 msg: 'Material eliminado Id:' + paramsId
             });
         } else {

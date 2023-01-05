@@ -190,7 +190,7 @@ var deleteRoleById = /*#__PURE__*/function () {
             console.log(deletedRole);
 
             if (deletedRole != null) {
-              res.status(200).json({
+              res.status(202).json({
                 msg: 'Role eliminado Id:' + paramsId
               });
             } else {

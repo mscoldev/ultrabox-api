@@ -79,7 +79,7 @@ const deleteProductionById = async (req = request, res = response) => {
         const body = { deleted: true }
         const deletedProduction = await Production.findByIdAndUpdate(paramsId, body);
         if (deletedProduction != null) {
-            res.status(200).json({
+            res.status(202).json({
                 msg: 'Material eliminado Id:' + paramsId
             });
         } else {

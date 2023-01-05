@@ -77,7 +77,7 @@ const deleteDestinationById = async (req = request, res = response) => {
             deletedDestination.enabled = false;
             deletedDestination.save();
 
-            res.status(200).json({
+            res.status(202).json({
                 msg: `Destino con Id: ${id}, ha sido eliminado.`
             });
         } else {

@@ -9,5 +9,8 @@
         "jsonata",
         "usuario",
         "verificar"
+    ],
+    "cSpell.ignoreWords": [
+        "databasepg"
     ]
 }

@@ -218,7 +218,7 @@ var deleteDestinationById = /*#__PURE__*/function () {
             if (deletedDestination != null) {
               deletedDestination.enabled = false;
               deletedDestination.save();
-              res.status(200).json({
+              res.status(202).json({
                 msg: "Destino con Id: ".concat(id, ", ha sido eliminado.")
               });
             } else {

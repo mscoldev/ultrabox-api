@@ -22,14 +22,23 @@ var cors = require('cors');
 
 var morgan = require('morgan');
 
-var _require = require('../database/config.database'),
-    dbConnection = _require.dbConnection;
+var _require = require('../middlewares/cacheResponse'),
+    cacheSuccess = _require.cacheSuccess;
 
-var _require2 = require('../database/config.databasepg'),
-    pgConnection = _require2.pgConnection;
+var _require2 = require('../middlewares/validateJWT'),
+    validateJWT = _require2.validateJWT;
 
-var _require3 = require('../libs/initialSetupDatabase'),
-    createRoles = _require3.createRoles;
+var _require3 = require('../database/config.database'),
+    dbConnection = _require3.dbConnection;
+
+var _require4 = require('../database/config.databasepg'),
+    pgConnection = _require4.pgConnection;
+
+var _require5 = require('../libs/initialSetupDatabase'),
+    createRoles = _require5.createRoles;
+
+var _require6 = require('moment'),
+    relativeTimeThreshold = _require6.relativeTimeThreshold;
 
 var PORT = process.env.PORT || 3000;
 var corsOptions = {
@@ -44,26 +53,27 @@ var Server = /*#__PURE__*/function () {
     _classCallCheck(this, Server);
 
     this.app = express();
-    this.port = PORT; //*PATHS MES
-
-    this.generalPath = '/api/';
-    this.authPath = '/api/auth';
-    this.recipePath = '/api/recipe';
-    this.materialPath = '/api/material';
-    this.productionPath = '/api/production';
-    this.productionLinePath = '/api/productionline';
-    this.rolePath = '/api/role';
-    this.typesDocumentPath = '/api/typesDocument'; //*PATHS SCALE
-
-    this.clientPath = '/api/scale/client';
-    this.driverPath = '/api/scale/driver';
-    this.originPath = '/api/scale/origin';
-    this.productPath = '/api/scale/product';
-    this.sitePath = '/api/scale/site';
-    this.truckPath = '/api/scale/truck';
-    this.registerPath = '/api/scale/register';
-    this.destinationPath = '/api/scale/destination';
-    this.weightPath = '/api/scale/weight'; //Conectar a la base de datos
+    this.port = PORT;
+    this.paths = {
+      //*PATHS MES
+      auth: '/api/auth',
+      recipe: '/api/recipe',
+      material: '/api/material',
+      production: '/api/production',
+      productionLine: '/api/productionline',
+      role: '/api/role',
+      typesDocument: '/api/typesDocument',
+      //*PATHS SCALE
+      client: '/api/scale/client',
+      driver: '/api/scale/driver',
+      origin: '/api/scale/origin',
+      product: '/api/scale/product',
+      site: '/api/scale/site',
+      truck: '/api/scale/truck',
+      register: '/api/scale/register',
+      destination: '/api/scale/destination',
+      weight: '/api/scale/weight'
+    }; //Conectar a la base de datos
 
     this.dbInitialize(); // Middlewares
 
@@ -107,7 +117,9 @@ var Server = /*#__PURE__*/function () {
   }, {
     key: "middlewares",
     value: function middlewares() {
-      // CORS
+      this.app.use(validateJWT);
+      this.app.use(cacheSuccess); // CORS
+
       this.app.use(cors(corsOptions)); //Morgan
 
       this.app.use(morgan('dev')); // Lectura y parseo del body
@@ -120,23 +132,23 @@ var Server = /*#__PURE__*/function () {
     key: "routes",
     value: function routes() {
       //*ROUTES APP MES
-      this.app.use(this.authPath, require('../routes/auth.routes'));
-      this.app.use(this.recipePath, require('../routes/mes/recipe.routes'));
-      this.app.use(this.materialPath, require('../routes/mes/material.routes'));
-      this.app.use(this.productionPath, require('../routes/mes/production.routes'));
-      this.app.use(this.productionLinePath, require('../routes/mes/productionLine.routes'));
-      this.app.use(this.rolePath, require('../routes/mes/role.routes'));
-      this.app.use(this.typesDocumentPath, require('../routes/mes/typesDocument.routes')); //*ROUTES APP SCALE
+      this.app.use(this.paths.auth, require('../routes/auth.routes'));
+      this.app.use(this.paths.recipe, require('../routes/mes/recipe.routes'));
+      this.app.use(this.paths.material, require('../routes/mes/material.routes'));
+      this.app.use(this.paths.production, require('../routes/mes/production.routes'));
+      this.app.use(this.paths.productionLine, require('../routes/mes/productionLine.routes'));
+      this.app.use(this.paths.role, require('../routes/mes/role.routes'));
+      this.app.use(this.paths.typesDocument, require('../routes/mes/typesDocument.routes')); //*ROUTES APP SCALE
 
-      this.app.use(this.clientPath, require('../routes/scale/client.routes'));
-      this.app.use(this.driverPath, require('../routes/scale/driver.routes'));
-      this.app.use(this.originPath, require('../routes/scale/origin.routes'));
-      this.app.use(this.productPath, require('../routes/scale/product.routes'));
-      this.app.use(this.sitePath, require('../routes/scale/site.routes'));
-      this.app.use(this.truckPath, require('../routes/scale/truck.routes'));
-      this.app.use(this.registerPath, require('../routes/scale/register.routes'));
-      this.app.use(this.destinationPath, require('../routes/scale/destination.routes'));
-      this.app.use(this.weightPath, require('../routes/scale/weight.routes'));
+      this.app.use(this.paths.client, require('../routes/scale/client.routes'));
+      this.app.use(this.paths.driver, require('../routes/scale/driver.routes'));
+      this.app.use(this.paths.origin, require('../routes/scale/origin.routes'));
+      this.app.use(this.paths.product, require('../routes/scale/product.routes'));
+      this.app.use(this.paths.site, require('../routes/scale/site.routes'));
+      this.app.use(this.paths.truck, require('../routes/scale/truck.routes'));
+      this.app.use(this.paths.register, require('../routes/scale/register.routes'));
+      this.app.use(this.paths.destination, require('../routes/scale/destination.routes'));
+      this.app.use(this.paths.weight, require('../routes/scale/weight.routes'));
     }
   }, {
     key: "listen",

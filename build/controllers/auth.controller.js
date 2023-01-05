@@ -18,8 +18,6 @@ var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
-var jwt = require('jsonwebtoken');
-
 var bcryptjs = require('bcryptjs');
 
 var _require2 = require('../helpers/generateJWT'),
@@ -396,7 +394,7 @@ var login = /*#__PURE__*/function () {
             }
 
             return _context5.abrupt("return", res.status(400).json({
-              msg: 'El username no existe'
+              msg: 'Oops!, Usuario o Contraseña incorrecto'
             }));
 
           case 9:
@@ -405,8 +403,8 @@ var login = /*#__PURE__*/function () {
               break;
             }
 
-            return _context5.abrupt("return", res.status(400).json({
-              msg: 'El username no se encuentra activo'
+            return _context5.abrupt("return", res.status(401).json({
+              msg: 'El usuario no se encuentra activo, consulte al administrador'
             }));
 
           case 11:
@@ -419,7 +417,7 @@ var login = /*#__PURE__*/function () {
             }
 
             return _context5.abrupt("return", res.status(400).json({
-              msg: 'El password es incorrecto'
+              msg: 'Oops!, Usuario o Contraseña incorrecto'
             }));
 
           case 14:
@@ -428,7 +426,7 @@ var login = /*#__PURE__*/function () {
 
           case 16:
             token = _context5.sent;
-            res.json({
+            res.status(303).json({
               msg: 'Login OK',
               user: user,
               token: token
@@ -440,7 +438,7 @@ var login = /*#__PURE__*/function () {
             _context5.prev = 20;
             _context5.t0 = _context5["catch"](3);
             return _context5.abrupt("return", res.status(500).json({
-              msg: 'Error interno, Hable con el administrador'
+              msg: 'Error interno, consulte con el administrador'
             }));
 
           case 23:

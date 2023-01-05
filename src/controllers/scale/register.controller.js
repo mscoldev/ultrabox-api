@@ -1,9 +1,6 @@
 const { response, request } = require('express');
 
 
-const { Client } = require('pg');
-const register = require('../../models/scale/register.model');
-
 const Register = require('../../models/scale/register.model');
 const Truck = require('../../models/scale/truck.model');
 
@@ -104,7 +101,6 @@ const updateRegisterById = async (req = request, res = response) => {
 
             //*Identificar Cargando o Descargando
 
-
             if (newRegister.secondWeight > newRegister.weight) {
                 //Estaba Cargando
                 newRegister.tare = newRegister.weight;
@@ -167,7 +163,7 @@ const deleteRegisterById = async (req = request, res = response) => {
             deletedRegister.save();
 
 
-            res.status(200).json({
+            res.status(202).json({
                 msg: `Registro con Id: ${id}, eliminado`
             });
         } else {

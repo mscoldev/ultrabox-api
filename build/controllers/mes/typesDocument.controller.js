@@ -190,7 +190,7 @@ var deleteTypesDocumentById = /*#__PURE__*/function () {
             deletedTypesDocument = _context4.sent;
 
             if (deletedTypesDocument != null) {
-              res.status(200).json({
+              res.status(202).json({
                 msg: 'TypesDocument eliminado Id:' + paramsId
               });
             } else {

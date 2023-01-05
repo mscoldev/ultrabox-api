@@ -210,7 +210,7 @@ var deleteRecipeById = /*#__PURE__*/function () {
             deletedRecipe = _context4.sent;
 
             if (deletedRecipe != null) {
-              res.status(200).json({
+              res.status(202).json({
                 msg: 'Receta eliminada Id:' + paramsId
               });
             } else {

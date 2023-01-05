@@ -79,7 +79,7 @@ const deleteProductionLineById = async (req = request, res = response) => {
         const body = { deleted: true }
         const deletedProductionLine = await ProductionLine.findByIdAndUpdate(paramsId, body);
         if (deletedProductionLine != null) {
-            res.status(200).json({
+            res.status(202).json({
                 msg: 'Linea de produccion eliminada Id:' + paramsId
             });
         } else {

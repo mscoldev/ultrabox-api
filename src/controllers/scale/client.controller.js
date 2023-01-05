@@ -78,7 +78,7 @@ const deleteClientById = async (req = request, res = response) => {
             clientDeleted.enabled = false;
             await clientDeleted.save();
 
-            res.status(200).json({
+            res.status(202).json({
                 msg: `El cliente con Id: ${id}, ha sido eliminado`
             });
         } else {

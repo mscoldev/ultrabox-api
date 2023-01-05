@@ -18,12 +18,16 @@ var User = require('../models/user.model');
 
 var validateJWT = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var _req$headers$authoriz;
+
     var req,
         res,
         next,
-        token,
+        url,
+        tokenBearer,
         _jwt$verify,
         uid,
+        dataToken,
         user,
         _args = arguments;
 
@@ -34,10 +38,21 @@ var validateJWT = /*#__PURE__*/function () {
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             next = _args.length > 2 ? _args[2] : undefined;
-            token = req.header('x-token');
+            url = req.url;
+            tokenBearer = ((_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.split(" ")[1]) || req.header('x-token');
 
-            if (token) {
-              _context.next = 6;
+            if (!(url == "/api/auth/login")) {
+              _context.next = 9;
+              break;
+            }
+
+            next();
+            _context.next = 25;
+            break;
+
+          case 9:
+            if (tokenBearer) {
+              _context.next = 11;
               break;
             }
 
@@ -45,32 +60,34 @@ var validateJWT = /*#__PURE__*/function () {
               msg: 'Sin autorización: Su Token no es valido o debe registrarse antes de realizar la operacion.'
             }));
 
-          case 6:
-            _context.prev = 6;
-            _jwt$verify = jwt.verify(token, process.env.SECRETORPRIVATEKEY), uid = _jwt$verify.uid;
-            _context.next = 10;
+          case 11:
+            _context.prev = 11;
+            _jwt$verify = jwt.verify(tokenBearer, process.env.SECRETORPRIVATEKEY), uid = _jwt$verify.uid;
+            dataToken = jwt.decode(tokenBearer, process.env.SECRETORPRIVATEKEY);
+            console.log(dataToken);
+            _context.next = 17;
             return User.findById(uid);
 
-          case 10:
+          case 17:
             user = _context.sent;
             req.user = user;
             next();
-            _context.next = 18;
+            _context.next = 25;
             break;
 
-          case 15:
-            _context.prev = 15;
-            _context.t0 = _context["catch"](6);
-            res.status(401).json({
+          case 22:
+            _context.prev = 22;
+            _context.t0 = _context["catch"](11);
+            res.status(403).json({
               msg: 'Token no valido'
             });
 
-          case 18:
+          case 25:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[6, 15]]);
+    }, _callee, null, [[11, 22]]);
   }));
 
   return function validateJWT() {

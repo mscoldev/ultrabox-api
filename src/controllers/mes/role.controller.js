@@ -58,7 +58,7 @@ const deleteRoleById = async (req = request, res = response) => {
         const deletedRole = await Role.findByIdAndUpdate(paramsId, body);
         console.log(deletedRole);
         if (deletedRole != null) {
-            res.status(200).json({
+            res.status(202).json({
                 msg: 'Role eliminado Id:' + paramsId
             });
         } else {

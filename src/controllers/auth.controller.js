@@ -1,5 +1,4 @@
 const { response, request } = require('express');
-const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../helpers/generateJWT')
 
@@ -197,14 +196,14 @@ const login = async (req = request, res = response) => {
 
         if (!user) {
             return res.status(400).json({
-                msg: 'El username no existe'
+                msg: 'Oops!, Usuario o Contraseña incorrecto'
             })
         }
 
         //*Verify user active
         if (!user.status) {
-            return res.status(400).json({
-                msg: 'El username no se encuentra activo'
+            return res.status(401).json({
+                msg: 'El usuario no se encuentra activo, consulte al administrador'
             })
         }
 
@@ -212,13 +211,13 @@ const login = async (req = request, res = response) => {
         const validPassword = bcryptjs.compareSync(password, user.password);
         if (!validPassword) {
             return res.status(400).json({
-                msg: 'El password es incorrecto'
+                msg: 'Oops!, Usuario o Contraseña incorrecto'
             })
 
         }
         //Generar JWT
         const token = await generateJWT(user.id);
-        res.json({
+        res.status(303).json({
             msg: 'Login OK',
             user,
             token
@@ -226,7 +225,7 @@ const login = async (req = request, res = response) => {
 
     } catch (error) {
         return res.status(500).json({
-            msg: 'Error interno, Hable con el administrador'
+            msg: 'Error interno, consulte con el administrador'
         });
     }
 

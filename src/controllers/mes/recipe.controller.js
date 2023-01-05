@@ -61,7 +61,7 @@ const deleteRecipeById = async (req = request, res = response) => {
         const body = { deleted: true }
         const deletedRecipe = await Recipe.findByIdAndUpdate(paramsId, body);
         if (deletedRecipe != null) {
-            res.status(200).json({
+            res.status(202).json({
                 msg: 'Receta eliminada Id:' + paramsId
             });
         } else {
