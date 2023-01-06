@@ -1,13 +1,4 @@
 const { Router } = require('express');
-const cors = require('cors');
-
-
-const corsOptions = {
-    credentials: false,
-    preflightContinue: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    origin: "*"
-}
 
 // Funciones desde el controlador
 const {
@@ -25,7 +16,7 @@ const router = Router();
 //Aqui las rutas necesarias --->
 
 //Listar todos los materiales en la base de datos
-router.get('/', cors(corsOptions), getMaterials);
+router.get('/', getMaterials);
 
 router.get('/:materialId', getMaterialsById);
 
