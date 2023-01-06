@@ -39,7 +39,7 @@ var validateJWT = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             next = _args.length > 2 ? _args[2] : undefined;
             url = req.url;
-            tokenBearer = ((_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.split(" ")[1]) || req.header('x-token');
+            tokenBearer = (_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.split(" ")[1];
 
             if (!(url == "/api/auth/login")) {
               _context.next = 9;

@@ -5,7 +5,7 @@ const User = require('../models/user.model')
 
 const validateJWT = async (req = request, res = response, next) => {
     const url = req.url;
-    const tokenBearer = req.headers.authorization?.split(" ")[1] || req.header('x-token')
+    const tokenBearer = req.headers.authorization?.split(" ")[1]
 
     if (url == "/api/auth/login") {
         next();

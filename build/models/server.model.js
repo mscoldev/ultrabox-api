@@ -20,23 +20,26 @@ var express = require('express');
 
 var cors = require('cors');
 
-var morgan = require('morgan'); // const { cache, cacheSuccess } = require('../middlewares/cacheResponse');
+var morgan = require('morgan');
 
+var _require = require('../middlewares/cacheResponse'),
+    cache = _require.cache,
+    cacheSuccess = _require.cacheSuccess;
 
-var _require = require('../middlewares/validateJWT'),
-    validateJWT = _require.validateJWT;
+var _require2 = require('../middlewares/validateJWT'),
+    validateJWT = _require2.validateJWT;
 
-var _require2 = require('../database/config.database'),
-    dbConnection = _require2.dbConnection;
+var _require3 = require('../database/config.database'),
+    dbConnection = _require3.dbConnection;
 
-var _require3 = require('../database/config.databasepg'),
-    pgConnection = _require3.pgConnection;
+var _require4 = require('../database/config.databasepg'),
+    pgConnection = _require4.pgConnection;
 
-var _require4 = require('../libs/initialSetupDatabase'),
-    createRoles = _require4.createRoles;
+var _require5 = require('../libs/initialSetupDatabase'),
+    createRoles = _require5.createRoles;
 
-var _require5 = require('moment'),
-    relativeTimeThreshold = _require5.relativeTimeThreshold;
+var _require6 = require('moment'),
+    relativeTimeThreshold = _require6.relativeTimeThreshold;
 
 var PORT = process.env.PORT || 3000;
 var corsOptions = {
@@ -115,10 +118,12 @@ var Server = /*#__PURE__*/function () {
   }, {
     key: "middlewares",
     value: function middlewares() {
-      this.app.use(validateJWT); // this.app.use(cache('1 minute', ((req, res) => req.method === "GET")));
-      // CORS
-      // this.app.use(cors(corsOptions));
-      //Morgan
+      this.app.use(validateJWT);
+      this.app.use(cache('1 minutes', function (req, res) {
+        return req.method === "GET";
+      })); // CORS
+
+      this.app.use(cors(corsOptions)); //Morgan
 
       this.app.use(morgan('dev')); // Lectura y parseo del body
 
