@@ -88,7 +88,7 @@ class Server {
         // this.app.use(cache('1 minute', ((req, res) => req.method === "GET")));
 
         // CORS
-        this.app.use(cors(corsOptions));
+        // this.app.use(cors(corsOptions));
 
         //Morgan
         this.app.use(morgan('dev'));
