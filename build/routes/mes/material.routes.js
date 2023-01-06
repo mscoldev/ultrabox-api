@@ -1,8 +1,16 @@
 "use strict";
 
 var _require = require('express'),
-    Router = _require.Router; // Funciones desde el controlador
+    Router = _require.Router;
 
+var cors = require('cors');
+
+var corsOptions = {
+  credentials: false,
+  preflightContinue: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  origin: "*"
+}; // Funciones desde el controlador
 
 var _require2 = require("../../controllers/mes/material.controller"),
     createMaterial = _require2.createMaterial,
@@ -15,7 +23,7 @@ var _require2 = require("../../controllers/mes/material.controller"),
 var router = Router(); //Aqui las rutas necesarias --->
 //Listar todos los materiales en la base de datos
 
-router.get('/', getMaterials);
+router.get('/', cors(corsOptions), getMaterials);
 router.get('/:materialId', getMaterialsById);
 router.put('/:materialId', updateMaterialById);
 router["delete"]('/:materialId', deleteMaterialById); //Agregar nuevos materiales al base de datos
