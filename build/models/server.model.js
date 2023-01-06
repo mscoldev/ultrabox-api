@@ -118,12 +118,12 @@ var Server = /*#__PURE__*/function () {
   }, {
     key: "middlewares",
     value: function middlewares() {
-      this.app.use(validateJWT);
+      // this.app.use(validateJWT);
       this.app.use(cache('1 minutes', function (req, res) {
         return req.method === "GET";
       })); // CORS
-
-      this.app.use(cors(corsOptions)); //Morgan
+      // this.app.use(cors(corsOptions));
+      //Morgan
 
       this.app.use(morgan('dev')); // Lectura y parseo del body
 

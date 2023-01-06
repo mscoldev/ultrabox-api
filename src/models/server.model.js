@@ -83,12 +83,12 @@ class Server {
 
     middlewares() {
 
-        this.app.use(validateJWT);
+        // this.app.use(validateJWT);
 
         this.app.use(cache('1 minutes', ((req, res) => req.method === "GET")));
 
         // CORS
-        this.app.use(cors(corsOptions));
+        // this.app.use(cors(corsOptions));
 
         //Morgan
         this.app.use(morgan('dev'));
