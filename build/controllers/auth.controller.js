@@ -426,7 +426,7 @@ var login = /*#__PURE__*/function () {
 
           case 16:
             token = _context5.sent;
-            res.status(201).json({
+            res.status(200).json({
               msg: 'Login OK',
               user: user,
               token: token
