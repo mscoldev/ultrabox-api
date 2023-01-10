@@ -3,8 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 
-const { cache, cacheSuccess } = require('../middlewares/cacheResponse');
-const { validateJWT } = require('../middlewares/validateJWT');
+const { cache } = require('../middlewares/cacheResponse');
 
 const { dbConnection } = require('../database/config.database');
 const { pgConnection } = require('../database/config.databasepg');
@@ -16,8 +15,9 @@ const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
     credentials: false,
-    preflightContinue: true,
+    preflightContinue: false,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    optionsSuccessStatusCode: 204,
     origin: "*"
 }
 class Server {
@@ -85,9 +85,7 @@ class Server {
         // CORS
         this.app.use(cors(corsOptions));
 
-        this.app.use(validateJWT);
-
-        // this.app.use(cache('1 minutes', ((req, res) => req.method === "GET")));
+        this.app.use(cache('1 minutes', ((req, res) => req.method === "GET")));
 
         //Morgan
         this.app.use(morgan('dev'));

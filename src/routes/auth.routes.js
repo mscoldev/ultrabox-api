@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 const Role = require('../models/role.model');
 
 const { validateFields } = require('../middlewares/validateFields');
-const { validateJWT } = require('../middlewares/validateJWT');
+
 const { getUserRol, validateAccessModule, addNameModule } = require('../middlewares/validateRol');
 
 
@@ -32,14 +32,14 @@ router.post('/login', [
     validateFields
 ], login);
 
-router.put('/user/:id', [
-    validateJWT
+router.put('/user/:id',
+
     // addNameModule(NAME_MODULE),
     // getUserRol,
     // validateAccessModule,
     //TODO Validar acceso al modulo de usuarios.
     //TODO Validar acceso a edicion - Posibles (Lectura, edicion, eliminacion, root)
-], updateUser);
+    updateUser);
 
 
 

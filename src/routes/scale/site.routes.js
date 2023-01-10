@@ -1,8 +1,6 @@
 
 const { Router } = require('express');
 
-const { validateJWT } = require('../../middlewares/validateJWT');
-
 
 const { getSites,
     getSiteById,
@@ -17,11 +15,11 @@ router.get('/', getSites);
 
 router.get('/:id', getSiteById);
 
-router.put('/:id', [validateJWT], updateSiteById);
+router.put('/:id', updateSiteById);
 
-router.post('/', [validateJWT], createSite);
+router.post('/', createSite);
 
-router.delete('/:id', [validateJWT], deleteSiteById);
+router.delete('/:id', deleteSiteById);
 
 
 

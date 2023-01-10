@@ -1,7 +1,8 @@
 
 const { Router } = require('express');
 
-const { validateJWT } = require('../../middlewares/validateJWT');
+const { validateJWT } = require('../../middlewares/validateJWT')
+
 
 
 const { getClients,
@@ -13,9 +14,9 @@ const { getClients,
 const router = Router();
 
 
-router.get('/', getClients);
+router.get('/', [validateJWT], getClients);
 
-router.get('/:id', getClientById);
+router.get('/:id', [validateJWT], getClientById);
 
 router.put('/:id', [validateJWT], updateClientById);
 
