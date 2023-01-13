@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const fileUpload = require('express-fileupload');
 
 const { cache } = require('../middlewares/cacheResponse');
 
@@ -82,8 +83,13 @@ class Server {
     // }
 
     middlewares() {
+
         // CORS
         this.app.use(cors(corsOptions));
+
+        console.log(process.cwd());
+
+        this.app.use('/', express.static(process.cwd() + '/src/public'));
 
         this.app.use(cache('1 minutes', ((req, res) => req.method === "GET")));
 
@@ -94,7 +100,11 @@ class Server {
         this.app.use(express.json());
 
         // Directorio Público
-        this.app.use(express.static('public'));
+
+        this.app.use(fileUpload({
+            useTempFiles: true,
+            tempFileDir: '/tmp/'
+        }));
 
     }
 

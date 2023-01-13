@@ -22,30 +22,29 @@ var cors = require('cors');
 
 var morgan = require('morgan');
 
+var fileUpload = require('express-fileupload');
+
 var _require = require('../middlewares/cacheResponse'),
-    cache = _require.cache,
-    cacheSuccess = _require.cacheSuccess;
+    cache = _require.cache;
 
-var _require2 = require('../middlewares/validateJWT'),
-    validateJWT = _require2.validateJWT;
+var _require2 = require('../database/config.database'),
+    dbConnection = _require2.dbConnection;
 
-var _require3 = require('../database/config.database'),
-    dbConnection = _require3.dbConnection;
+var _require3 = require('../database/config.databasepg'),
+    pgConnection = _require3.pgConnection;
 
-var _require4 = require('../database/config.databasepg'),
-    pgConnection = _require4.pgConnection;
+var _require4 = require('../libs/initialSetupDatabase'),
+    createRoles = _require4.createRoles;
 
-var _require5 = require('../libs/initialSetupDatabase'),
-    createRoles = _require5.createRoles;
-
-var _require6 = require('moment'),
-    relativeTimeThreshold = _require6.relativeTimeThreshold;
+var _require5 = require('moment'),
+    relativeTimeThreshold = _require5.relativeTimeThreshold;
 
 var PORT = process.env.PORT || 3000;
 var corsOptions = {
   credentials: false,
-  preflightContinue: true,
+  preflightContinue: false,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  optionsSuccessStatusCode: 204,
   origin: "*"
 };
 
@@ -120,14 +119,20 @@ var Server = /*#__PURE__*/function () {
     value: function middlewares() {
       // CORS
       this.app.use(cors(corsOptions));
-      this.app.use(validateJWT); // this.app.use(cache('1 minutes', ((req, res) => req.method === "GET")));
-      //Morgan
+      console.log(process.cwd());
+      this.app.use('/', express["static"](process.cwd() + '/src/public'));
+      this.app.use(cache('1 minutes', function (req, res) {
+        return req.method === "GET";
+      })); //Morgan
 
       this.app.use(morgan('dev')); // Lectura y parseo del body
 
       this.app.use(express.json()); // Directorio Público
 
-      this.app.use(express["static"]('public'));
+      this.app.use(fileUpload({
+        useTempFiles: true,
+        tempFileDir: '/tmp/'
+      }));
     }
   }, {
     key: "routes",

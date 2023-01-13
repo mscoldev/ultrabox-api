@@ -20,8 +20,11 @@ var _require = require('express'),
 
 var bcryptjs = require('bcryptjs');
 
-var _require2 = require('../helpers/generateJWT'),
-    generateJWT = _require2.generateJWT;
+var moment = require('moment');
+
+var _require2 = require('../helpers/funtionsJWT'),
+    generateJWT = _require2.generateJWT,
+    verifyJWT = _require2.verifyJWT;
 
 var User = require('../models/user.model');
 
@@ -454,10 +457,62 @@ var login = /*#__PURE__*/function () {
   };
 }();
 
+var verifyToken = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+    var req,
+        res,
+        token,
+        decoded,
+        dateExpired,
+        notExpired,
+        _args6 = arguments;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
+            res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
+            _context6.prev = 2;
+            token = req.body.token;
+            _context6.next = 6;
+            return verifyJWT(token);
+
+          case 6:
+            decoded = _context6.sent;
+            dateExpired = decoded.exp * 1000;
+            notExpired = Date.now() <= dateExpired ? false : true;
+            return _context6.abrupt("return", res.status(201).json({
+              iat: moment(decoded.iat * 1000).format('YYYY-MM-DD HH:mm:ss'),
+              exp: moment(decoded.exp * 1000).format('YYYY-MM-DD HH:mm:ss'),
+              expSeconds: moment(dateExpired).diff(moment(Date.now()), 'seconds'),
+              expired: notExpired
+            }));
+
+          case 12:
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](2);
+            return _context6.abrupt("return", res.status(500).json({
+              msg: 'Error interno'
+            }));
+
+          case 15:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[2, 12]]);
+  }));
+
+  return function verifyToken() {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
 module.exports = {
   signUp: signUp,
   getUsers: getUsers,
   getUserByUid: getUserByUid,
   updateUser: updateUser,
+  verifyToken: verifyToken,
   login: login
 };

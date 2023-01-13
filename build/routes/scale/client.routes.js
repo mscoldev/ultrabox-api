@@ -14,8 +14,8 @@ var _require3 = require('../../controllers/scale/client.controller'),
     createClient = _require3.createClient;
 
 var router = Router();
-router.get('/', getClients);
-router.get('/:id', getClientById);
+router.get('/', [validateJWT], getClients);
+router.get('/:id', [validateJWT], getClientById);
 router.put('/:id', [validateJWT], updateClientById);
 router.post('/', [validateJWT], createClient);
 router["delete"]('/:id', [validateJWT], deleteClientById);

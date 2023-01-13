@@ -1,6 +1,7 @@
 const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
-const { generateJWT } = require('../helpers/generateJWT')
+const moment = require('moment');
+const { generateJWT, verifyJWT } = require('../helpers/funtionsJWT')
 
 
 const User = require('../models/user.model');
@@ -231,10 +232,36 @@ const login = async (req = request, res = response) => {
 
 }
 
+
+const verifyToken = async (req = request, res = response) => {
+    try {
+        const { token } = req.body
+        const decoded = await verifyJWT(token)
+        const dateExpired = decoded.exp * 1000
+        const notExpired = (Date.now() <= dateExpired) ? false : true;
+
+        return res.status(201).json({
+            iat: moment(decoded.iat * 1000).format('YYYY-MM-DD HH:mm:ss'),
+            exp: moment(decoded.exp * 1000).format('YYYY-MM-DD HH:mm:ss'),
+            expSeconds: moment(dateExpired).diff(moment(Date.now()), 'seconds'),
+            expired: notExpired
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Error interno'
+        })
+    }
+
+
+}
+
+
 module.exports = {
     signUp,
     getUsers,
     getUserByUid,
     updateUser,
+    verifyToken,
     login
 };
