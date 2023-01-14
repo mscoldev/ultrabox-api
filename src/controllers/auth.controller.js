@@ -252,9 +252,8 @@ const verifyToken = async (req = request, res = response) => {
             msg: 'Error interno'
         })
     }
-
-
 }
+
 
 
 module.exports = {
