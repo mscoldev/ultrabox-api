@@ -247,9 +247,9 @@ const verifyToken = async (req = request, res = response) => {
             expired: notExpired
         })
 
-    } catch (error) {
-        return res.status(500).json({
-            msg: 'Error interno'
+    } catch (err) {
+        return res.status(400).json({
+            msg: 'Algo ha salido mal...'
         })
     }
 }

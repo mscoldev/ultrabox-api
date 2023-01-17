@@ -190,27 +190,60 @@ var register = sequelize.define('registers', {
   },
   _idProduct: {
     type: DataTypes.INTEGER,
-    required: true
+    required: true,
+    validate: {
+      isInt: {
+        msg: 'El _idProduct debe ser Int'
+      }
+    }
   },
   _idDriver: {
     type: DataTypes.UUID,
-    required: true
+    required: true,
+    validate: {
+      isUUID: {
+        args: 4,
+        msg: 'El _idDriver debe ser UUID'
+      }
+    }
   },
   _idTruck: {
     type: DataTypes.UUID,
-    required: true
+    required: true,
+    validate: {
+      isUUID: {
+        args: 4,
+        msg: 'El _idTruck debe ser UUID'
+      }
+    }
   },
   _idClient: {
     type: DataTypes.UUID,
-    required: true
+    required: true,
+    validate: {
+      isUUID: {
+        args: 4,
+        msg: 'El _idClient debe ser UUID'
+      }
+    }
   },
   _idOrigin: {
     type: DataTypes.INTEGER,
-    required: true
+    required: true,
+    validate: {
+      isInt: {
+        msg: 'El _idOrigin debe ser Int'
+      }
+    }
   },
   _idSite: {
     type: DataTypes.INTEGER,
-    required: true
+    required: true,
+    validate: {
+      isInt: {
+        msg: 'El _idSite debe ser Int'
+      }
+    }
   },
   enabled: {
     type: DataTypes.BOOLEAN,

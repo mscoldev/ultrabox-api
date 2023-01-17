@@ -17,6 +17,7 @@
   "author": "mscoldev",
   "license": "ISC",
   "dependencies": {
+    "@hapi/boom": "^10.0.0",
     "apicache": "^1.6.3",
     "bcryptjs": "2.4.3",
     "chalk": "^5.1.2",

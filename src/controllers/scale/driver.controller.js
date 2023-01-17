@@ -110,6 +110,22 @@ const createDriver = async (req = request, res = response) => {
 
 }
 
+const createDriverFromRegister = async (driver) => {
+    try {
+        const { _idDriver, typeDocument, nit, name } = driver
+        const newDriver = await Driver.create({
+            _idDriver,
+            typeDocument,
+            nit,
+            name
+        });
+        return newDriver
+    } catch (err) {
+        throw new Error(`Error al crear el conductor (Driver): ${err}`)
+        // return res.status(500).json({ message: `Se ha producido un error, ${err.message}` })
+    }
+
+}
 
 
 module.exports = {
@@ -117,5 +133,6 @@ module.exports = {
     getDriverById,
     updateDriverById,
     deleteDriverById,
-    createDriver
+    createDriver,
+    createDriverFromRegister
 }

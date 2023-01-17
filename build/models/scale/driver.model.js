@@ -14,22 +14,36 @@ var driver = sequelize.define('drivers', {
   },
   name: {
     type: DataTypes.STRING,
-    required: {
-      args: true,
-      msg: 'El nombre del conductor es requerido.'
+    allowNull: false,
+    validate: {
+      notNull: {
+        msg: 'Por favor ingresa un nombre'
+      }
     }
   },
   nit: {
     type: DataTypes.STRING,
-    required: true,
+    allowNull: false,
     unique: {
-      args: true,
-      msg: 'El numero de identificacion debe ser unico. El numero ingresado ya se encuentra registrado.'
+      arg: true,
+      msg: 'El nit de conductor debe ser unico'
+    },
+    validate: {
+      notNull: {
+        msg: 'Por favor ingresa un numero de identificacion'
+      }
     }
+  },
+  typeDocument: {
+    type: DataTypes.ENUM,
+    allowNull: false,
+    required: true,
+    values: ['CC', 'TI', 'CE', 'DNI', 'LIC', 'NIC', 'NII']
   },
   enabled: {
     type: DataTypes.BOOLEAN,
     required: true,
+    allowNull: false,
     defaultValue: true
   }
 });

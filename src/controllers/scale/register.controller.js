@@ -4,6 +4,7 @@ const { response, request } = require('express');
 const Register = require('../../models/scale/register.model');
 const Truck = require('../../models/scale/truck.model');
 
+const { createDriverFromRegister } = require('../../controllers/scale/driver.controller')
 
 
 const getRegisters = async (req = request, res = response) => {
@@ -178,47 +179,77 @@ const deleteRegisterById = async (req = request, res = response) => {
 
 
 const createRegister = async (req = request, res = response) => {
-    try {
+    const {
+        weight,
+        status,
+        userRecorder,
+        _idProduct,
+        driver,
+        _idTruck,
+        _idClient,
+        _idOrigin,
+        _idSite,
+        enabled } = req.body;
 
-        const getLastSerialLog = await Register.max('serialLog');
+    if (driver._idDriver != null) {
+        try {
+            const getLastSerialLog = await Register.max('serialLog');
+            const newRegister = await Register.create({
+                serialLog: getLastSerialLog + 1,
+                weight,
+                dateWeight: null,
+                status,
+                userRecorder,
+                _idProduct,
+                _idDriver: driver._idDriver,
+                _idTruck,
+                _idClient,
+                _idOrigin,
+                _idSite,
+                enabled
+            });
 
-        const {
-            weight,
-            status,
-            userRecorder,
-            _idProduct,
-            _idDriver,
-            _idTruck,
-            _idClient,
-            _idOrigin,
-            _idSite,
-            enabled } = req.body;
+            res.status(201).json({
+                msg: 'Registro creado satisfactoriamente!',
+                newRegister
+            })
 
-        const newRegister = await Register.create({
-            serialLog: getLastSerialLog + 1,
-            weight,
-            dateWeight: null,
-            status,
-            userRecorder,
-            _idProduct,
-            _idDriver,
-            _idTruck,
-            _idClient,
-            _idOrigin,
-            _idSite,
-            enabled
-        });
+        } catch (err) {
+            return res.status(500).json({ message: `Oops! ha producido un error: ${err.message}` })
+        }
 
+    } else {
+        try {
+            const getLastSerialLog = await Register.max('serialLog');
+            const newDriver = await createDriverFromRegister(driver)
 
-        res.status(201).json({
-            msg: 'Registro creado satisfactoriamente!',
-            newRegister
-        })
-    } catch (err) {
-        return res.status(500).json({ message: `Se ha producido un error, ${err.message}` })
+            const newRegister = await Register.create({
+                serialLog: getLastSerialLog + 1,
+                weight,
+                dateWeight: null,
+                status,
+                userRecorder,
+                _idProduct,
+                _idDriver: await newDriver.id,
+                _idTruck,
+                _idClient,
+                _idOrigin,
+                _idSite,
+                enabled
+            });
+            res.status(201).json({
+                msg: 'Registro creado satisfactoriamente!',
+                newDriver,
+                newRegister
+            })
+
+        } catch (err) {
+            return res.status(500).json({ message: `Oops! ha producido un error: ${err.message}` })
+        }
+
     }
-
 }
+
 
 
 

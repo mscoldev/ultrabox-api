@@ -491,8 +491,8 @@ var verifyToken = /*#__PURE__*/function () {
           case 12:
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](2);
-            return _context6.abrupt("return", res.status(500).json({
-              msg: 'Error interno'
+            return _context6.abrupt("return", res.status(400).json({
+              msg: 'Algo ha salido mal...'
             }));
 
           case 15:

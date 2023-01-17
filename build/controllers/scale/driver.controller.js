@@ -315,10 +315,51 @@ var createDriver = /*#__PURE__*/function () {
   };
 }();
 
+var createDriverFromRegister = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(driver) {
+    var _idDriver, typeDocument, nit, name, newDriver;
+
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.prev = 0;
+            _idDriver = driver._idDriver, typeDocument = driver.typeDocument, nit = driver.nit, name = driver.name;
+            _context6.next = 4;
+            return Driver.create({
+              _idDriver: _idDriver,
+              typeDocument: typeDocument,
+              nit: nit,
+              name: name
+            });
+
+          case 4:
+            newDriver = _context6.sent;
+            return _context6.abrupt("return", newDriver);
+
+          case 8:
+            _context6.prev = 8;
+            _context6.t0 = _context6["catch"](0);
+            throw new Error("Error al crear el conductor (Driver): ".concat(_context6.t0));
+
+          case 11:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[0, 8]]);
+  }));
+
+  return function createDriverFromRegister(_x) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
 module.exports = {
   getDrivers: getDrivers,
   getDriverById: getDriverById,
   updateDriverById: updateDriverById,
   deleteDriverById: deleteDriverById,
-  createDriver: createDriver
+  createDriver: createDriver,
+  createDriverFromRegister: createDriverFromRegister
 };
