@@ -94,10 +94,11 @@ const deleteDriverById = async (req = request, res = response) => {
 
 const createDriver = async (req = request, res = response) => {
     try {
-        const { name, nit } = req.body
+        const { name, nit, typeDocument } = req.body
         const newDriver = await Driver.create({
             name,
             nit,
+            typeDocument
         });
 
         res.status(201).json({

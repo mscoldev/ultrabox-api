@@ -269,6 +269,7 @@ var createDriver = /*#__PURE__*/function () {
         _req$body2,
         name,
         nit,
+        typeDocument,
         newDriver,
         _args5 = arguments;
 
@@ -279,11 +280,12 @@ var createDriver = /*#__PURE__*/function () {
             req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
             res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
             _context5.prev = 2;
-            _req$body2 = req.body, name = _req$body2.name, nit = _req$body2.nit;
+            _req$body2 = req.body, name = _req$body2.name, nit = _req$body2.nit, typeDocument = _req$body2.typeDocument;
             _context5.next = 6;
             return Driver.create({
               name: name,
-              nit: nit
+              nit: nit,
+              typeDocument: typeDocument
             });
 
           case 6:
