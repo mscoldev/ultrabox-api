@@ -37,6 +37,7 @@ class Server {
             productionLine: '/api/productionline',
             role: '/api/role',
             typesDocument: '/api/typesDocument',
+            productionLog: '/api/mes/productionLog',
             //*PATHS SCALE
             client: '/api/scale/client',
             driver: '/api/scale/driver',
@@ -118,6 +119,7 @@ class Server {
         this.app.use(this.paths.productionLine, require('../routes/mes/productionLine.routes'));
         this.app.use(this.paths.role, require('../routes/mes/role.routes'));
         this.app.use(this.paths.typesDocument, require('../routes/mes/typesDocument.routes'));
+        this.app.use(this.paths.productionLog, require('../routes/mes/productionLogs.routes'));
 
 
         //*ROUTES APP SCALE
