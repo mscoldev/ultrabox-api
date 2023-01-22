@@ -4,6 +4,8 @@ var _require = require("mongoose"),
     Schema = _require.Schema,
     model = _require.model;
 
+var moment = require('moment');
+
 var productionLogSchema = Schema({
   codigo: {
     type: Number,
@@ -62,4 +64,12 @@ var productionLogSchema = Schema({
   timestamps: true,
   versionKey: false
 });
+
+productionLogSchema.methods.toJSON = function () {
+  var productionLog = this.toObject();
+  productionLog.createdAt = moment(productionLog.createdAt).format('DD-MM-YYYY HH:mm');
+  productionLog.updatedAt = moment(productionLog.updateddAt).format('DD-MM-YYYY HH:mm');
+  return productionLog;
+};
+
 module.exports = model('productionLog', productionLogSchema);

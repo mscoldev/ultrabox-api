@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose")
+const moment = require('moment');
 
 const productionLogSchema = Schema({
     codigo: {
@@ -61,5 +62,12 @@ const productionLogSchema = Schema({
     timestamps: true,
     versionKey: false
 })
+
+productionLogSchema.methods.toJSON = function () {
+    const productionLog = this.toObject();
+    productionLog.createdAt = moment(productionLog.createdAt).format('DD-MM-YYYY HH:mm');
+    productionLog.updatedAt = moment(productionLog.updateddAt).format('DD-MM-YYYY HH:mm');
+    return productionLog
+}
 
 module.exports = model('productionLog', productionLogSchema);
