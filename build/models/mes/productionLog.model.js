@@ -68,7 +68,7 @@ var productionLogSchema = Schema({
 productionLogSchema.methods.toJSON = function () {
   var productionLog = this.toObject();
   productionLog.createdAt = moment(productionLog.createdAt).format('DD-MM-YYYY HH:mm');
-  productionLog.updatedAt = moment(productionLog.updateddAt).format('DD-MM-YYYY HH:mm');
+  productionLog.updatedAt = moment(productionLog.updatedAt).format('DD-MM-YYYY HH:mm');
   return productionLog;
 };
 
