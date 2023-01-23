@@ -5,7 +5,6 @@ const ProductionLog = require("../../models/mes/productionLog.model");
 
 const getProductionLogs = async (req = request, res = response) => {
     const { sort, limit } = req.query
-    console.log(req.query)
     try {
         const productionLogs = await ProductionLog.find()
             .sort({ createdAt: sort })
