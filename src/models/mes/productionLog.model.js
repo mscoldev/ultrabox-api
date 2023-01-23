@@ -1,14 +1,7 @@
 const { Schema, model, default: mongoose } = require("mongoose")
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 const moment = require('moment');
 
 const productionLogSchema = Schema({
-    uuid: {
-        type: String,
-        unique: true,
-        index: true,
-        required: [true, 'Debe definir un UUID para el registro']
-    },
     codigo: {
         type: Number,
         required: [true, 'El codigo es requerido']
@@ -68,8 +61,6 @@ const productionLogSchema = Schema({
     versionKey: false
 })
 
-productionLogSchema.plugin(AutoIncrement, { inc_field: 'serial' });
-productionLogSchema.plugin(AutoIncrement, { inc_field: 'serial2' })
 
 productionLogSchema.methods.toJSON = function () {
     const productionLog = this.toObject();
