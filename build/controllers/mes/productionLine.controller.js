@@ -64,10 +64,8 @@ var getNameProdLinesByIdController = /*#__PURE__*/function () {
     var req,
         res,
         idc,
-        _yield$ProductionLine,
-        name,
+        productionLine,
         _args2 = arguments;
-
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -82,28 +80,27 @@ var getNameProdLinesByIdController = /*#__PURE__*/function () {
             });
 
           case 6:
-            _yield$ProductionLine = _context2.sent;
-            name = _yield$ProductionLine.name;
+            productionLine = _context2.sent;
             res.status(200).json({
-              msg: 'Nombre de linea de produccion',
-              name: name
+              msg: 'Informacion de linea de produccion',
+              productionLine: productionLine
             });
-            _context2.next = 14;
+            _context2.next = 13;
             break;
 
-          case 11:
-            _context2.prev = 11;
+          case 10:
+            _context2.prev = 10;
             _context2.t0 = _context2["catch"](3);
             return _context2.abrupt("return", res.status(500).json({
               message: _context2.t0.message
             }));
 
-          case 14:
+          case 13:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[3, 11]]);
+    }, _callee2, null, [[3, 10]]);
   }));
 
   return function getNameProdLinesByIdController() {
