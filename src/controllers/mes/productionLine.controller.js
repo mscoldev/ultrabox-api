@@ -14,6 +14,20 @@ const getProductionLines = async (req = request, res = response) => {
     }
 }
 
+const getNameProdLinesByIdController = async (req = request, res = response) => {
+    const { idc } = req.params
+    try {
+        const { name } = await ProductionLine.findOne({ 'id_controller': idc })
+        res.status(200).json({
+            msg: 'Nombre de linea de produccion',
+            name
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+}
+
+
 const createProductionLine = async (req = request, res = response) => {
     try {
         const body = req.body;
@@ -97,5 +111,6 @@ module.exports = {
     createProductionLine,
     getProductionLineById,
     updateProductionLineById,
-    deleteProductionLineById
+    deleteProductionLineById,
+    getNameProdLinesByIdController
 }

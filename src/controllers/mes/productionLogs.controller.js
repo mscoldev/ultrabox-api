@@ -1,6 +1,6 @@
 const { response, request } = require("express");
 const ProductionLog = require("../../models/mes/productionLog.model");
-
+const ProductionLine = require("../../models/productionLine.model");
 
 
 const getProductionLogs = async (req = request, res = response) => {
@@ -9,9 +9,11 @@ const getProductionLogs = async (req = request, res = response) => {
         const productionLogs = await ProductionLog.find()
             .sort({ createdAt: sort })
             .limit(limit);
+        const productionLines = await ProductionLine.find()
         res.status(200).json({
             msg: 'Registros de produccion',
-            productionLogs
+            productionLogs,
+            productionLines
         })
     } catch (err) {
         return res.status(500).json({ msg: `Opps!, se ha generado un error: ${err.message}` });

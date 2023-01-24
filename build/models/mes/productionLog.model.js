@@ -2,9 +2,12 @@
 
 var _require = require("mongoose"),
     Schema = _require.Schema,
-    model = _require.model;
+    model = _require.model,
+    mongoose = _require["default"];
 
 var moment = require('moment');
+
+var productionLineModel = require("../productionLine.model");
 
 var productionLogSchema = Schema({
   codigo: {
@@ -24,7 +27,11 @@ var productionLogSchema = Schema({
     "default": false
   },
   molino: {
-    type: Number,
+    type: String,
+    required: [true, 'Debe indicar el punto de produccion molino']
+  },
+  linea_produccion: {
+    type: String,
     required: [true, 'Debe indicar el punto de produccion molino']
   },
   receta: {

@@ -59,38 +59,41 @@ var getProductionLines = /*#__PURE__*/function () {
   };
 }();
 
-var createProductionLine = /*#__PURE__*/function () {
+var getNameProdLinesByIdController = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
-        body,
-        productionLine,
-        productionLineSaved,
+        idc,
+        _yield$ProductionLine,
+        name,
         _args2 = arguments;
+
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
-            _context2.prev = 2;
-            body = req.body;
-            productionLine = new ProductionLine(body);
-            _context2.next = 7;
-            return productionLine.save();
+            idc = req.params.idc;
+            _context2.prev = 3;
+            _context2.next = 6;
+            return ProductionLine.findOne({
+              'id_controller': idc
+            });
 
-          case 7:
-            productionLineSaved = _context2.sent;
-            res.status(201).json({
-              msg: 'Linea de producción creada',
-              productionLineSaved: productionLineSaved
+          case 6:
+            _yield$ProductionLine = _context2.sent;
+            name = _yield$ProductionLine.name;
+            res.status(200).json({
+              msg: 'Nombre de linea de produccion',
+              name: name
             });
             _context2.next = 14;
             break;
 
           case 11:
             _context2.prev = 11;
-            _context2.t0 = _context2["catch"](2);
+            _context2.t0 = _context2["catch"](3);
             return _context2.abrupt("return", res.status(500).json({
               message: _context2.t0.message
             }));
@@ -100,19 +103,21 @@ var createProductionLine = /*#__PURE__*/function () {
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[2, 11]]);
+    }, _callee2, null, [[3, 11]]);
   }));
 
-  return function createProductionLine() {
+  return function getNameProdLinesByIdController() {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var getProductionLineById = /*#__PURE__*/function () {
+var createProductionLine = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var req,
         res,
+        body,
         productionLine,
+        productionLineSaved,
         _args3 = arguments;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
@@ -121,11 +126,58 @@ var getProductionLineById = /*#__PURE__*/function () {
             req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
             _context3.prev = 2;
-            _context3.next = 5;
+            body = req.body;
+            productionLine = new ProductionLine(body);
+            _context3.next = 7;
+            return productionLine.save();
+
+          case 7:
+            productionLineSaved = _context3.sent;
+            res.status(201).json({
+              msg: 'Linea de producción creada',
+              productionLineSaved: productionLineSaved
+            });
+            _context3.next = 14;
+            break;
+
+          case 11:
+            _context3.prev = 11;
+            _context3.t0 = _context3["catch"](2);
+            return _context3.abrupt("return", res.status(500).json({
+              message: _context3.t0.message
+            }));
+
+          case 14:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[2, 11]]);
+  }));
+
+  return function createProductionLine() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var getProductionLineById = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var req,
+        res,
+        productionLine,
+        _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
+            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
+            _context4.prev = 2;
+            _context4.next = 5;
             return ProductionLine.findById(req.params._id);
 
           case 5:
-            productionLine = _context3.sent;
+            productionLine = _context4.sent;
 
             if (productionLine != null) {
               res.status(200).json({
@@ -138,53 +190,53 @@ var getProductionLineById = /*#__PURE__*/function () {
               });
             }
 
-            _context3.next = 12;
+            _context4.next = 12;
             break;
 
           case 9:
-            _context3.prev = 9;
-            _context3.t0 = _context3["catch"](2);
+            _context4.prev = 9;
+            _context4.t0 = _context4["catch"](2);
             res.status(500).json({
-              message: _context3.t0.message
+              message: _context4.t0.message
             });
 
           case 12:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3, null, [[2, 9]]);
+    }, _callee4, null, [[2, 9]]);
   }));
 
   return function getProductionLineById() {
-    return _ref3.apply(this, arguments);
+    return _ref4.apply(this, arguments);
   };
 }();
 
 var updateProductionLineById = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
     var req,
         res,
         paramsId,
         body,
         updatedProductionLine,
-        _args4 = arguments;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        _args5 = arguments;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
-            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
-            _context4.prev = 2;
+            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
+            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
+            _context5.prev = 2;
             paramsId = req.params._id;
             body = req.body;
-            _context4.next = 7;
+            _context5.next = 7;
             return ProductionLine.findByIdAndUpdate(paramsId, body, {
               "new": true
             });
 
           case 7:
-            updatedProductionLine = _context4.sent;
+            updatedProductionLine = _context5.sent;
 
             if (updatedProductionLine != null) {
               res.status(200).json({
@@ -197,53 +249,53 @@ var updateProductionLineById = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 14;
+            _context5.next = 14;
             break;
 
           case 11:
-            _context4.prev = 11;
-            _context4.t0 = _context4["catch"](2);
-            return _context4.abrupt("return", res.status(500).json({
-              message: _context4.t0.message
+            _context5.prev = 11;
+            _context5.t0 = _context5["catch"](2);
+            return _context5.abrupt("return", res.status(500).json({
+              message: _context5.t0.message
             }));
 
           case 14:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee4, null, [[2, 11]]);
+    }, _callee5, null, [[2, 11]]);
   }));
 
   return function updateProductionLineById() {
-    return _ref4.apply(this, arguments);
+    return _ref5.apply(this, arguments);
   };
 }();
 
 var deleteProductionLineById = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
     var req,
         res,
         paramsId,
         body,
         deletedProductionLine,
-        _args5 = arguments;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+        _args6 = arguments;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
-            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
-            _context5.prev = 2;
+            req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
+            res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
+            _context6.prev = 2;
             paramsId = req.params._id;
             body = {
               deleted: true
             };
-            _context5.next = 7;
+            _context6.next = 7;
             return ProductionLine.findByIdAndUpdate(paramsId, body);
 
           case 7:
-            deletedProductionLine = _context5.sent;
+            deletedProductionLine = _context6.sent;
 
             if (deletedProductionLine != null) {
               res.status(202).json({
@@ -255,26 +307,26 @@ var deleteProductionLineById = /*#__PURE__*/function () {
               });
             }
 
-            _context5.next = 14;
+            _context6.next = 14;
             break;
 
           case 11:
-            _context5.prev = 11;
-            _context5.t0 = _context5["catch"](2);
+            _context6.prev = 11;
+            _context6.t0 = _context6["catch"](2);
             res.status(500).json({
-              message: _context5.t0.message
+              message: _context6.t0.message
             });
 
           case 14:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, null, [[2, 11]]);
+    }, _callee6, null, [[2, 11]]);
   }));
 
   return function deleteProductionLineById() {
-    return _ref5.apply(this, arguments);
+    return _ref6.apply(this, arguments);
   };
 }();
 
@@ -283,5 +335,6 @@ module.exports = {
   createProductionLine: createProductionLine,
   getProductionLineById: getProductionLineById,
   updateProductionLineById: updateProductionLineById,
-  deleteProductionLineById: deleteProductionLineById
+  deleteProductionLineById: deleteProductionLineById,
+  getNameProdLinesByIdController: getNameProdLinesByIdController
 };

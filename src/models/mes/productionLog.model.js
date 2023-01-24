@@ -1,5 +1,6 @@
 const { Schema, model, default: mongoose } = require("mongoose")
 const moment = require('moment');
+const productionLineModel = require("../productionLine.model");
 
 const productionLogSchema = Schema({
     codigo: {
@@ -19,7 +20,11 @@ const productionLogSchema = Schema({
         default: false
     },
     molino: {
-        type: Number,
+        type: String,
+        required: [true, 'Debe indicar el punto de produccion molino']
+    },
+    linea_produccion: {
+        type: String,
         required: [true, 'Debe indicar el punto de produccion molino']
     },
     receta: {
@@ -54,12 +59,12 @@ const productionLogSchema = Schema({
         type: Number,
         required: [false],
         default: 0
-    },
-
+    }
 }, {
     timestamps: true,
     versionKey: false
 })
+
 
 
 productionLogSchema.methods.toJSON = function () {

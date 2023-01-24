@@ -14,6 +14,8 @@ var _require = require("express"),
 
 var ProductionLog = require("../../models/mes/productionLog.model");
 
+var ProductionLine = require("../../models/productionLine.model");
+
 var getProductionLogs = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
@@ -22,6 +24,7 @@ var getProductionLogs = /*#__PURE__*/function () {
         sort,
         limit,
         productionLogs,
+        productionLines,
         _args = arguments;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -31,35 +34,40 @@ var getProductionLogs = /*#__PURE__*/function () {
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _req$query = req.query, sort = _req$query.sort, limit = _req$query.limit;
-            console.log(req.query);
-            _context.prev = 4;
-            _context.next = 7;
+            _context.prev = 3;
+            _context.next = 6;
             return ProductionLog.find().sort({
               createdAt: sort
             }).limit(limit);
 
-          case 7:
+          case 6:
             productionLogs = _context.sent;
+            _context.next = 9;
+            return ProductionLine.find();
+
+          case 9:
+            productionLines = _context.sent;
             res.status(200).json({
               msg: 'Registros de produccion',
-              productionLogs: productionLogs
+              productionLogs: productionLogs,
+              productionLines: productionLines
             });
-            _context.next = 14;
+            _context.next = 16;
             break;
 
-          case 11:
-            _context.prev = 11;
-            _context.t0 = _context["catch"](4);
+          case 13:
+            _context.prev = 13;
+            _context.t0 = _context["catch"](3);
             return _context.abrupt("return", res.status(500).json({
               msg: "Opps!, se ha generado un error: ".concat(_context.t0.message)
             }));
 
-          case 14:
+          case 16:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[4, 11]]);
+    }, _callee, null, [[3, 13]]);
   }));
 
   return function getProductionLogs() {

@@ -7,7 +7,8 @@ const {
     getProductionLineById,
     updateProductionLineById,
     createProductionLine,
-    deleteProductionLineById
+    deleteProductionLineById,
+    getNameProdLinesByIdController
 } = require('../../controllers/mes/productionLine.controller');
 
 
@@ -18,6 +19,7 @@ const router = Router();
 router.get('/', getProductionLines);
 
 router.get('/:_id', getProductionLineById);
+router.get('/name/:idc', getNameProdLinesByIdController);
 
 router.post('/', createProductionLine);
 
