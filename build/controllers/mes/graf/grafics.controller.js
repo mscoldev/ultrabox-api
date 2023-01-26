@@ -12,10 +12,14 @@ var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
+var ProductionLog = require("../../../models/mes/productionLog.model");
+
 var getGraficsMolinos = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
+        result1,
+        result2,
         _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -23,16 +27,78 @@ var getGraficsMolinos = /*#__PURE__*/function () {
           case 0:
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
+            _context.prev = 2;
+            _context.next = 5;
+            return ProductionLog.aggregate([{
+              $match: {
+                molino: 1
+              }
+            }, {
+              $group: {
+                _id: {
+                  $dateToString: {
+                    format: "%Y-%m-%d",
+                    date: "$createdAt"
+                  }
+                },
+                kgTotales: {
+                  $sum: "$cantidad"
+                }
+              }
+            }, {
+              $sort: {
+                createdAt: 1
+              }
+            }]);
+
+          case 5:
+            result1 = _context.sent;
+            _context.next = 8;
+            return ProductionLog.aggregate([{
+              $match: {
+                molino: 2
+              }
+            }, {
+              $group: {
+                _id: {
+                  $dateToString: {
+                    format: "%Y-%m-%d",
+                    date: "$createdAt"
+                  }
+                },
+                kgTotales: {
+                  $sum: "$cantidad"
+                }
+              }
+            }, {
+              $sort: {
+                createdAt: 1
+              }
+            }]);
+
+          case 8:
+            result2 = _context.sent;
             res.status(200).json({
-              msg: 'Grafico Molinos'
+              msg: 'Grafico Molinos',
+              molino1: result1,
+              molino2: result2
+            });
+            _context.next = 15;
+            break;
+
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](2);
+            res.status(500).json({
+              msg: _context.t0.message
             });
 
-          case 3:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[2, 12]]);
   }));
 
   return function getGraficsMolinos() {
@@ -44,6 +110,7 @@ var getGraficskwton = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
+        result1,
         _args2 = arguments;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
@@ -51,16 +118,60 @@ var getGraficskwton = /*#__PURE__*/function () {
           case 0:
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            _context2.prev = 2;
+            _context2.next = 5;
+            return ProductionLog.aggregate([{
+              $match: {
+                molino: 2,
+                receta: 5
+              }
+            }, {
+              $project: {
+                kwton: {
+                  $divide: [{
+                    $sum: "$kwhpd004"
+                  }, {
+                    $sum: "$cantidad"
+                  }]
+                }
+              }
+            }, {
+              $group: {
+                _id: {
+                  $dateToString: {
+                    format: "%Y-%m-%d",
+                    date: "$createdAt"
+                  }
+                }
+              }
+            }, {
+              $sort: {
+                createdAt: 1
+              }
+            }]);
+
+          case 5:
+            result1 = _context2.sent;
             res.status(200).json({
-              msg: 'Grafico kwton'
+              msg: 'Grafico Molinos',
+              molino1: result1
+            });
+            _context2.next = 12;
+            break;
+
+          case 9:
+            _context2.prev = 9;
+            _context2.t0 = _context2["catch"](2);
+            res.status(500).json({
+              msg: _context2.t0.message
             });
 
-          case 3:
+          case 12:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2);
+    }, _callee2, null, [[2, 9]]);
   }));
 
   return function getGraficskwton() {
