@@ -8,172 +8,67 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _require = require('express'),
+    response = _require.response,
+    request = _require.request;
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+var getGraficsMolinos = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var req,
+        res,
+        _args = arguments;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
+            res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
+            res.status(200).json({
+              msg: 'Grafico Molinos'
+            });
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-require('dotenv').config();
-
-var express = require('express');
-
-var cors = require('cors');
-
-var morgan = require('morgan');
-
-var fileUpload = require('express-fileupload');
-
-var _require = require('../middlewares/cacheResponse'),
-    cache = _require.cache;
-
-var _require2 = require('../database/config.database'),
-    dbConnection = _require2.dbConnection;
-
-var _require3 = require('../database/config.databasepg'),
-    pgConnection = _require3.pgConnection;
-
-var _require4 = require('../libs/initialSetupDatabase'),
-    createRoles = _require4.createRoles;
-
-var _require5 = require('moment'),
-    relativeTimeThreshold = _require5.relativeTimeThreshold;
-
-var PORT = process.env.PORT || 3000;
-var corsOptions = {
-  credentials: false,
-  preflightContinue: false,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  optionsSuccessStatusCode: 204,
-  origin: "*"
-};
-
-var Server = /*#__PURE__*/function () {
-  function Server() {
-    _classCallCheck(this, Server);
-
-    this.app = express();
-    this.port = PORT;
-    this.paths = {
-      //*PATHS MES
-      auth: '/api/auth',
-      recipe: '/api/recipe',
-      material: '/api/material',
-      production: '/api/production',
-      productionLine: '/api/productionline',
-      role: '/api/role',
-      typesDocument: '/api/typesDocument',
-      productionLog: '/api/mes/productionLog',
-      //*PATHS MES - GRAFICOS
-      graf: '/api/mes/graf',
-      //*PATHS SCALE
-      client: '/api/scale/client',
-      driver: '/api/scale/driver',
-      origin: '/api/scale/origin',
-      product: '/api/scale/product',
-      site: '/api/scale/site',
-      truck: '/api/scale/truck',
-      register: '/api/scale/register',
-      destination: '/api/scale/destination',
-      weight: '/api/scale/weight'
-    }; //Conectar a la base de datos
-
-    this.dbInitialize(); // Middlewares
-
-    this.middlewares(); // Rutas de mi aplicación
-
-    this.routes();
-  } //* Connect & Initialize Database
-
-
-  _createClass(Server, [{
-    key: "dbInitialize",
-    value: function () {
-      var _dbInitialize = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return Promise.all([pgConnection(), dbConnection(), createRoles()]);
-
-              case 2:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function dbInitialize() {
-        return _dbInitialize.apply(this, arguments);
+          case 3:
+          case "end":
+            return _context.stop();
+        }
       }
+    }, _callee);
+  }));
 
-      return dbInitialize;
-    }() // async connectToDatabase (){
-    //     await dbConnection();
-    // }
-    // async initialSetupDatabase (){
-    //     await createRoles();
-    // }
-
-  }, {
-    key: "middlewares",
-    value: function middlewares() {
-      // CORS
-      this.app.use(cors(corsOptions));
-      console.log(process.cwd());
-      this.app.use('/', express["static"](process.cwd() + '/src/public'));
-      this.app.use(cache('1 minutes', function (req, res) {
-        return req.method === "GET";
-      })); //Morgan
-
-      this.app.use(morgan('dev')); // Lectura y parseo del body
-
-      this.app.use(express.json()); // Directorio Público
-
-      this.app.use(fileUpload({
-        useTempFiles: true,
-        tempFileDir: '/tmp/'
-      }));
-    }
-  }, {
-    key: "routes",
-    value: function routes() {
-      //*ROUTES APP MES
-      this.app.use(this.paths.auth, require('../routes/auth.routes'));
-      this.app.use(this.paths.recipe, require('../routes/mes/recipe.routes'));
-      this.app.use(this.paths.material, require('../routes/mes/material.routes'));
-      this.app.use(this.paths.production, require('../routes/mes/production.routes'));
-      this.app.use(this.paths.productionLine, require('../routes/mes/productionLine.routes'));
-      this.app.use(this.paths.role, require('../routes/mes/role.routes'));
-      this.app.use(this.paths.typesDocument, require('../routes/mes/typesDocument.routes'));
-      this.app.use(this.paths.productionLog, require('../routes/mes/productionLogs.routes')); //*ROUTES APP MES - GRAFICOS
-
-      this.app.use(this.paths.graf, require('../routes/mes/query/graf.routes')); //*ROUTES APP SCALE
-
-      this.app.use(this.paths.client, require('../routes/scale/client.routes'));
-      this.app.use(this.paths.driver, require('../routes/scale/driver.routes'));
-      this.app.use(this.paths.origin, require('../routes/scale/origin.routes'));
-      this.app.use(this.paths.product, require('../routes/scale/product.routes'));
-      this.app.use(this.paths.site, require('../routes/scale/site.routes'));
-      this.app.use(this.paths.truck, require('../routes/scale/truck.routes'));
-      this.app.use(this.paths.register, require('../routes/scale/register.routes'));
-      this.app.use(this.paths.destination, require('../routes/scale/destination.routes'));
-      this.app.use(this.paths.weight, require('../routes/scale/weight.routes'));
-    }
-  }, {
-    key: "listen",
-    value: function listen() {
-      var _this = this;
-
-      this.app.listen(this.port, function () {
-        console.log('Server running on port: ', _this.port);
-      });
-    }
-  }]);
-
-  return Server;
+  return function getGraficsMolinos() {
+    return _ref.apply(this, arguments);
+  };
 }();
 
-module.exports = Server;
+var getGraficskwton = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var req,
+        res,
+        _args2 = arguments;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
+            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            res.status(200).json({
+              msg: 'Grafico kwton'
+            });
+
+          case 3:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function getGraficskwton() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+module.exports = {
+  getGraficsMolinos: getGraficsMolinos,
+  getGraficskwton: getGraficskwton
+};
