@@ -5,10 +5,11 @@ const ProductionLine = require("../../models/productionLine.model");
 
 const getProductionLogs = async (req = request, res = response) => {
     const { sort, limit } = req.query
+    console.log(req.query);
     try {
         const productionLogs = await ProductionLog.find()
             .sort({ createdAt: sort })
-            .limit(limit);
+            .limit(limit).exec();
         const productionLines = await ProductionLine.find()
         res.status(200).json({
             msg: 'Registros de produccion',

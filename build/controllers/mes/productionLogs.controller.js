@@ -34,40 +34,41 @@ var getProductionLogs = /*#__PURE__*/function () {
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _req$query = req.query, sort = _req$query.sort, limit = _req$query.limit;
-            _context.prev = 3;
-            _context.next = 6;
+            console.log(req.query);
+            _context.prev = 4;
+            _context.next = 7;
             return ProductionLog.find().sort({
               createdAt: sort
-            }).limit(limit);
+            }).limit(limit).exec();
 
-          case 6:
+          case 7:
             productionLogs = _context.sent;
-            _context.next = 9;
+            _context.next = 10;
             return ProductionLine.find();
 
-          case 9:
+          case 10:
             productionLines = _context.sent;
             res.status(200).json({
               msg: 'Registros de produccion',
               productionLogs: productionLogs,
               productionLines: productionLines
             });
-            _context.next = 16;
+            _context.next = 17;
             break;
 
-          case 13:
-            _context.prev = 13;
-            _context.t0 = _context["catch"](3);
+          case 14:
+            _context.prev = 14;
+            _context.t0 = _context["catch"](4);
             return _context.abrupt("return", res.status(500).json({
               msg: "Opps!, se ha generado un error: ".concat(_context.t0.message)
             }));
 
-          case 16:
+          case 17:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 13]]);
+    }, _callee, null, [[4, 14]]);
   }));
 
   return function getProductionLogs() {
