@@ -19,6 +19,7 @@
   "dependencies": {
     "@hapi/boom": "^10.0.0",
     "apicache": "^1.6.3",
+    "axios": "^1.2.5",
     "bcryptjs": "2.4.3",
     "chalk": "^5.1.2",
     "clc": "^1.0.2",

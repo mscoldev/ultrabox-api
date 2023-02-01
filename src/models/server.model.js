@@ -94,7 +94,7 @@ class Server {
 
         this.app.use('/', express.static(process.cwd() + '/src/public'));
 
-        this.app.use(cache('1 minutes', ((req, res) => req.method === "GET")));
+        // this.app.use(cache('1 minutes', ((req, res) => req.method === "GET")));
 
         //Morgan
         this.app.use(morgan('dev'));
