@@ -422,6 +422,7 @@ const createInitialConfApp = async () => {
       nit: '123456789-0',
       initSerial: 1
     }).save()
+    console.log(initialConf);
 
   } catch (error) {
     console.error(error);
