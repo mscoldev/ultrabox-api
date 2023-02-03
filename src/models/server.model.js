@@ -4,12 +4,9 @@ const cors = require('cors');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
 
-const { cache } = require('../middlewares/cacheResponse');
-
 const { dbConnection } = require('../database/config.database');
 const { pgConnection } = require('../database/config.databasepg');
-const { createRoles } = require('../libs/initialSetupDatabase');
-const { relativeTimeThreshold } = require('moment');
+const { createRoles, createInitialConfApp } = require('../libs/initialSetupDatabase');
 const PORT = process.env.PORT || 3000;
 
 
@@ -30,6 +27,7 @@ class Server {
 
         this.paths = {
             //*PATHS MES
+            conf: '/api/conf',
             auth: '/api/auth',
             recipe: '/api/recipe',
             material: '/api/material',
@@ -74,6 +72,7 @@ class Server {
             pgConnection(),
             dbConnection(),
             createRoles(),
+            createInitialConfApp()
         ])
     }
 
@@ -94,8 +93,6 @@ class Server {
 
         this.app.use('/', express.static(process.cwd() + '/src/public'));
 
-        // this.app.use(cache('1 minutes', ((req, res) => req.method === "GET")));
-
         //Morgan
         this.app.use(morgan('dev'));
 
@@ -113,6 +110,7 @@ class Server {
 
     routes() {
         //*ROUTES APP MES
+        this.app.use(this.paths.conf, require('../routes/conf.routes'));
 
         this.app.use(this.paths.auth, require('../routes/auth.routes'));
         this.app.use(this.paths.recipe, require('../routes/mes/recipe.routes'));
