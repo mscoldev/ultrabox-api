@@ -23,6 +23,7 @@ const sequelize = new Sequelize(
     });
 
 const pgConnection = async () => {
+    console.log("********EJECUTANDO PGCONECTION**********");
     try {
         await sequelize.authenticate();
         console.log('Conectado a la base de datos postgres');

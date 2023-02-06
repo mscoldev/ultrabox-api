@@ -14,6 +14,8 @@ var _require = require('express'),
 
 var Material = require("../../models/material.model");
 
+var boom = require('@hapi/boom');
+
 var getMaterials = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
@@ -59,12 +61,14 @@ var getMaterials = /*#__PURE__*/function () {
   return function getMaterials() {
     return _ref.apply(this, arguments);
   };
-}();
+}(); //TODO: Implementar verificacion de tipo de datos al realizar busquedas por ID.
+
 
 var getMaterialsById = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
+        next,
         material,
         _args2 = arguments;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
@@ -73,29 +77,44 @@ var getMaterialsById = /*#__PURE__*/function () {
           case 0:
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
-            _context2.next = 4;
+            next = _args2.length > 2 ? _args2[2] : undefined;
+            _context2.prev = 3;
+            _context2.next = 6;
             return Material.findById(req.params.materialId);
 
-          case 4:
+          case 6:
             material = _context2.sent;
 
-            if (material != null) {
-              res.status(200).json({
-                msg: 'Material por Id',
-                material: material
-              });
-            } else {
-              res.status(404).json({
-                msg: 'Material no encontrado, verifique el Id ingresado'
-              });
+            if (!(material != null)) {
+              _context2.next = 11;
+              break;
             }
 
-          case 6:
+            res.status(200).json({
+              msg: 'Material por Id',
+              material: material
+            });
+            _context2.next = 12;
+            break;
+
+          case 11:
+            throw boom.notFound('Material not found');
+
+          case 12:
+            _context2.next = 17;
+            break;
+
+          case 14:
+            _context2.prev = 14;
+            _context2.t0 = _context2["catch"](3);
+            next(_context2.t0);
+
+          case 17:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2);
+    }, _callee2, null, [[3, 14]]);
   }));
 
   return function getMaterialsById() {

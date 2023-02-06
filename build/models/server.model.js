@@ -24,8 +24,12 @@ var morgan = require('morgan');
 
 var fileUpload = require('express-fileupload');
 
-var _require = require('../middlewares/cacheResponse'),
-    cache = _require.cache;
+var _require = require('../middlewares/error.handler'),
+    logErrors = _require.logErrors,
+    errorHandler = _require.errorHandler,
+    boomErrorHandler = _require.boomErrorHandler;
+
+require('../helpers/auth');
 
 var _require2 = require('../database/config.database'),
     dbConnection = _require2.dbConnection;
@@ -34,10 +38,8 @@ var _require3 = require('../database/config.databasepg'),
     pgConnection = _require3.pgConnection;
 
 var _require4 = require('../libs/initialSetupDatabase'),
-    createRoles = _require4.createRoles;
-
-var _require5 = require('moment'),
-    relativeTimeThreshold = _require5.relativeTimeThreshold;
+    createRoles = _require4.createRoles,
+    createInitialConfApp = _require4.createInitialConfApp;
 
 var PORT = process.env.PORT || 3000;
 var corsOptions = {
@@ -45,7 +47,7 @@ var corsOptions = {
   preflightContinue: false,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   optionsSuccessStatusCode: 204,
-  origin: "*"
+  origin: '0.0.0.0/0'
 };
 
 var Server = /*#__PURE__*/function () {
@@ -56,6 +58,7 @@ var Server = /*#__PURE__*/function () {
     this.port = PORT;
     this.paths = {
       //*PATHS MES
+      conf: '/api/conf',
       auth: '/api/auth',
       recipe: '/api/recipe',
       material: '/api/material',
@@ -83,6 +86,7 @@ var Server = /*#__PURE__*/function () {
     this.middlewares(); // Rutas de mi aplicación
 
     this.routes();
+    this.middlewaresErrors();
   } //* Connect & Initialize Database
 
 
@@ -95,7 +99,7 @@ var Server = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return Promise.all([pgConnection(), dbConnection(), createRoles()]);
+                return Promise.all([pgConnection(), dbConnection(), createRoles(), createInitialConfApp()]);
 
               case 2:
               case "end":
@@ -121,24 +125,30 @@ var Server = /*#__PURE__*/function () {
     key: "middlewares",
     value: function middlewares() {
       // CORS
-      this.app.use(cors(corsOptions));
-      console.log(process.cwd());
-      this.app.use('/', express["static"](process.cwd() + '/src/public')); // this.app.use(cache('1 minutes', ((req, res) => req.method === "GET")));
+      this.app.use(cors(corsOptions)); // this.app.use('/', express.static(process.cwd() + '/src/public'));
       //Morgan
 
       this.app.use(morgan('dev')); // Lectura y parseo del body
 
       this.app.use(express.json()); // Directorio Público
-
-      this.app.use(fileUpload({
-        useTempFiles: true,
-        tempFileDir: '/tmp/'
-      }));
+      // this.app.use(fileUpload({
+      //     useTempFiles: true,
+      //     tempFileDir: '/tmp/'
+      // }));
+    }
+  }, {
+    key: "middlewaresErrors",
+    value: function middlewaresErrors() {
+      //Error Handler
+      this.app.use(logErrors);
+      this.app.use(boomErrorHandler);
+      this.app.use(errorHandler);
     }
   }, {
     key: "routes",
     value: function routes() {
       //*ROUTES APP MES
+      this.app.use(this.paths.conf, require('../routes/conf.routes'));
       this.app.use(this.paths.auth, require('../routes/auth.routes'));
       this.app.use(this.paths.recipe, require('../routes/mes/recipe.routes'));
       this.app.use(this.paths.material, require('../routes/mes/material.routes'));

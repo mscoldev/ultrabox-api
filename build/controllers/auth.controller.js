@@ -26,6 +26,8 @@ var _require2 = require('../helpers/funtionsJWT'),
     generateJWT = _require2.generateJWT,
     verifyJWT = _require2.verifyJWT;
 
+var boom = require('@hapi/boom');
+
 var User = require('../models/user.model');
 
 require("dotenv").config();
@@ -461,6 +463,7 @@ var verifyToken = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
     var req,
         res,
+        next,
         token,
         decoded,
         dateExpired,
@@ -472,12 +475,13 @@ var verifyToken = /*#__PURE__*/function () {
           case 0:
             req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
             res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
-            _context6.prev = 2;
+            next = _args6.length > 2 ? _args6[2] : undefined;
+            _context6.prev = 3;
             token = req.body.token;
-            _context6.next = 6;
+            _context6.next = 7;
             return verifyJWT(token);
 
-          case 6:
+          case 7:
             decoded = _context6.sent;
             dateExpired = decoded.exp * 1000;
             notExpired = Date.now() <= dateExpired ? false : true;
@@ -488,19 +492,17 @@ var verifyToken = /*#__PURE__*/function () {
               expired: notExpired
             }));
 
-          case 12:
-            _context6.prev = 12;
-            _context6.t0 = _context6["catch"](2);
-            return _context6.abrupt("return", res.status(400).json({
-              msg: 'Algo ha salido mal...'
-            }));
+          case 13:
+            _context6.prev = 13;
+            _context6.t0 = _context6["catch"](3);
+            next(_context6.t0);
 
-          case 15:
+          case 16:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[2, 12]]);
+    }, _callee6, null, [[3, 13]]);
   }));
 
   return function verifyToken() {
@@ -508,10 +510,75 @@ var verifyToken = /*#__PURE__*/function () {
   };
 }();
 
+var getUserByUserName = /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+    var req,
+        res,
+        _req$body4,
+        username,
+        password,
+        findUser,
+        _args7 = arguments;
+
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            req = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : request;
+            res = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : response;
+            console.log("getUserByUserName - Ejecutandose");
+            _context7.prev = 3;
+            _req$body4 = req.body, username = _req$body4.username, password = _req$body4.password;
+            console.log('Este es el req.body: ' + req.body);
+            _context7.next = 8;
+            return User.findOne({
+              username: username
+            });
+
+          case 8:
+            findUser = _context7.sent;
+            console.log(findUser);
+
+            if (findUser != null) {
+              res.status(200).json({
+                msg: 'Datos de usuario',
+                findUser: findUser
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Usuario no encontrado, verifique el Id ingresado'
+              });
+            }
+
+            _context7.next = 17;
+            break;
+
+          case 13:
+            _context7.prev = 13;
+            _context7.t0 = _context7["catch"](3);
+            console.log('Este es el error de body');
+            return _context7.abrupt("return", res.status(500).json({
+              message: _context7.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[3, 13]]);
+  }));
+
+  return function getUserByUserName() {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
 module.exports = {
   signUp: signUp,
   getUsers: getUsers,
   getUserByUid: getUserByUid,
+  getUserByUserName: getUserByUserName,
   updateUser: updateUser,
   verifyToken: verifyToken,
   login: login

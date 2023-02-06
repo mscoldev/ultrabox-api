@@ -31,28 +31,27 @@ var pgConnection = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return sequelize.sync({
-              force: true
-            });
+            console.log("********EJECUTANDO PGCONECTION**********");
+            _context.prev = 1;
+            _context.next = 4;
+            return sequelize.authenticate();
 
-          case 3:
+          case 4:
             console.log('Conectado a la base de datos postgres');
-            _context.next = 9;
+            _context.next = 10;
             break;
 
-          case 6:
-            _context.prev = 6;
-            _context.t0 = _context["catch"](0);
+          case 7:
+            _context.prev = 7;
+            _context.t0 = _context["catch"](1);
             console.error('Unable to connect to the database:', _context.t0);
 
-          case 9:
+          case 10:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 6]]);
+    }, _callee, null, [[1, 7]]);
   }));
 
   return function pgConnection() {

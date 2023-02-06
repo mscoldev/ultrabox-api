@@ -6,7 +6,7 @@ var _require = require('express'),
 var _require2 = require('express-validator'),
     check = _require2.check;
 
-var Role = require('../models/role.model');
+var passport = require('passport');
 
 var _require3 = require('../middlewares/validateFields'),
     validateFields = _require3.validateFields;
@@ -21,6 +21,7 @@ var _require5 = require('../controllers/auth.controller'),
     signUp = _require5.signUp,
     getUsers = _require5.getUsers,
     getUserByUid = _require5.getUserByUid,
+    getUserByUserName = _require5.getUserByUserName,
     updateUser = _require5.updateUser,
     login = _require5.login,
     verifyToken = _require5.verifyToken;
@@ -31,9 +32,15 @@ var router = Router(); //Aqui las rutas necesarias --->
 
 router.get('/users', getUsers);
 router.get('/user/:id', getUserByUid);
+router.get('/user/username/', getUserByUserName);
 router.post('/token', verifyToken);
 router.post('/signup', signUp);
-router.post('/login', [check('username', 'El nombre de usuario es obligatorio').not().isEmpty(), check('password', 'El password es obligatorio').not().isEmpty(), validateFields], login);
+router.post('/login', [check('username', 'El nombre de usuario es obligatorio').not().isEmpty(), check('password', 'El password es obligatorio').not().isEmpty(), validateFields, passport.authenticate('local', {
+  session: false
+})], login);
+router.post('/login2', passport.authenticate('local', {
+  session: false
+}), login);
 router.put('/user/:id', // addNameModule(NAME_MODULE),
 // getUserRol,
 // validateAccessModule,

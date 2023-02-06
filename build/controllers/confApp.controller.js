@@ -8,326 +8,117 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var Role = require('../models/role.model');
+var _require = require('express'),
+    response = _require.response,
+    request = _require.request;
 
-var ConfApp = require('../models/confApp.model'); //* Initial configuration Roles in database
+var ConfApp = require('../models/confApp.model');
 
-
-var createRoles = /*#__PURE__*/function () {
+var getConfActiveCompany = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var count, values;
+    var req,
+        res,
+        confAppCompany,
+        _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return Role.estimatedDocumentCount();
+            req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
+            res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
+            _context.prev = 2;
+            _context.next = 5;
+            return ConfApp.findOne({
+              "deleted": false
+            });
 
-          case 3:
-            count = _context.sent;
-
-            if (!(count > 0)) {
-              _context.next = 6;
-              break;
-            }
-
-            return _context.abrupt("return");
-
-          case 6:
-            _context.next = 8;
-            return Promise.all([new Role({
-              name: 'user',
-              app: 'ultraindustria',
-              menu: [{
-                "text": "Dashboard",
-                "link": "main.dashboard",
-                "submain": [],
-                "actions": ["R", "W", "D"]
-              }, {
-                "text": "Producción",
-                "link": "",
-                "submain": [{
-                  "text": "Log Registros",
-                  "link": "main.log",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }, {
-                  "text": "Configuración",
-                  "link": "",
-                  "submain": [{
-                    "text": "Materiales",
-                    "link": "main.material",
-                    "actions": ["R", "W", "D"]
-                  }, {
-                    "text": "Receta",
-                    "link": "main.recipe",
-                    "actions": ["R", "W", "D"]
-                  }]
-                }]
-              }, {
-                "text": "Planeación",
-                "link": "",
-                "submain": [{
-                  "text": "Calendario",
-                  "link": "main.calendar",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }]
-              }, {
-                "text": "Seguridad",
-                "link": "",
-                "submain": [{
-                  "text": "Roles",
-                  "link": "main.role",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }, {
-                  "text": "Usuarios",
-                  "link": "main.user",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }]
-              }]
-            }).save(), new Role({
-              name: 'admin',
-              app: 'ultraindustria',
-              menu: [{
-                "text": "Dashboard",
-                "link": "main.dashboard",
-                "submain": [],
-                "actions": ["R", "W", "D"]
-              }, {
-                "text": "Producción",
-                "link": "",
-                "submain": [{
-                  "text": "Log Registros",
-                  "link": "main.log",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }, {
-                  "text": "Configuración",
-                  "link": "",
-                  "submain": [{
-                    "text": "Materiales",
-                    "link": "main.material",
-                    "actions": ["R", "W", "D"]
-                  }, {
-                    "text": "Receta",
-                    "link": "main.recipe",
-                    "actions": ["R", "W", "D"]
-                  }]
-                }]
-              }, {
-                "text": "Planeación",
-                "link": "",
-                "submain": [{
-                  "text": "Calendario",
-                  "link": "main.calendar",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }]
-              }, {
-                "text": "Seguridad",
-                "link": "",
-                "submain": [{
-                  "text": "Roles",
-                  "link": "main.role",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }, {
-                  "text": "Usuarios",
-                  "link": "main.user",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }]
-              }]
-            }).save(), new Role({
-              name: 'operator',
-              app: 'ultraindustria',
-              menu: [{
-                "text": "Dashboard",
-                "link": "main.dashboard",
-                "submain": [],
-                "actions": ["R", "W", "D"]
-              }, {
-                "text": "Producción",
-                "link": "",
-                "submain": [{
-                  "text": "Log Registros",
-                  "link": "main.log",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }, {
-                  "text": "Configuración",
-                  "link": "",
-                  "submain": [{
-                    "text": "Materiales",
-                    "link": "main.material",
-                    "actions": ["R", "W", "D"]
-                  }, {
-                    "text": "Receta",
-                    "link": "main.recipe",
-                    "actions": ["R", "W", "D"]
-                  }]
-                }]
-              }, {
-                "text": "Planeación",
-                "link": "",
-                "submain": [{
-                  "text": "Calendario",
-                  "link": "main.calendar",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }]
-              }, {
-                "text": "Seguridad",
-                "link": "",
-                "submain": [{
-                  "text": "Roles",
-                  "link": "main.role",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }, {
-                  "text": "Usuarios",
-                  "link": "main.user",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }]
-              }]
-            }).save(), new Role({
-              name: 'planner',
-              app: 'ultraindustria',
-              menu: [{
-                "text": "Dashboard",
-                "link": "main.dashboard",
-                "submain": [],
-                "actions": ["R", "W", "D"]
-              }, {
-                "text": "Producción",
-                "link": "",
-                "submain": [{
-                  "text": "Log Registros",
-                  "link": "main.log",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }, {
-                  "text": "Configuración",
-                  "link": "",
-                  "submain": [{
-                    "text": "Materiales",
-                    "link": "main.material",
-                    "actions": ["R", "W", "D"]
-                  }, {
-                    "text": "Receta",
-                    "link": "main.recipe",
-                    "actions": ["R", "W", "D"]
-                  }]
-                }]
-              }, {
-                "text": "Planeación",
-                "link": "",
-                "submain": [{
-                  "text": "Calendario",
-                  "link": "main.calendar",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }]
-              }, {
-                "text": "Seguridad",
-                "link": "",
-                "submain": [{
-                  "text": "Roles",
-                  "link": "main.role",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }, {
-                  "text": "Usuarios",
-                  "link": "main.user",
-                  "submain": [],
-                  "actions": ["R", "W", "D"]
-                }]
-              }]
-            }).save()]);
-
-          case 8:
-            values = _context.sent;
-            console.log(values);
-            _context.next = 15;
+          case 5:
+            confAppCompany = _context.sent;
+            res.status(200).json({
+              msg: 'Configuracion de la compania',
+              confAppCompany: confAppCompany
+            });
+            _context.next = 12;
             break;
 
-          case 12:
-            _context.prev = 12;
-            _context.t0 = _context["catch"](0);
-            console.error(_context.t0);
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](2);
+            return _context.abrupt("return", res.status(500).json({
+              msg: 'Algo ha salido mal...'
+            }));
 
-          case 15:
+          case 12:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 12]]);
+    }, _callee, null, [[2, 9]]);
   }));
 
-  return function createRoles() {
+  return function getConfActiveCompany() {
     return _ref.apply(this, arguments);
   };
 }();
 
-var createInitialConfApp = /*#__PURE__*/function () {
+var setConfCompany = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    var count, initialConf;
+    var req,
+        res,
+        _req$body,
+        company,
+        nit,
+        initSerial,
+        confAppCompany,
+        confAppCompanySaved,
+        _args2 = arguments;
+
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.prev = 0;
-            _context2.next = 3;
-            return ConfApp.estimatedDocumentCount();
+            req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
+            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            _req$body = req.body, company = _req$body.company, nit = _req$body.nit, initSerial = _req$body.initSerial;
+            _context2.prev = 3;
+            confAppCompany = new ConfApp({
+              company: company,
+              nit: nit,
+              initSerial: initSerial
+            });
+            _context2.next = 7;
+            return confAppCompany.save();
 
-          case 3:
-            count = _context2.sent;
-
-            if (!(count > 0)) {
-              _context2.next = 6;
-              break;
-            }
-
-            return _context2.abrupt("return");
-
-          case 6:
-            _context2.next = 8;
-            return new ConfApp({
-              company: 'MIOBOX APP',
-              nit: '123456789-0',
-              initSerial: 1
-            }).save();
-
-          case 8:
-            initialConf = _context2.sent;
-            console.log(initialConf);
-            _context2.next = 15;
+          case 7:
+            confAppCompanySaved = _context2.sent;
+            res.status(201).json({
+              msg: 'Configuracion cargada',
+              confAppCompanySaved: confAppCompanySaved
+            });
+            _context2.next = 14;
             break;
 
-          case 12:
-            _context2.prev = 12;
-            _context2.t0 = _context2["catch"](0);
-            console.error(_context2.t0);
+          case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](3);
+            return _context2.abrupt("return", res.status(500).json({
+              msg: "Algo ha salido mal...".concat(_context2.t0.message)
+            }));
 
-          case 15:
+          case 14:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 12]]);
+    }, _callee2, null, [[3, 11]]);
   }));
 
-  return function createInitialConfApp() {
+  return function setConfCompany() {
     return _ref2.apply(this, arguments);
   };
 }();
 
 module.exports = {
-  createRoles: createRoles,
-  createInitialConfApp: createInitialConfApp
+  getConfActiveCompany: getConfActiveCompany,
+  setConfCompany: setConfCompany
 };
