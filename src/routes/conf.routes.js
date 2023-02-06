@@ -1,6 +1,6 @@
 
 const { Router } = require('express');
-
+const passport = require('passport');
 
 
 // Funciones desde el controlador
@@ -14,7 +14,9 @@ const router = Router();
 //Aqui las rutas necesarias --->
 
 
-router.get('/company', getConfActiveCompany);
+router.get('/company', passport.authenticate('jwt', {
+    session: false
+}), getConfActiveCompany);
 
 router.put('/company', setConfCompany);
 

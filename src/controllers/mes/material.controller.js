@@ -1,8 +1,9 @@
 const { response, request } = require('express');
 const Material = require("../../models/material.model");
+const boom = require('@hapi/boom');
 
 
-const getMaterials = async (req = request, res = response) => {
+const getMaterials = async (req = request, res = response,) => {
     try {
         const materials = await Material.find({ "deleted": false });
         res.status(200).json({
@@ -14,19 +15,25 @@ const getMaterials = async (req = request, res = response) => {
     }
 }
 
-const getMaterialsById = async (req = request, res = response) => {
-    const material = await Material.findById(req.params.materialId);
-    if (material != null) {
-        res.status(200).json({
-            msg: 'Material por Id',
-            material
-        });
-    } else {
-        res.status(404).json({
-            msg: 'Material no encontrado, verifique el Id ingresado'
-        })
+
+//TODO: Implementar verificacion de tipo de datos al realizar busquedas por ID.
+
+const getMaterialsById = async (req = request, res = response, next) => {
+    try {
+        const material = await Material.findById(req.params.materialId);
+        if (material != null) {
+            res.status(200).json({
+                msg: 'Material por Id',
+                material
+            })
+        } else {
+            throw boom.notFound('Material not found')
+        }
+    } catch (err) {
+        next(err);
     }
 }
+
 
 const updateMaterialById = async (req = request, res = response) => {
     try {

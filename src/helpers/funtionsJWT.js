@@ -5,8 +5,8 @@ const generateJWT = (uid = '') => {
     return new Promise((resolve, reject) => {
         const payload = { uid };
 
-        jwt.sign(payload, process.env.SECRETORPRIVATEKEY, {
-            expiresIn: '1h'
+        jwt.sign(payload, process.env.SECRET_KEY, {
+            expiresIn: '6h'
         }, (err, token) => {
             if (err) {
                 console.log(err);
@@ -23,11 +23,23 @@ const verifyJWT = (token = '') => {
 
     return new Promise((resolve, reject) => {
         const payload = token;
-        console.log(payload);
-        jwt.verify(payload, process.env.SECRETORPRIVATEKEY, (err, decoded) => {
+        jwt.verify(payload, process.env.SECRET_KEY, (err, decoded) => {
             if (err) {
-                console.log(err);
-                reject('Token invalido');
+                reject(
+                    {
+                        isBoom: true,
+                        output: {
+                            statusCode: 400,
+                            payload: {
+                                statusCode: 400,
+                                error: "Bad Request",
+                                message: 'Token Invalido',
+                                expired: true
+                            }
+                        }
+
+                    }
+                );
             } else {
                 resolve(decoded);
             }

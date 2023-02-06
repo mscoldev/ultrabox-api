@@ -1,16 +1,19 @@
 
 const { Router } = require('express');
 const { check } = require('express-validator');
-const Role = require('../models/role.model');
-
+const passport = require('passport');
 const { validateFields } = require('../middlewares/validateFields');
 
 const { getUserRol, validateAccessModule, addNameModule } = require('../middlewares/validateRol');
 
-
-
 // Funciones desde el controlador
-const { signUp, getUsers, getUserByUid, updateUser, login, verifyToken } = require('../controllers/auth.controller');
+const { signUp,
+    getUsers,
+    getUserByUid,
+    getUserByUserName,
+    updateUser,
+    login,
+    verifyToken } = require('../controllers/auth.controller');
 
 const NAME_MODULE = 'auth';
 
@@ -23,6 +26,7 @@ const router = Router();
 
 router.get('/users', getUsers);
 router.get('/user/:id', getUserByUid);
+router.get('/user/username/', getUserByUserName);
 router.post('/token', verifyToken);
 
 router.post('/signup', signUp);
@@ -30,8 +34,15 @@ router.post('/signup', signUp);
 router.post('/login', [
     check('username', 'El nombre de usuario es obligatorio').not().isEmpty(),
     check('password', 'El password es obligatorio').not().isEmpty(),
-    validateFields
+    validateFields,
+    passport.authenticate('local', {
+        session: false
+    })
 ], login);
+
+router.post('/login2', passport.authenticate('local', {
+    session: false
+}), login);
 
 router.put('/user/:id',
 

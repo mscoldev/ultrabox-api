@@ -4,6 +4,8 @@ const cors = require('cors');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
 
+const { logErrors, errorHandler, boomErrorHandler } = require('../middlewares/error.handler');
+require('../helpers/auth')
 const { dbConnection } = require('../database/config.database');
 const { pgConnection } = require('../database/config.databasepg');
 const { createRoles, createInitialConfApp } = require('../libs/initialSetupDatabase');
@@ -16,7 +18,7 @@ const corsOptions = {
     preflightContinue: false,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     optionsSuccessStatusCode: 204,
-    origin: "*"
+    origin: '0.0.0.0/0'
 }
 class Server {
 
@@ -61,7 +63,7 @@ class Server {
         // Rutas de mi aplicación
         this.routes();
 
-
+        this.middlewaresErrors();
 
     }
 
@@ -89,9 +91,7 @@ class Server {
         // CORS
         this.app.use(cors(corsOptions));
 
-        console.log(process.cwd());
-
-        this.app.use('/', express.static(process.cwd() + '/src/public'));
+        // this.app.use('/', express.static(process.cwd() + '/src/public'));
 
         //Morgan
         this.app.use(morgan('dev'));
@@ -101,11 +101,18 @@ class Server {
 
         // Directorio Público
 
-        this.app.use(fileUpload({
-            useTempFiles: true,
-            tempFileDir: '/tmp/'
-        }));
+        // this.app.use(fileUpload({
+        //     useTempFiles: true,
+        //     tempFileDir: '/tmp/'
+        // }));
 
+    }
+
+    middlewaresErrors() {
+        //Error Handler
+        this.app.use(logErrors);
+        this.app.use(boomErrorHandler);
+        this.app.use(errorHandler);
     }
 
     routes() {

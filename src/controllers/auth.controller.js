@@ -2,6 +2,7 @@ const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
 const moment = require('moment');
 const { generateJWT, verifyJWT } = require('../helpers/funtionsJWT')
+const boom = require('@hapi/boom')
 
 
 const User = require('../models/user.model');
@@ -233,7 +234,7 @@ const login = async (req = request, res = response) => {
 }
 
 
-const verifyToken = async (req = request, res = response) => {
+const verifyToken = async (req = request, res = response, next) => {
     try {
         const { token } = req.body
         const decoded = await verifyJWT(token)
@@ -248,18 +249,42 @@ const verifyToken = async (req = request, res = response) => {
         })
 
     } catch (err) {
-        return res.status(400).json({
-            msg: 'Algo ha salido mal...'
-        })
+        next(err);
     }
 }
 
+const getUserByUserName = async (req = request, res = response) => {
+    console.log("getUserByUserName - Ejecutandose");
+    try {
+        const { username, password } = req.body;
+        console.log('Este es el req.body: ' + req.body);
+        const findUser = await User.findOne({ username: username })
+        console.log(findUser);
+        if (findUser != null) {
+            res.status(200).json({
+                msg: 'Datos de usuario',
+                findUser
+            });
+        } else {
+            res.status(404).json({
+                msg: 'Usuario no encontrado, verifique el Id ingresado'
+            })
+        }
+    } catch (err) {
+        console.log('Este es el error de body');
+        return res.status(500).json({
+            message: err.message
+        })
+    }
+
+}
 
 
 module.exports = {
     signUp,
     getUsers,
     getUserByUid,
+    getUserByUserName,
     updateUser,
     verifyToken,
     login
