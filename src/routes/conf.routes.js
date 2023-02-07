@@ -18,7 +18,7 @@ router.get('/company', passport.authenticate('jwt', {
     session: false
 }), getConfActiveCompany);
 
-router.put('/company', setConfCompany);
+router.put('/company/:id', setConfCompany);
 
 
 module.exports = router;
