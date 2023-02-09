@@ -38,14 +38,12 @@ var register = sequelize.define('registers', {
   serialScale: {
     type: DataTypes.INTEGER,
     unique: true,
-    required: true,
-    autoIncrement: true
+    required: true
   },
   serialLog: {
     type: DataTypes.INTEGER,
     unique: true,
-    required: true,
-    allowNull: false
+    required: true
   },
   qty: {
     type: DataTypes.DECIMAL(10, 3),
@@ -186,11 +184,13 @@ var register = sequelize.define('registers', {
   },
   userRecorder: {
     type: DataTypes.STRING,
-    required: true
+    required: true,
+    allowNull: false
   },
   _idProduct: {
     type: DataTypes.INTEGER,
     required: true,
+    allowNull: false,
     validate: {
       isInt: {
         msg: 'El _idProduct debe ser Int'
@@ -200,6 +200,7 @@ var register = sequelize.define('registers', {
   _idDriver: {
     type: DataTypes.UUID,
     required: true,
+    allowNull: false,
     validate: {
       isUUID: {
         args: 4,
@@ -210,6 +211,7 @@ var register = sequelize.define('registers', {
   _idTruck: {
     type: DataTypes.UUID,
     required: true,
+    allowNull: false,
     validate: {
       isUUID: {
         args: 4,
@@ -220,6 +222,7 @@ var register = sequelize.define('registers', {
   _idClient: {
     type: DataTypes.UUID,
     required: true,
+    allowNull: false,
     validate: {
       isUUID: {
         args: 4,
@@ -230,6 +233,7 @@ var register = sequelize.define('registers', {
   _idOrigin: {
     type: DataTypes.INTEGER,
     required: true,
+    allowNull: false,
     validate: {
       isInt: {
         msg: 'El _idOrigin debe ser Int'
@@ -239,6 +243,7 @@ var register = sequelize.define('registers', {
   _idSite: {
     type: DataTypes.INTEGER,
     required: true,
+    allowNull: false,
     validate: {
       isInt: {
         msg: 'El _idSite debe ser Int'

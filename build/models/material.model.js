@@ -37,6 +37,11 @@ var materialSchema = Schema({
     type: Number,
     required: [false, 'Density is required']
   },
+  productionLineUse: [{
+    type: Schema.Types.ObjectId,
+    ref: 'ProductionLine',
+    required: [true, 'Debe definir una la linea de produccion que utiliza este material']
+  }],
   deleted: {
     type: Boolean,
     required: [true, 'Default Activated'],

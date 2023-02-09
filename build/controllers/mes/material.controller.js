@@ -122,30 +122,93 @@ var getMaterialsById = /*#__PURE__*/function () {
   };
 }();
 
-var updateMaterialById = /*#__PURE__*/function () {
+var getMaterialsByLine = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var req,
         res,
-        paramsId,
-        body,
-        updatedMaterial,
+        next,
+        _idProductionLine,
+        material,
         _args3 = arguments;
+
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
-            _context3.prev = 2;
+            next = _args3.length > 2 ? _args3[2] : undefined;
+            _context3.prev = 3;
+            _idProductionLine = req.params._idProductionLine;
+            _context3.next = 7;
+            return Material.find({
+              productionLineUse: _idProductionLine
+            });
+
+          case 7:
+            material = _context3.sent;
+
+            if (!(material != null)) {
+              _context3.next = 12;
+              break;
+            }
+
+            res.status(200).json({
+              msg: 'Materiales por Linea de produccion',
+              material: material
+            });
+            _context3.next = 13;
+            break;
+
+          case 12:
+            throw boom.notFound('Material not found');
+
+          case 13:
+            _context3.next = 18;
+            break;
+
+          case 15:
+            _context3.prev = 15;
+            _context3.t0 = _context3["catch"](3);
+            next(_context3.t0);
+
+          case 18:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[3, 15]]);
+  }));
+
+  return function getMaterialsByLine() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var updateMaterialById = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var req,
+        res,
+        paramsId,
+        body,
+        updatedMaterial,
+        _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
+            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
+            _context4.prev = 2;
             paramsId = req.params.materialId;
             body = req.body;
-            _context3.next = 7;
+            _context4.next = 7;
             return Material.findByIdAndUpdate(paramsId, body, {
               "new": true
             });
 
           case 7:
-            updatedMaterial = _context3.sent;
+            updatedMaterial = _context4.sent;
 
             if (updatedMaterial != null) {
               res.status(200).json({
@@ -158,54 +221,54 @@ var updateMaterialById = /*#__PURE__*/function () {
               });
             }
 
-            _context3.next = 14;
+            _context4.next = 14;
             break;
 
           case 11:
-            _context3.prev = 11;
-            _context3.t0 = _context3["catch"](2);
-            return _context3.abrupt("return", res.status(500).json({
-              message: _context3.t0.message
+            _context4.prev = 11;
+            _context4.t0 = _context4["catch"](2);
+            return _context4.abrupt("return", res.status(500).json({
+              message: _context4.t0.message
             }));
 
           case 14:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3, null, [[2, 11]]);
+    }, _callee4, null, [[2, 11]]);
   }));
 
   return function updateMaterialById() {
-    return _ref3.apply(this, arguments);
+    return _ref4.apply(this, arguments);
   };
 }();
 
 var deleteMaterialById = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
     var req,
         res,
         paramsId,
         body,
         deletedMaterial,
         errMsg,
-        _args4 = arguments;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        _args5 = arguments;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
-            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
-            _context4.prev = 2;
+            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
+            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
+            _context5.prev = 2;
             paramsId = req.params.materialId;
             body = {
               deleted: true
             };
-            _context4.next = 7;
+            _context5.next = 7;
             return Material.findByIdAndUpdate(paramsId, body);
 
           case 7:
-            deletedMaterial = _context4.sent;
+            deletedMaterial = _context5.sent;
 
             if (deletedMaterial != null) {
               res.status(202).json({
@@ -217,18 +280,18 @@ var deleteMaterialById = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 15;
+            _context5.next = 15;
             break;
 
           case 11:
-            _context4.prev = 11;
-            _context4.t0 = _context4["catch"](2);
+            _context5.prev = 11;
+            _context5.t0 = _context5["catch"](2);
 
             // Set custom error for unique keys
-            if (_context4.t0.code == 11000) {
-              errMsg = Object.keys(_context4.t0.keyValue)[0] + " already exists.";
+            if (_context5.t0.code == 11000) {
+              errMsg = Object.keys(_context5.t0.keyValue)[0] + " already exists.";
             } else {
-              errMsg = _context4.t0.message;
+              errMsg = _context5.t0.message;
             }
 
             res.status(400).json({
@@ -241,64 +304,64 @@ var deleteMaterialById = /*#__PURE__*/function () {
 
           case 16:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee4, null, [[2, 11]]);
+    }, _callee5, null, [[2, 11]]);
   }));
 
   return function deleteMaterialById() {
-    return _ref4.apply(this, arguments);
+    return _ref5.apply(this, arguments);
   };
 }();
 
 var createMaterial = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
     var req,
         res,
         body,
         material,
         materialSaved,
-        _args5 = arguments;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+        _args6 = arguments;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
-            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
-            _context5.prev = 2;
+            req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
+            res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
+            _context6.prev = 2;
             body = req.body;
             console.log(body);
             material = new Material(body);
-            _context5.next = 8;
+            _context6.next = 8;
             return material.save();
 
           case 8:
-            materialSaved = _context5.sent;
+            materialSaved = _context6.sent;
             res.status(201).json({
               msg: 'Material created successfully',
               materialSaved: materialSaved
             });
-            _context5.next = 15;
+            _context6.next = 15;
             break;
 
           case 12:
-            _context5.prev = 12;
-            _context5.t0 = _context5["catch"](2);
-            return _context5.abrupt("return", res.status(500).json({
-              message: _context5.t0.message
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](2);
+            return _context6.abrupt("return", res.status(500).json({
+              message: _context6.t0.message
             }));
 
           case 15:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, null, [[2, 12]]);
+    }, _callee6, null, [[2, 12]]);
   }));
 
   return function createMaterial() {
-    return _ref5.apply(this, arguments);
+    return _ref6.apply(this, arguments);
   };
 }();
 
@@ -306,6 +369,7 @@ module.exports = {
   createMaterial: createMaterial,
   getMaterials: getMaterials,
   getMaterialsById: getMaterialsById,
+  getMaterialsByLine: getMaterialsByLine,
   updateMaterialById: updateMaterialById,
   deleteMaterialById: deleteMaterialById
 };
