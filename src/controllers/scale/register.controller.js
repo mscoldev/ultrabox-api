@@ -180,6 +180,8 @@ const deleteRegisterById = async (req = request, res = response) => {
 
 const createRegister = async (req = request, res = response) => {
     const {
+        serialScale,
+        qty,
         weight,
         status,
         userRecorder,
@@ -224,6 +226,8 @@ const createRegister = async (req = request, res = response) => {
             const newDriver = await createDriverFromRegister(driver)
 
             const newRegister = await Register.create({
+                serialScale,
+                qty,
                 serialLog: getLastSerialLog + 1,
                 weight,
                 dateWeight: null,

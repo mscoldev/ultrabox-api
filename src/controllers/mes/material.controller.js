@@ -34,6 +34,24 @@ const getMaterialsById = async (req = request, res = response, next) => {
     }
 }
 
+const getMaterialsByLine = async (req = request, res = response, next) => {
+    try {
+        const { _idProductionLine } = req.params
+        const material = await Material.find({ productionLineUse: _idProductionLine });
+        if (material != null) {
+            res.status(200).json({
+                msg: 'Materiales por Linea de produccion',
+                material
+            })
+        } else {
+            throw boom.notFound('Material not found')
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+
 
 const updateMaterialById = async (req = request, res = response) => {
     try {
@@ -106,4 +124,11 @@ const createMaterial = async (req = request, res = response) => {
 
 
 
-module.exports = { createMaterial, getMaterials, getMaterialsById, updateMaterialById, deleteMaterialById }
+module.exports = {
+    createMaterial,
+    getMaterials,
+    getMaterialsById,
+    getMaterialsByLine,
+    updateMaterialById,
+    deleteMaterialById
+}

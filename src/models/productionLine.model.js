@@ -12,7 +12,7 @@ const productionLineSchema = Schema({
     },
     id_controller: {
         type: Number,
-        required: false,
+        required: [true, 'Defina un id_controller para la linea de produccion'],
         unique: [true, 'Este id ya se encuentra registrado en otra linea de produccion']
     },
     deleted: {

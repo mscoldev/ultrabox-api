@@ -6,6 +6,7 @@ const {
     createMaterial,
     getMaterials,
     getMaterialsById,
+    getMaterialsByLine,
     updateMaterialById,
     deleteMaterialById
 } = require("../../controllers/mes/material.controller");
@@ -20,6 +21,7 @@ const router = Router();
 router.get('/', getMaterials);
 
 router.get('/:materialId', getMaterialsById);
+router.get('/line/:_idProductionLine', getMaterialsByLine);
 
 router.put('/:materialId', updateMaterialById);
 
