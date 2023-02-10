@@ -30,12 +30,14 @@ const register = sequelize.define('registers', {
     serialScale: {
         type: DataTypes.INTEGER,
         unique: true,
-        required: true
+        required: true,
+        autoIncrement: true
     },
     serialLog: {
         type: DataTypes.INTEGER,
         unique: true,
-        required: true
+        required: true,
+        allowNull: false,
     },
     qty: {
         type: DataTypes.DECIMAL(10, 3),
@@ -164,12 +166,10 @@ const register = sequelize.define('registers', {
     userRecorder: {
         type: DataTypes.STRING,
         required: true,
-        allowNull: false,
     },
     _idProduct: {
         type: DataTypes.INTEGER,
         required: true,
-        allowNull: false,
         validate: {
             isInt: { msg: 'El _idProduct debe ser Int' }
         }
@@ -177,7 +177,6 @@ const register = sequelize.define('registers', {
     _idDriver: {
         type: DataTypes.UUID,
         required: true,
-        allowNull: false,
         validate: {
             isUUID: {
                 args: 4,
@@ -188,7 +187,6 @@ const register = sequelize.define('registers', {
     _idTruck: {
         type: DataTypes.UUID,
         required: true,
-        allowNull: false,
         validate: {
             isUUID: {
                 args: 4,
@@ -199,7 +197,6 @@ const register = sequelize.define('registers', {
     _idClient: {
         type: DataTypes.UUID,
         required: true,
-        allowNull: false,
         validate: {
             isUUID: {
                 args: 4,
@@ -210,7 +207,6 @@ const register = sequelize.define('registers', {
     _idOrigin: {
         type: DataTypes.INTEGER,
         required: true,
-        allowNull: false,
         validate: {
             isInt: { msg: 'El _idOrigin debe ser Int' }
         }
@@ -218,7 +214,6 @@ const register = sequelize.define('registers', {
     _idSite: {
         type: DataTypes.INTEGER,
         required: true,
-        allowNull: false,
         validate: {
             isInt: { msg: 'El _idSite debe ser Int' }
         }

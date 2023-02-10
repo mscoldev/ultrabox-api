@@ -1,6 +1,5 @@
 const { response, request } = require('express');
 const ConfApp = require('../models/confApp.model');
-const boom = require('@hapi/boom');
 
 
 const getConfActiveCompany = async (req = request, res = response) => {
@@ -20,27 +19,26 @@ const getConfActiveCompany = async (req = request, res = response) => {
 
 }
 
-const setConfCompany = async (req = request, res = respons, next) => {
+const setConfCompany = async (req = request, res = response) => {
     const { company, nit, initSerial } = req.body;
-    const id = req.params.id
     try {
-        const confAppCompany = {
+        const confAppCompany = new ConfApp({
             company,
             nit,
             initSerial
-        };
-        const confAppCompanySaved = await ConfApp.findByIdAndUpdate(id, confAppCompany, { new: true });
-        if (confAppCompanySaved != null) {
-            res.status(200).json({
-                msg: 'Configuracion actualizada',
-                confAppCompanySaved
-            });
-        } else {
-            throw boom.badRequest('Configuracion no encontrada o con parametros incorrectos')
-        }
+        });
+
+        const confAppCompanySaved = await confAppCompany.save();
+
+        res.status(201).json({
+            msg: 'Configuracion cargada',
+            confAppCompanySaved
+        })
 
     } catch (err) {
-        next(err)
+        return res.status(500).json({
+            msg: `Algo ha salido mal...${err.message}`
+        })
     }
 
 }
