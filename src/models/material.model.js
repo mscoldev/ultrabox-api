@@ -37,7 +37,11 @@ const materialSchema = Schema({
         type: Boolean,
         required: [true, 'Default Activated'],
         default: false
-    }
+    },
+    productionLineUse: [{
+        ref: 'ProductionLine',
+        type: Schema.Types.ObjectId
+    }],
 }, {
     timestamps: true,
     versionKey: false

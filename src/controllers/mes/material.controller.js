@@ -1,11 +1,18 @@
 const { response, request } = require('express');
 const Material = require("../../models/material.model");
 const boom = require('@hapi/boom');
+const { mongoose } = require('mongoose');
+const { col } = require('sequelize');
 
 
 const getMaterials = async (req = request, res = response,) => {
     try {
-        const materials = await Material.find({ "deleted": false });
+        const materials = await Material.find({ "deleted": false }).populate([{
+            path: 'productionLineUse',
+            model: 'ProductionLine',
+            options: { lean: true },
+            select: { name: 1 }
+        }]).exec();
         res.status(200).json({
             msg: 'List of materials',
             materials
@@ -34,6 +41,39 @@ const getMaterialsById = async (req = request, res = response, next) => {
     }
 }
 
+const getMaterialsByLine = async (req = request, res = response, next) => {
+
+    try {
+
+        const { productionLineUse } = req.query
+        const arrayProductionLineUse = productionLineUse.split(",");
+        const objectIdArray = arrayProductionLineUse.map(id => mongoose.Types.ObjectId(id));
+
+        console.log(objectIdArray);
+
+        const material = await Material.find({ 'productionLineUse': { $in: objectIdArray } })
+            .populate([{
+                path: 'productionLineUse',
+                model: 'ProductionLine',
+                options: { lean: true },
+                select: { name: 1 }
+            }]).exec();
+
+        if (material != null) {
+            res.status(200).json({
+                msg: 'Materiales por linea de produccion',
+                material
+            })
+        } else {
+            throw boom.notFound('Material no encontrado')
+        }
+
+    } catch (err) {
+
+        next(err);
+    }
+
+}
 
 const updateMaterialById = async (req = request, res = response) => {
     try {
@@ -83,8 +123,6 @@ const deleteMaterialById = async (req = request, res = response) => {
     };
 }
 
-
-
 const createMaterial = async (req = request, res = response) => {
     //TODO: Usar desestructuracion de objetos
     try {
@@ -106,4 +144,11 @@ const createMaterial = async (req = request, res = response) => {
 
 
 
-module.exports = { createMaterial, getMaterials, getMaterialsById, updateMaterialById, deleteMaterialById }
+module.exports = {
+    createMaterial,
+    getMaterials,
+    getMaterialsById,
+    getMaterialsByLine,
+    updateMaterialById,
+    deleteMaterialById
+}
