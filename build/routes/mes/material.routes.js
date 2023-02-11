@@ -16,11 +16,9 @@ var _require2 = require("../../controllers/mes/material.controller"),
 var router = Router(); //Aqui las rutas necesarias --->
 //Listar todos los materiales en la base de datos
 
-router.get('/', getMaterials);
+router.get('/line', getMaterialsByLine);
 router.get('/:materialId', getMaterialsById);
-router.get('/line/:_idProductionLine', getMaterialsByLine);
-router.put('/:materialId', updateMaterialById);
-router["delete"]('/:materialId', deleteMaterialById); //Agregar nuevos materiales al base de datos
+router.get('/', getMaterials); //Agregar nuevos materiales al base de datos
 
 router.post('/', createMaterial);
 module.exports = router;

@@ -14,8 +14,6 @@ var _require = require('express'),
 
 var ConfApp = require('../models/confApp.model');
 
-var boom = require('@hapi/boom');
-
 var getConfActiveCompany = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
@@ -67,12 +65,10 @@ var setConfCompany = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
-        next,
         _req$body,
         company,
         nit,
         initSerial,
-        id,
         confAppCompany,
         confAppCompanySaved,
         _args2 = arguments;
@@ -82,54 +78,39 @@ var setConfCompany = /*#__PURE__*/function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
-            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : respons;
-            next = _args2.length > 2 ? _args2[2] : undefined;
+            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
             _req$body = req.body, company = _req$body.company, nit = _req$body.nit, initSerial = _req$body.initSerial;
-            id = req.params.id;
-            _context2.prev = 5;
-            confAppCompany = {
+            _context2.prev = 3;
+            confAppCompany = new ConfApp({
               company: company,
               nit: nit,
               initSerial: initSerial
-            };
-            _context2.next = 9;
-            return ConfApp.findByIdAndUpdate(id, confAppCompany, {
-              "new": true
             });
+            _context2.next = 7;
+            return confAppCompany.save();
 
-          case 9:
+          case 7:
             confAppCompanySaved = _context2.sent;
-
-            if (!(confAppCompanySaved != null)) {
-              _context2.next = 14;
-              break;
-            }
-
-            res.status(200).json({
-              msg: 'Configuracion actualizada',
+            res.status(201).json({
+              msg: 'Configuracion cargada',
               confAppCompanySaved: confAppCompanySaved
             });
-            _context2.next = 15;
+            _context2.next = 14;
             break;
+
+          case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](3);
+            return _context2.abrupt("return", res.status(500).json({
+              msg: "Algo ha salido mal...".concat(_context2.t0.message)
+            }));
 
           case 14:
-            throw boom.badRequest('Configuracion no encontrada o con parametros incorrectos');
-
-          case 15:
-            _context2.next = 20;
-            break;
-
-          case 17:
-            _context2.prev = 17;
-            _context2.t0 = _context2["catch"](5);
-            next(_context2.t0);
-
-          case 20:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[5, 17]]);
+    }, _callee2, null, [[3, 11]]);
   }));
 
   return function setConfCompany() {

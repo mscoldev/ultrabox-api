@@ -23,11 +23,6 @@ var recipeSchema = Schema({
     required: [true, 'El estado deleted es requerido no puede dejarlo en blanco T/F'],
     "default": false
   },
-  productionLineUse: [{
-    type: Schema.Types.ObjectId,
-    ref: 'ProductionLine',
-    required: [true, 'Debe definir una la linea de produccion que utiliza esta receta']
-  }],
   ingredients: [new Schema({
     _idMaterial: {
       type: Schema.Types.ObjectId,

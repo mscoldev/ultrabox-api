@@ -16,5 +16,5 @@ var router = Router(); //Aqui las rutas necesarias --->
 router.get('/company', passport.authenticate('jwt', {
   session: false
 }), getConfActiveCompany);
-router.put('/company/:id', setConfCompany);
+router.put('/company', setConfCompany);
 module.exports = router;

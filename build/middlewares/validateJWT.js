@@ -62,8 +62,8 @@ var validateJWT = /*#__PURE__*/function () {
 
           case 11:
             _context.prev = 11;
-            _jwt$verify = jwt.verify(tokenBearer, process.env.SECRET_KEY), uid = _jwt$verify.uid;
-            dataToken = jwt.decode(tokenBearer, process.env.SECRET_KEY);
+            _jwt$verify = jwt.verify(tokenBearer, process.env.SECRETORPRIVATEKEY), uid = _jwt$verify.uid;
+            dataToken = jwt.decode(tokenBearer, process.env.SECRETORPRIVATEKEY);
             console.log(dataToken);
             _context.next = 17;
             return User.findById(uid);

@@ -401,8 +401,6 @@ var createRegister = /*#__PURE__*/function () {
     var req,
         res,
         _req$body2,
-        serialScale,
-        qty,
         weight,
         status,
         userRecorder,
@@ -426,7 +424,7 @@ var createRegister = /*#__PURE__*/function () {
           case 0:
             req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
             res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
-            _req$body2 = req.body, serialScale = _req$body2.serialScale, qty = _req$body2.qty, weight = _req$body2.weight, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, driver = _req$body2.driver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idSite = _req$body2._idSite, enabled = _req$body2.enabled;
+            _req$body2 = req.body, weight = _req$body2.weight, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, driver = _req$body2.driver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idSite = _req$body2._idSite, enabled = _req$body2.enabled;
 
             if (!(driver._idDriver != null)) {
               _context6.next = 19;
@@ -472,7 +470,7 @@ var createRegister = /*#__PURE__*/function () {
             }));
 
           case 17:
-            _context6.next = 52;
+            _context6.next = 50;
             break;
 
           case 19:
@@ -488,65 +486,61 @@ var createRegister = /*#__PURE__*/function () {
           case 25:
             newDriver = _context6.sent;
             _context6.t1 = Register;
-            _context6.t2 = serialScale;
-            _context6.t3 = qty;
-            _context6.t4 = _getLastSerialLog + 1;
-            _context6.t5 = weight;
-            _context6.t6 = status;
-            _context6.t7 = userRecorder;
-            _context6.t8 = _idProduct;
-            _context6.next = 36;
+            _context6.t2 = _getLastSerialLog + 1;
+            _context6.t3 = weight;
+            _context6.t4 = status;
+            _context6.t5 = userRecorder;
+            _context6.t6 = _idProduct;
+            _context6.next = 34;
             return newDriver.id;
 
-          case 36:
-            _context6.t9 = _context6.sent;
-            _context6.t10 = _idTruck;
-            _context6.t11 = _idClient;
-            _context6.t12 = _idOrigin;
-            _context6.t13 = _idSite;
-            _context6.t14 = enabled;
-            _context6.t15 = {
-              serialScale: _context6.t2,
-              qty: _context6.t3,
-              serialLog: _context6.t4,
-              weight: _context6.t5,
+          case 34:
+            _context6.t7 = _context6.sent;
+            _context6.t8 = _idTruck;
+            _context6.t9 = _idClient;
+            _context6.t10 = _idOrigin;
+            _context6.t11 = _idSite;
+            _context6.t12 = enabled;
+            _context6.t13 = {
+              serialLog: _context6.t2,
+              weight: _context6.t3,
               dateWeight: null,
-              status: _context6.t6,
-              userRecorder: _context6.t7,
-              _idProduct: _context6.t8,
-              _idDriver: _context6.t9,
-              _idTruck: _context6.t10,
-              _idClient: _context6.t11,
-              _idOrigin: _context6.t12,
-              _idSite: _context6.t13,
-              enabled: _context6.t14
+              status: _context6.t4,
+              userRecorder: _context6.t5,
+              _idProduct: _context6.t6,
+              _idDriver: _context6.t7,
+              _idTruck: _context6.t8,
+              _idClient: _context6.t9,
+              _idOrigin: _context6.t10,
+              _idSite: _context6.t11,
+              enabled: _context6.t12
             };
-            _context6.next = 45;
-            return _context6.t1.create.call(_context6.t1, _context6.t15);
+            _context6.next = 43;
+            return _context6.t1.create.call(_context6.t1, _context6.t13);
 
-          case 45:
+          case 43:
             _newRegister = _context6.sent;
             res.status(201).json({
               msg: 'Registro creado satisfactoriamente!',
               newDriver: newDriver,
               newRegister: _newRegister
             });
-            _context6.next = 52;
+            _context6.next = 50;
             break;
 
-          case 49:
-            _context6.prev = 49;
-            _context6.t16 = _context6["catch"](19);
+          case 47:
+            _context6.prev = 47;
+            _context6.t14 = _context6["catch"](19);
             return _context6.abrupt("return", res.status(500).json({
-              message: "Oops! ha producido un error: ".concat(_context6.t16.message)
+              message: "Oops! ha producido un error: ".concat(_context6.t14.message)
             }));
 
-          case 52:
+          case 50:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[4, 14], [19, 49]]);
+    }, _callee6, null, [[4, 14], [19, 47]]);
   }));
 
   return function createRegister() {

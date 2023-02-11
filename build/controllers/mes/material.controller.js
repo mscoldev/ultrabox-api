@@ -16,6 +16,12 @@ var Material = require("../../models/material.model");
 
 var boom = require('@hapi/boom');
 
+var _require2 = require('mongoose'),
+    mongoose = _require2.mongoose;
+
+var _require3 = require('sequelize'),
+    col = _require3.col;
+
 var getMaterials = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
@@ -32,7 +38,16 @@ var getMaterials = /*#__PURE__*/function () {
             _context.next = 5;
             return Material.find({
               "deleted": false
-            });
+            }).populate([{
+              path: 'productionLineUse',
+              model: 'ProductionLine',
+              options: {
+                lean: true
+              },
+              select: {
+                name: 1
+              }
+            }]).exec();
 
           case 5:
             materials = _context.sent;
@@ -127,10 +142,11 @@ var getMaterialsByLine = /*#__PURE__*/function () {
     var req,
         res,
         next,
-        _idProductionLine,
+        productionLineUse,
+        arrayProductionLineUse,
+        objectIdArray,
         material,
         _args3 = arguments;
-
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -139,45 +155,61 @@ var getMaterialsByLine = /*#__PURE__*/function () {
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
             next = _args3.length > 2 ? _args3[2] : undefined;
             _context3.prev = 3;
-            _idProductionLine = req.params._idProductionLine;
-            _context3.next = 7;
-            return Material.find({
-              productionLineUse: _idProductionLine
+            productionLineUse = req.query.productionLineUse;
+            arrayProductionLineUse = productionLineUse.split(",");
+            objectIdArray = arrayProductionLineUse.map(function (id) {
+              return mongoose.Types.ObjectId(id);
             });
+            console.log(objectIdArray);
+            _context3.next = 10;
+            return Material.find({
+              'productionLineUse': {
+                $in: objectIdArray
+              }
+            }).populate([{
+              path: 'productionLineUse',
+              model: 'ProductionLine',
+              options: {
+                lean: true
+              },
+              select: {
+                name: 1
+              }
+            }]).exec();
 
-          case 7:
+          case 10:
             material = _context3.sent;
 
             if (!(material != null)) {
-              _context3.next = 12;
+              _context3.next = 15;
               break;
             }
 
             res.status(200).json({
-              msg: 'Materiales por Linea de produccion',
+              msg: 'Materiales por linea de produccion',
               material: material
             });
-            _context3.next = 13;
-            break;
-
-          case 12:
-            throw boom.notFound('Material not found');
-
-          case 13:
-            _context3.next = 18;
+            _context3.next = 16;
             break;
 
           case 15:
-            _context3.prev = 15;
+            throw boom.notFound('Material no encontrado');
+
+          case 16:
+            _context3.next = 21;
+            break;
+
+          case 18:
+            _context3.prev = 18;
             _context3.t0 = _context3["catch"](3);
             next(_context3.t0);
 
-          case 18:
+          case 21:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[3, 15]]);
+    }, _callee3, null, [[3, 18]]);
   }));
 
   return function getMaterialsByLine() {
