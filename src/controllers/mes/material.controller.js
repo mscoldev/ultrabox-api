@@ -1,8 +1,8 @@
 const { response, request } = require('express');
-const Material = require("../../models/material.model");
 const boom = require('@hapi/boom');
-const { mongoose } = require('mongoose');
-const { col } = require('sequelize');
+const { Types } = require('mongoose');
+const Material = require("../../models/material.model");
+
 
 
 const getMaterials = async (req = request, res = response,) => {
@@ -47,7 +47,7 @@ const getMaterialsByLine = async (req = request, res = response, next) => {
 
         const { productionLineUse } = req.query
         const arrayProductionLineUse = productionLineUse.split(",");
-        const objectIdArray = arrayProductionLineUse.map(id => mongoose.Types.ObjectId(id));
+        const objectIdArray = arrayProductionLineUse.map(id => Types.ObjectId(id));
 
         console.log(objectIdArray);
 
