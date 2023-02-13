@@ -1,0 +1,26 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "cantidad",
+        "codigo",
+        "estado",
+        "Expresion",
+        "Grafico",
+        "Grafics",
+        "Graficskwton",
+        "kwhpd",
+        "molino",
+        "Molinos",
+        "nata",
+        "receta",
+        "resultado",
+        "Resultado",
+        "Totales",
+        "unidad"
+    ],
+    "ignoreWords": [],
+    "import": []
+}

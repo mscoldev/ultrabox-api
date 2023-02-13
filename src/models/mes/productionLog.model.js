@@ -1,6 +1,7 @@
 const { Schema, model, default: mongoose } = require("mongoose")
 const moment = require('moment');
-const productionLineModel = require("../productionLine.model");
+
+require('../../libs/round.lib')
 
 const productionLogSchema = Schema({
     codigo: {
@@ -71,6 +72,9 @@ productionLogSchema.methods.toJSON = function () {
     const productionLog = this.toObject();
     productionLog.createdAt = moment(productionLog.createdAt).format('DD-MM-YYYY HH:mm');
     productionLog.updatedAt = moment(productionLog.updatedAt).format('DD-MM-YYYY HH:mm');
+    productionLog.kwtot = this.kwhpd004 + this.kwhpd005 + this.kwhpd006;
+    productionLog.kwTon = Math.floor10(productionLog.kwtot / this.cantidad, -3);
+
     return productionLog
 }
 
