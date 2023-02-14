@@ -18,6 +18,8 @@ var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
+var moment = require('moment');
+
 var Register = require('../../models/scale/register.model');
 
 var Truck = require('../../models/scale/truck.model');
@@ -60,7 +62,7 @@ var getRegisters = /*#__PURE__*/function () {
           case 6:
             registers = _context.sent;
             res.status(200).json({
-              msg: 'Lista de registros',
+              msg: 'Registro actualizado con exito',
               registers: registers
             });
             _context.next = 13;
@@ -248,7 +250,11 @@ var updateRegisterById = /*#__PURE__*/function () {
         userRecorder,
         newRegister,
         dateRegister,
+        fechaTexto,
+        formatoEntrada,
+        fecha,
         formatedDate,
+        registerSaved,
         _args4 = arguments;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -267,12 +273,16 @@ var updateRegisterById = /*#__PURE__*/function () {
             newRegister = _context4.sent;
 
             if (!(newRegister != null)) {
-              _context4.next = 22;
+              _context4.next = 26;
               break;
             }
 
             dateRegister = newRegister.date;
-            formatedDate = new Date(dateRegister).toISOString();
+            fechaTexto = dateRegister;
+            formatoEntrada = "DD-MM-YYYY HH:mm";
+            fecha = moment(fechaTexto, formatoEntrada).toDate();
+            formatedDate = fecha; //new Date(dateRegister).toISOString();
+
             newRegister.secondWeight = weight;
             newRegister.secondDateWeight = null; //trigger setValue
 
@@ -282,7 +292,7 @@ var updateRegisterById = /*#__PURE__*/function () {
             if (newRegister.secondWeight > newRegister.weight) {
               //Estaba Cargando
               newRegister.tare = newRegister.weight;
-              newRegister.dateTara = formatedDate; //aqui debe colocarse la fecha de la medicion
+              newRegister.dateTara = formatedDate.toISOString(); //aqui debe colocarse la fecha de la medicion
 
               newRegister.groosWeight = newRegister.secondWeight;
               newRegister.netWeight = newRegister.groosWeight - newRegister.tare;
@@ -302,7 +312,7 @@ var updateRegisterById = /*#__PURE__*/function () {
 
               newRegister.groosWeight = newRegister.weight;
               newRegister.netWeight = newRegister.groosWeight - newRegister.tare;
-              newRegister.dateNet = formatedDate;
+              newRegister.dateNet = formatedDate.toISOString();
             } //*Autocalcular
             // newRegister.netWeigth = "";
             // newRegister.dateTara = "";
@@ -310,40 +320,41 @@ var updateRegisterById = /*#__PURE__*/function () {
 
 
             console.log(newRegister);
-            _context4.next = 19;
+            _context4.next = 22;
             return newRegister.save();
 
-          case 19:
+          case 22:
+            registerSaved = _context4.sent;
             res.status(200).json({
               msg: 'Registro actualizado con exito',
-              newRegister: newRegister
+              registerSaved: registerSaved
             });
-            _context4.next = 24;
+            _context4.next = 28;
             break;
 
-          case 22:
+          case 26:
             console.log('Not found');
             res.status(200).json({
               msg: 'Registro con encontrado, verifique el Id ingresado'
             });
 
-          case 24:
-            _context4.next = 29;
+          case 28:
+            _context4.next = 33;
             break;
 
-          case 26:
-            _context4.prev = 26;
+          case 30:
+            _context4.prev = 30;
             _context4.t0 = _context4["catch"](2);
             return _context4.abrupt("return", res.status(500).json({
               message: "Se ha producido un error, ".concat(_context4.t0.message)
             }));
 
-          case 29:
+          case 33:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 26]]);
+    }, _callee4, null, [[2, 30]]);
   }));
 
   return function updateRegisterById() {
@@ -454,6 +465,8 @@ var createRegister = /*#__PURE__*/function () {
               serialLog: getLastSerialLog + 1,
               serialScale: serialScale,
               weight: weight,
+              dateTara: new Date().toISOString(),
+              dateNet: new Date().toISOString(),
               dateWeight: null,
               status: status,
               userRecorder: userRecorder,

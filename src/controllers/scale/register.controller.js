@@ -1,4 +1,5 @@
 const { response, request } = require('express');
+const moment = require('moment');
 
 const Register = require('../../models/scale/register.model');
 const Truck = require('../../models/scale/truck.model');
@@ -18,10 +19,11 @@ const getRegisters = async (req = request, res = response) => {
             offset: offset
         });
 
+
         res.status(200).json({
-            msg: 'Lista de registros',
+            msg: 'Registro actualizado con exito',
             registers
-        })
+        });
     } catch (err) {
         return res.status(500).json({ message: err.message });
     }
@@ -92,7 +94,11 @@ const updateRegisterById = async (req = request, res = response) => {
 
         if (newRegister != null) {
             const dateRegister = newRegister.date
-            const formatedDate = new Date(dateRegister).toISOString();
+            const fechaTexto = dateRegister;
+            const formatoEntrada = "DD-MM-YYYY HH:mm";
+            const fecha = moment(fechaTexto, formatoEntrada).toDate();
+
+            const formatedDate = fecha //new Date(dateRegister).toISOString();
 
             newRegister.secondWeight = weight;
             newRegister.secondDateWeight = null; //trigger setValue
@@ -105,7 +111,7 @@ const updateRegisterById = async (req = request, res = response) => {
             if (newRegister.secondWeight > newRegister.weight) {
                 //Estaba Cargando
                 newRegister.tare = newRegister.weight;
-                newRegister.dateTara = formatedDate  //aqui debe colocarse la fecha de la medicion
+                newRegister.dateTara = formatedDate.toISOString()  //aqui debe colocarse la fecha de la medicion
                 newRegister.groosWeight = newRegister.secondWeight;
                 newRegister.netWeight = newRegister.groosWeight - newRegister.tare
                 newRegister.operation = 'Cargando'
@@ -124,7 +130,7 @@ const updateRegisterById = async (req = request, res = response) => {
                 newRegister.dateTara = new Date().toISOString();// aqui debe colocarse la fecha de la segunda captura
                 newRegister.groosWeight = newRegister.weight;
                 newRegister.netWeight = newRegister.groosWeight - newRegister.tare
-                newRegister.dateNet = formatedDate
+                newRegister.dateNet = formatedDate.toISOString()
             }
 
 
@@ -138,11 +144,12 @@ const updateRegisterById = async (req = request, res = response) => {
 
 
             console.log(newRegister);
-            await newRegister.save();
+            const registerSaved = await newRegister.save();
+
 
             res.status(200).json({
                 msg: 'Registro actualizado con exito',
-                newRegister
+                registerSaved
             });
         } else {
             console.log('Not found');
@@ -201,6 +208,8 @@ const createRegister = async (req = request, res = response) => {
                 serialLog: getLastSerialLog + 1,
                 serialScale,
                 weight,
+                dateTara: new Date().toISOString(),
+                dateNet: new Date().toISOString(),
                 dateWeight: null,
                 status,
                 userRecorder,

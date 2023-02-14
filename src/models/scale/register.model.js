@@ -21,10 +21,10 @@ const register = sequelize.define('registers', {
     },
     date: {
         type: DataTypes.DATE,
-        // get() {
-        //     const hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:mm');
-        //     return hdate
-        // },
+        get() {
+            const hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:mm');
+            return hdate
+        },
         required: true,
         defaultValue: DataTypes.NOW
     },
@@ -107,7 +107,11 @@ const register = sequelize.define('registers', {
                 args: true,
                 msg: 'El campo dateTara debe ser una fecha válida'
             }
-        }
+        },
+        get() {
+            const hdate = moment(this.dataValues.dateTara).format('DD-MM-YYYY HH:mm');
+            return hdate
+        },
     },
     dateNet: {
         type: DataTypes.DATE,
@@ -116,7 +120,11 @@ const register = sequelize.define('registers', {
                 args: true,
                 msg: 'El campo dateNet debe ser una fecha válida'
             }
-        }
+        },
+        get() {
+            const hdate = moment(this.dataValues.dateNet).format('DD-MM-YYYY HH:mm');
+            return hdate
+        },
     },
     weight: {
         type: DataTypes.DECIMAL(10, 3),
