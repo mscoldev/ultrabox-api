@@ -22,7 +22,8 @@ const router = Router();
 router.get('/line', getMaterialsByLine);
 router.get('/:materialId', getMaterialsById);
 router.get('/', getMaterials);
-
+router.put('/', updateMaterialById);
+router.delete('/', deleteMaterialById)
 
 //Agregar nuevos materiales al base de datos
 router.post('/', createMaterial);
