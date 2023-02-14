@@ -1,5 +1,5 @@
-
 const { Router } = require('express');
+const passport = require('passport');
 
 const { getRegisters,
     getRegisterById,
@@ -17,9 +17,13 @@ router.get('/:id', getRegisterById);
 
 router.get('/truck/:numberPlate', getLastRegisterByNumberPlate);
 
-router.put('/:id', updateRegisterById);
+router.put('/:id', [
+    passport.authenticate('jwt', { session: false })
+], updateRegisterById);
 
-router.post('/', createRegister);
+router.post('/', [
+    passport.authenticate('jwt', { session: false })
+], createRegister);
 
 router.delete('/:id', deleteRegisterById);
 

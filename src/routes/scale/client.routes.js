@@ -14,15 +14,15 @@ const { getClients,
 const router = Router();
 
 
-router.get('/', [validateJWT], getClients);
+router.get('/', getClients);
 
-router.get('/:id', [validateJWT], getClientById);
+router.get('/:id', getClientById);
 
-router.put('/:id', [validateJWT], updateClientById);
+router.put('/:id', updateClientById);
 
-router.post('/', [validateJWT], createClient);
+router.post('/', createClient);
 
-router.delete('/:id', [validateJWT], deleteClientById);
+router.delete('/:id', deleteClientById);
 
 
 

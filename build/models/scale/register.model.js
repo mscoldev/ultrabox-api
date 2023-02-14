@@ -24,22 +24,32 @@ var register = sequelize.define('registers', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
+    allowNull: false,
     defaultValue: DataTypes.UUIDV4
   },
   date: {
     type: DataTypes.DATE,
-    get: function get() {
-      var hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:mm');
-      return hdate;
-    },
+    // get() {
+    //     const hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:mm');
+    //     return hdate
+    // },
     required: true,
     defaultValue: DataTypes.NOW
   },
   serialScale: {
     type: DataTypes.INTEGER,
-    unique: true,
+    unique: {
+      args: true,
+      msg: 'El consecutivo de bascula debe ser unico'
+    },
+    validate: {
+      isNumeric: {
+        args: true,
+        msg: 'El consecutivo de bascula debe ser de tipo número'
+      }
+    },
     required: true,
-    autoIncrement: true
+    allowNull: false
   },
   serialLog: {
     type: DataTypes.INTEGER,
@@ -104,33 +114,21 @@ var register = sequelize.define('registers', {
   },
   dateTara: {
     type: DataTypes.DATE,
-    set: function set() {
-      var dateNow = new Date().toISOString();
-      var tareNow = this.tare;
-
-      if (tareNow != 0) {
-        this.setDataValue('dateTara', dateNow);
+    required: false,
+    validate: {
+      isDate: {
+        args: true,
+        msg: 'El campo dateTara debe ser una fecha válida'
       }
-    },
-    get: function get() {
-      var hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:mm');
-      return hdate;
-    },
-    required: false
+    }
   },
   dateNet: {
     type: DataTypes.DATE,
-    set: function set() {
-      var dateNow = new Date().toISOString();
-      var netWeightNow = this.netWeight;
-
-      if (netWeightNow != 0) {
-        this.setDataValue('dateNet', dateNow);
+    validate: {
+      isDate: {
+        args: true,
+        msg: 'El campo dateNet debe ser una fecha válida'
       }
-    },
-    get: function get() {
-      var hdate = moment(this.dataValues.date).format('DD-MM-YYYY HH:mm');
-      return hdate;
     }
   },
   weight: {
@@ -191,57 +189,81 @@ var register = sequelize.define('registers', {
   _idProduct: {
     type: DataTypes.INTEGER,
     required: true,
+    allowNull: false,
     validate: {
       isInt: {
         msg: 'El _idProduct debe ser Int'
+      },
+      notEmpty: {
+        msg: 'El producto no puede estar vacio'
       }
     }
   },
   _idDriver: {
     type: DataTypes.UUID,
     required: true,
+    allowNull: false,
     validate: {
       isUUID: {
         args: 4,
         msg: 'El _idDriver debe ser UUID'
+      },
+      notEmpty: {
+        msg: 'El conductor no puede estar vacio'
       }
     }
   },
   _idTruck: {
     type: DataTypes.UUID,
     required: true,
+    allowNull: false,
     validate: {
       isUUID: {
         args: 4,
         msg: 'El _idTruck debe ser UUID'
+      },
+      notEmpty: {
+        msg: 'El vehiculo no puede estar vacio'
       }
     }
   },
   _idClient: {
     type: DataTypes.UUID,
     required: true,
+    allowNull: false,
     validate: {
       isUUID: {
         args: 4,
         msg: 'El _idClient debe ser UUID'
+      },
+      notEmpty: {
+        msg: 'El cliente no puede estar vacio'
       }
     }
   },
   _idOrigin: {
     type: DataTypes.INTEGER,
     required: true,
+    allowNull: false,
     validate: {
       isInt: {
         msg: 'El _idOrigin debe ser Int'
+      },
+      notEmpty: {
+        msg: 'El origen no puede estar vacio'
       }
     }
   },
   _idSite: {
     type: DataTypes.INTEGER,
     required: true,
+    allowNull: false,
     validate: {
       isInt: {
         msg: 'El _idSite debe ser Int'
+      },
+      notEmpty: {
+        msg: 'El destino no puede estar vacio'
       }
     }
   },

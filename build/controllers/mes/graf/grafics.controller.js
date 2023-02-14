@@ -12,7 +12,9 @@ var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
-var ProductionLog = require("../../../models/mes/productionLog.model");
+var ProductionLog = require('../../../models/mes/productionLog.model');
+
+var nataFunction = require('../../../helpers/JSONata');
 
 var getGraficsMolinos = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -110,7 +112,11 @@ var getGraficskwton = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
-        result1,
+        data,
+        molino,
+        ex,
+        result,
+        test,
         _args2 = arguments;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
@@ -120,58 +126,67 @@ var getGraficskwton = /*#__PURE__*/function () {
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
             _context2.prev = 2;
             _context2.next = 5;
-            return ProductionLog.aggregate([{
-              $match: {
-                molino: 2,
-                receta: 5
+            return ProductionLog.find({
+              cantidad: {
+                $gt: 0
               }
-            }, {
-              $project: {
-                kwton: {
-                  $divide: [{
-                    $sum: "$kwhpd004"
-                  }, {
-                    $sum: "$cantidad"
-                  }]
-                }
+            }).select({
+              codigo: 1,
+              unidad: 1,
+              cantidad: 1,
+              estado: 1,
+              molino: 1,
+              receta: 1,
+              silo: 1,
+              kwhpd004: 1,
+              kwhpd005: 1,
+              kwhpd006: 1,
+              m3gas: 1,
+              m3ton: 1,
+              createdAt: {
+                $toString: "$createdAt"
+              },
+              updatedAt: {
+                $toString: "$updatedAt"
               }
-            }, {
-              $group: {
-                _id: {
-                  $dateToString: {
-                    format: "%Y-%m-%d",
-                    date: "$createdAt"
-                  }
-                }
-              }
-            }, {
-              $sort: {
-                createdAt: 1
-              }
-            }]);
+            }).lean();
 
           case 5:
-            result1 = _context2.sent;
-            res.status(200).json({
+            data = _context2.sent;
+            molino = {
+              data: data
+            };
+            console.log(molino); //*Expresion JSONata
+
+            ex = "$filter($, function ($v, $i, $a) {$v.createdAt <= \"2023-01-21\"}).kwTon";
+            _context2.next = 11;
+            return nataFunction(data, ex);
+
+          case 11:
+            result = _context2.sent;
+            console.log(result); //Resultado
+
+            test = res.status(200).json({
               msg: 'Grafico Molinos',
-              molino1: result1
-            });
-            _context2.next = 12;
+              molino1: data
+            }); // console.log(test.req.body);
+
+            _context2.next = 19;
             break;
 
-          case 9:
-            _context2.prev = 9;
+          case 16:
+            _context2.prev = 16;
             _context2.t0 = _context2["catch"](2);
             res.status(500).json({
               msg: _context2.t0.message
             });
 
-          case 12:
+          case 19:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[2, 9]]);
+    }, _callee2, null, [[2, 16]]);
   }));
 
   return function getGraficskwton() {

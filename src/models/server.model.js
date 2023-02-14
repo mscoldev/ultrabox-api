@@ -18,7 +18,7 @@ const corsOptions = {
     preflightContinue: false,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     optionsSuccessStatusCode: 204,
-    origin: '0.0.0.0/0'
+    origin: '*'
 }
 class Server {
 

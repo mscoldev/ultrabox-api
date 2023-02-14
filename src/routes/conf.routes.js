@@ -14,9 +14,10 @@ const router = Router();
 //Aqui las rutas necesarias --->
 
 
-router.get('/company', passport.authenticate('jwt', {
-    session: false
-}), getConfActiveCompany);
+router.get('/company', [
+    passport.authenticate('jwt', { session: false })
+],
+    getConfActiveCompany);
 
 router.put('/company', setConfCompany);
 

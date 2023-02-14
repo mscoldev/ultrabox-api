@@ -1,10 +1,10 @@
 const { response, request } = require('express');
 
-
 const Register = require('../../models/scale/register.model');
 const Truck = require('../../models/scale/truck.model');
 
-const { createDriverFromRegister } = require('../../controllers/scale/driver.controller')
+const { createDriverFromRegister } = require('../../controllers/scale/driver.controller');
+
 
 
 const getRegisters = async (req = request, res = response) => {
@@ -26,7 +26,6 @@ const getRegisters = async (req = request, res = response) => {
         return res.status(500).json({ message: err.message });
     }
 }
-
 
 const getRegisterById = async (req = request, res = response) => {
     try {
@@ -85,7 +84,6 @@ const getLastRegisterByNumberPlate = async (req = request, res = response) => {
     }
 }
 
-
 const updateRegisterById = async (req = request, res = response) => {
     try {
         const { id } = req.params;
@@ -93,6 +91,8 @@ const updateRegisterById = async (req = request, res = response) => {
         const newRegister = await Register.findByPk(id);
 
         if (newRegister != null) {
+            const dateRegister = newRegister.date
+            const formatedDate = new Date(dateRegister).toISOString();
 
             newRegister.secondWeight = weight;
             newRegister.secondDateWeight = null; //trigger setValue
@@ -105,22 +105,26 @@ const updateRegisterById = async (req = request, res = response) => {
             if (newRegister.secondWeight > newRegister.weight) {
                 //Estaba Cargando
                 newRegister.tare = newRegister.weight;
+                newRegister.dateTara = formatedDate  //aqui debe colocarse la fecha de la medicion
                 newRegister.groosWeight = newRegister.secondWeight;
                 newRegister.netWeight = newRegister.groosWeight - newRegister.tare
                 newRegister.operation = 'Cargando'
+                newRegister.dateNet = new Date().toISOString();
 
                 console.log(`Primera Medida: ${newRegister.weight}`);
                 console.log(`Segunda Medida: ${newRegister.secondWeight}`);
                 console.log('####Cargando...');
             } else {
-                //Estaba Descarnado
+                //Estaba Descargando
                 console.log('####Descargando...');
                 console.log(`Primera Medida: ${newRegister.weight}`);
                 console.log(`Segunda Medida: ${newRegister.secondWeight}`);
                 newRegister.operation = 'Descargando'
                 newRegister.tare = newRegister.secondWeight;
+                newRegister.dateTara = new Date().toISOString();// aqui debe colocarse la fecha de la segunda captura
                 newRegister.groosWeight = newRegister.weight;
                 newRegister.netWeight = newRegister.groosWeight - newRegister.tare
+                newRegister.dateNet = formatedDate
             }
 
 
@@ -133,7 +137,7 @@ const updateRegisterById = async (req = request, res = response) => {
             // newRegister.dateNet = "";
 
 
-
+            console.log(newRegister);
             await newRegister.save();
 
             res.status(200).json({
@@ -151,7 +155,6 @@ const updateRegisterById = async (req = request, res = response) => {
         return res.status(500).json({ message: `Se ha producido un error, ${err.message}` });
     }
 }
-
 
 const deleteRegisterById = async (req = request, res = response) => {
     try {
@@ -177,10 +180,10 @@ const deleteRegisterById = async (req = request, res = response) => {
     }
 }
 
-
 const createRegister = async (req = request, res = response) => {
     const {
         weight,
+        serialScale,
         status,
         userRecorder,
         _idProduct,
@@ -196,12 +199,13 @@ const createRegister = async (req = request, res = response) => {
             const getLastSerialLog = await Register.max('serialLog');
             const newRegister = await Register.create({
                 serialLog: getLastSerialLog + 1,
+                serialScale,
                 weight,
                 dateWeight: null,
                 status,
                 userRecorder,
                 _idProduct,
-                _idDriver: driver._idDriver,
+                _idDriver: driver._idDriver, //Cambio para obtener el dato desde un arreglo.
                 _idTruck,
                 _idClient,
                 _idOrigin,
@@ -225,6 +229,7 @@ const createRegister = async (req = request, res = response) => {
 
             const newRegister = await Register.create({
                 serialLog: getLastSerialLog + 1,
+                serialScale,
                 weight,
                 dateWeight: null,
                 status,

@@ -13,8 +13,8 @@ var _require2 = require('../controllers/confApp.controller'),
 
 var router = Router(); //Aqui las rutas necesarias --->
 
-router.get('/company', passport.authenticate('jwt', {
+router.get('/company', [passport.authenticate('jwt', {
   session: false
-}), getConfActiveCompany);
+})], getConfActiveCompany);
 router.put('/company', setConfCompany);
 module.exports = router;

@@ -247,6 +247,8 @@ var updateRegisterById = /*#__PURE__*/function () {
         status,
         userRecorder,
         newRegister,
+        dateRegister,
+        formatedDate,
         _args4 = arguments;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -265,10 +267,12 @@ var updateRegisterById = /*#__PURE__*/function () {
             newRegister = _context4.sent;
 
             if (!(newRegister != null)) {
-              _context4.next = 19;
+              _context4.next = 22;
               break;
             }
 
+            dateRegister = newRegister.date;
+            formatedDate = new Date(dateRegister).toISOString();
             newRegister.secondWeight = weight;
             newRegister.secondDateWeight = null; //trigger setValue
 
@@ -278,61 +282,68 @@ var updateRegisterById = /*#__PURE__*/function () {
             if (newRegister.secondWeight > newRegister.weight) {
               //Estaba Cargando
               newRegister.tare = newRegister.weight;
+              newRegister.dateTara = formatedDate; //aqui debe colocarse la fecha de la medicion
+
               newRegister.groosWeight = newRegister.secondWeight;
               newRegister.netWeight = newRegister.groosWeight - newRegister.tare;
               newRegister.operation = 'Cargando';
+              newRegister.dateNet = new Date().toISOString();
               console.log("Primera Medida: ".concat(newRegister.weight));
               console.log("Segunda Medida: ".concat(newRegister.secondWeight));
               console.log('####Cargando...');
             } else {
-              //Estaba Descarnado
+              //Estaba Descargando
               console.log('####Descargando...');
               console.log("Primera Medida: ".concat(newRegister.weight));
               console.log("Segunda Medida: ".concat(newRegister.secondWeight));
               newRegister.operation = 'Descargando';
               newRegister.tare = newRegister.secondWeight;
+              newRegister.dateTara = new Date().toISOString(); // aqui debe colocarse la fecha de la segunda captura
+
               newRegister.groosWeight = newRegister.weight;
               newRegister.netWeight = newRegister.groosWeight - newRegister.tare;
+              newRegister.dateNet = formatedDate;
             } //*Autocalcular
             // newRegister.netWeigth = "";
             // newRegister.dateTara = "";
             // newRegister.dateNet = "";
 
 
-            _context4.next = 16;
+            console.log(newRegister);
+            _context4.next = 19;
             return newRegister.save();
 
-          case 16:
+          case 19:
             res.status(200).json({
               msg: 'Registro actualizado con exito',
               newRegister: newRegister
             });
-            _context4.next = 21;
+            _context4.next = 24;
             break;
 
-          case 19:
+          case 22:
             console.log('Not found');
             res.status(200).json({
               msg: 'Registro con encontrado, verifique el Id ingresado'
             });
 
-          case 21:
-            _context4.next = 26;
+          case 24:
+            _context4.next = 29;
             break;
 
-          case 23:
-            _context4.prev = 23;
+          case 26:
+            _context4.prev = 26;
             _context4.t0 = _context4["catch"](2);
             return _context4.abrupt("return", res.status(500).json({
               message: "Se ha producido un error, ".concat(_context4.t0.message)
             }));
 
-          case 26:
+          case 29:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 23]]);
+    }, _callee4, null, [[2, 26]]);
   }));
 
   return function updateRegisterById() {
@@ -402,6 +413,7 @@ var createRegister = /*#__PURE__*/function () {
         res,
         _req$body2,
         weight,
+        serialScale,
         status,
         userRecorder,
         _idProduct,
@@ -424,7 +436,7 @@ var createRegister = /*#__PURE__*/function () {
           case 0:
             req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
             res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
-            _req$body2 = req.body, weight = _req$body2.weight, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, driver = _req$body2.driver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idSite = _req$body2._idSite, enabled = _req$body2.enabled;
+            _req$body2 = req.body, weight = _req$body2.weight, serialScale = _req$body2.serialScale, status = _req$body2.status, userRecorder = _req$body2.userRecorder, _idProduct = _req$body2._idProduct, driver = _req$body2.driver, _idTruck = _req$body2._idTruck, _idClient = _req$body2._idClient, _idOrigin = _req$body2._idOrigin, _idSite = _req$body2._idSite, enabled = _req$body2.enabled;
 
             if (!(driver._idDriver != null)) {
               _context6.next = 19;
@@ -440,12 +452,14 @@ var createRegister = /*#__PURE__*/function () {
             _context6.next = 10;
             return Register.create({
               serialLog: getLastSerialLog + 1,
+              serialScale: serialScale,
               weight: weight,
               dateWeight: null,
               status: status,
               userRecorder: userRecorder,
               _idProduct: _idProduct,
               _idDriver: driver._idDriver,
+              //Cambio para obtener el dato desde un arreglo.
               _idTruck: _idTruck,
               _idClient: _idClient,
               _idOrigin: _idOrigin,
@@ -470,7 +484,7 @@ var createRegister = /*#__PURE__*/function () {
             }));
 
           case 17:
-            _context6.next = 50;
+            _context6.next = 51;
             break;
 
           case 19:
@@ -487,60 +501,62 @@ var createRegister = /*#__PURE__*/function () {
             newDriver = _context6.sent;
             _context6.t1 = Register;
             _context6.t2 = _getLastSerialLog + 1;
-            _context6.t3 = weight;
-            _context6.t4 = status;
-            _context6.t5 = userRecorder;
-            _context6.t6 = _idProduct;
-            _context6.next = 34;
+            _context6.t3 = serialScale;
+            _context6.t4 = weight;
+            _context6.t5 = status;
+            _context6.t6 = userRecorder;
+            _context6.t7 = _idProduct;
+            _context6.next = 35;
             return newDriver.id;
 
-          case 34:
-            _context6.t7 = _context6.sent;
-            _context6.t8 = _idTruck;
-            _context6.t9 = _idClient;
-            _context6.t10 = _idOrigin;
-            _context6.t11 = _idSite;
-            _context6.t12 = enabled;
-            _context6.t13 = {
+          case 35:
+            _context6.t8 = _context6.sent;
+            _context6.t9 = _idTruck;
+            _context6.t10 = _idClient;
+            _context6.t11 = _idOrigin;
+            _context6.t12 = _idSite;
+            _context6.t13 = enabled;
+            _context6.t14 = {
               serialLog: _context6.t2,
-              weight: _context6.t3,
+              serialScale: _context6.t3,
+              weight: _context6.t4,
               dateWeight: null,
-              status: _context6.t4,
-              userRecorder: _context6.t5,
-              _idProduct: _context6.t6,
-              _idDriver: _context6.t7,
-              _idTruck: _context6.t8,
-              _idClient: _context6.t9,
-              _idOrigin: _context6.t10,
-              _idSite: _context6.t11,
-              enabled: _context6.t12
+              status: _context6.t5,
+              userRecorder: _context6.t6,
+              _idProduct: _context6.t7,
+              _idDriver: _context6.t8,
+              _idTruck: _context6.t9,
+              _idClient: _context6.t10,
+              _idOrigin: _context6.t11,
+              _idSite: _context6.t12,
+              enabled: _context6.t13
             };
-            _context6.next = 43;
-            return _context6.t1.create.call(_context6.t1, _context6.t13);
+            _context6.next = 44;
+            return _context6.t1.create.call(_context6.t1, _context6.t14);
 
-          case 43:
+          case 44:
             _newRegister = _context6.sent;
             res.status(201).json({
               msg: 'Registro creado satisfactoriamente!',
               newDriver: newDriver,
               newRegister: _newRegister
             });
-            _context6.next = 50;
+            _context6.next = 51;
             break;
 
-          case 47:
-            _context6.prev = 47;
-            _context6.t14 = _context6["catch"](19);
+          case 48:
+            _context6.prev = 48;
+            _context6.t15 = _context6["catch"](19);
             return _context6.abrupt("return", res.status(500).json({
-              message: "Oops! ha producido un error: ".concat(_context6.t14.message)
+              message: "Oops! ha producido un error: ".concat(_context6.t15.message)
             }));
 
-          case 50:
+          case 51:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[4, 14], [19, 47]]);
+    }, _callee6, null, [[4, 14], [19, 48]]);
   }));
 
   return function createRegister() {
