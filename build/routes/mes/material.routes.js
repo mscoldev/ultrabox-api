@@ -19,8 +19,8 @@ var router = Router(); //Aqui las rutas necesarias --->
 router.get('/line', getMaterialsByLine);
 router.get('/:materialId', getMaterialsById);
 router.get('/', getMaterials);
-router.put('/', updateMaterialById);
-router["delete"]('/', deleteMaterialById); //Agregar nuevos materiales al base de datos
+router.put('/:materialId', updateMaterialById);
+router["delete"]('/:materialId', deleteMaterialById); //Agregar nuevos materiales al base de datos
 
 router.post('/', createMaterial);
 module.exports = router;
