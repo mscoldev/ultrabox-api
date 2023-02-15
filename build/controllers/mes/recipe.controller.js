@@ -42,7 +42,16 @@ var getRecipe = /*#__PURE__*/function () {
           case 6:
             _context.t1 = _context.sent;
             _context.next = 9;
-            return (0, _context.t0)(_context.t1);
+            return (0, _context.t0)(_context.t1).populate([{
+              path: 'productionLineUse',
+              model: 'ProductionLine',
+              options: {
+                lean: true
+              },
+              select: {
+                name: 1
+              }
+            }]).exec();
 
           case 9:
             recipes = _context.sent;

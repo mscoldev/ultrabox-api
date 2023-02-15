@@ -6,7 +6,12 @@ const jsonata = require('jsonata');
 const getRecipe = async (req = request, res = response) => {
     try {
         // const recipes = await getRecipesToDatabase()
-        const recipes = await JSONataExpression(await getRecipesToDatabase());
+        const recipes = await JSONataExpression(await getRecipesToDatabase()).populate([{
+            path: 'productionLineUse',
+            model: 'ProductionLine',
+            options: { lean: true },
+            select: { name: 1 }
+        }]).exec();
         res.status(200).json({
             msg: 'Lista de recetas',
             recipes

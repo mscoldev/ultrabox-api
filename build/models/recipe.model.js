@@ -33,7 +33,11 @@ var recipeSchema = Schema({
       type: Number,
       required: [true, 'Defina la cantidad a utilizar del material']
     }
-  })]
+  })],
+  productionLineUse: [{
+    ref: 'ProductionLine',
+    type: Schema.Types.ObjectId
+  }]
 }, {
   timestamps: true,
   versionKey: false
