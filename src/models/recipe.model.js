@@ -32,7 +32,8 @@ const recipeSchema = Schema({
     })],
     productionLineUse: [{
         ref: 'ProductionLine',
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        required: [true, 'Defina la productionlineuse a utilizar del material']
     }],
 }, {
     timestamps: true,
