@@ -36,17 +36,18 @@ const getProductById = async (req = request, res = response) => {
     }
 }
 
-
+//TODO: Agregar densidad a la desestructuracion
 const updateProductById = async (req = request, res = response) => {
     try {
         const { id } = req.params;
-        const { productName, enable } = req.body;
+        const { productName, enable, density } = req.body;
         const productUpdated = await Product.findByPk(id);
 
         if (productUpdated != null) {
             console.log('found');
             productUpdated.productName = productName;
             productUpdated.enable = enable;
+            productUpdated.density = density;
 
             await productUpdated.save();
 
@@ -93,9 +94,10 @@ const deleteProductById = async (req = request, res = response) => {
 
 const createProduct = async (req = request, res = response) => {
     try {
-        const { productName } = req.body
+        const { productName, density } = req.body
         const newProduct = await Product.create({
-            productName
+            productName,
+            density
         });
 
         res.status(201).json({

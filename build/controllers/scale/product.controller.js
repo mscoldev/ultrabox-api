@@ -117,7 +117,8 @@ var getProductById = /*#__PURE__*/function () {
   return function getProductById() {
     return _ref2.apply(this, arguments);
   };
-}();
+}(); //TODO: Agregar densidad a la desestructuracion
+
 
 var updateProductById = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
@@ -127,6 +128,7 @@ var updateProductById = /*#__PURE__*/function () {
         _req$body,
         productName,
         enable,
+        density,
         productUpdated,
         _args3 = arguments;
 
@@ -138,7 +140,7 @@ var updateProductById = /*#__PURE__*/function () {
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
             _context3.prev = 2;
             id = req.params.id;
-            _req$body = req.body, productName = _req$body.productName, enable = _req$body.enable;
+            _req$body = req.body, productName = _req$body.productName, enable = _req$body.enable, density = _req$body.density;
             _context3.next = 7;
             return Product.findByPk(id);
 
@@ -146,47 +148,48 @@ var updateProductById = /*#__PURE__*/function () {
             productUpdated = _context3.sent;
 
             if (!(productUpdated != null)) {
-              _context3.next = 17;
+              _context3.next = 18;
               break;
             }
 
             console.log('found');
             productUpdated.productName = productName;
             productUpdated.enable = enable;
-            _context3.next = 14;
+            productUpdated.density = density;
+            _context3.next = 15;
             return productUpdated.save();
 
-          case 14:
+          case 15:
             res.status(200).json({
               msg: 'Origen actualizado',
               productUpdated: productUpdated
             });
-            _context3.next = 19;
+            _context3.next = 20;
             break;
 
-          case 17:
+          case 18:
             console.log('Not found');
             res.status(200).json({
               msg: 'Producto no encontrado, verifique id'
             });
 
-          case 19:
-            _context3.next = 24;
+          case 20:
+            _context3.next = 25;
             break;
 
-          case 21:
-            _context3.prev = 21;
+          case 22:
+            _context3.prev = 22;
             _context3.t0 = _context3["catch"](2);
             return _context3.abrupt("return", res.status(500).json({
               message: "Se ha producido un error, ".concat(_context3.t0.message)
             }));
 
-          case 24:
+          case 25:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[2, 21]]);
+    }, _callee3, null, [[2, 22]]);
   }));
 
   return function updateProductById() {
@@ -264,9 +267,12 @@ var createProduct = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
     var req,
         res,
+        _req$body2,
         productName,
+        density,
         newProduct,
         _args5 = arguments;
+
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
@@ -274,10 +280,11 @@ var createProduct = /*#__PURE__*/function () {
             req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
             res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
             _context5.prev = 2;
-            productName = req.body.productName;
+            _req$body2 = req.body, productName = _req$body2.productName, density = _req$body2.density;
             _context5.next = 6;
             return Product.create({
-              productName: productName
+              productName: productName,
+              density: density
             });
 
           case 6:
