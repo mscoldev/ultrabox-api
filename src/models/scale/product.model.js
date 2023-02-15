@@ -22,7 +22,6 @@ const product = sequelize.define('products', {
             isDecimal: { msg: 'La densidad no es un numero decimal' }
         }
     },
-
     enabled: {
         type: DataTypes.BOOLEAN,
         required: true,

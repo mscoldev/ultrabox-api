@@ -20,15 +20,13 @@ const getConfActiveCompany = async (req = request, res = response) => {
 }
 
 const setConfCompany = async (req = request, res = response) => {
-    const { company, nit, initSerial } = req.body;
-    try {
-        const confAppCompany = new ConfApp({
-            company,
-            nit,
-            initSerial
-        });
 
-        const confAppCompanySaved = await confAppCompany.save();
+    try {
+        const body = req.body;
+
+        const { _id } = await ConfApp.findOne({ "deleted": false })
+
+        const confAppCompanySaved = await ConfApp.findByIdAndUpdate(_id, body, { new: true });;
 
         res.status(201).json({
             msg: 'Configuracion cargada',
