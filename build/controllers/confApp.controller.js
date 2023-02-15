@@ -65,11 +65,9 @@ var setConfCompany = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
-        _req$body,
-        company,
-        nit,
-        initSerial,
-        confAppCompany,
+        body,
+        _yield$ConfApp$findOn,
+        _id,
         confAppCompanySaved,
         _args2 = arguments;
 
@@ -79,38 +77,44 @@ var setConfCompany = /*#__PURE__*/function () {
           case 0:
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
-            _req$body = req.body, company = _req$body.company, nit = _req$body.nit, initSerial = _req$body.initSerial;
-            _context2.prev = 3;
-            confAppCompany = new ConfApp({
-              company: company,
-              nit: nit,
-              initSerial: initSerial
+            _context2.prev = 2;
+            body = req.body;
+            _context2.next = 6;
+            return ConfApp.findOne({
+              "deleted": false
             });
-            _context2.next = 7;
-            return confAppCompany.save();
 
-          case 7:
+          case 6:
+            _yield$ConfApp$findOn = _context2.sent;
+            _id = _yield$ConfApp$findOn._id;
+            _context2.next = 10;
+            return ConfApp.findByIdAndUpdate(_id, body, {
+              "new": true
+            });
+
+          case 10:
             confAppCompanySaved = _context2.sent;
+            ;
             res.status(201).json({
               msg: 'Configuracion cargada',
               confAppCompanySaved: confAppCompanySaved
             });
-            _context2.next = 14;
+            _context2.next = 18;
             break;
 
-          case 11:
-            _context2.prev = 11;
-            _context2.t0 = _context2["catch"](3);
+          case 15:
+            _context2.prev = 15;
+            _context2.t0 = _context2["catch"](2);
             return _context2.abrupt("return", res.status(500).json({
               msg: "Algo ha salido mal...".concat(_context2.t0.message)
             }));
 
-          case 14:
+          case 18:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[3, 11]]);
+    }, _callee2, null, [[2, 15]]);
   }));
 
   return function setConfCompany() {
