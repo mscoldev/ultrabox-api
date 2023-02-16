@@ -5,10 +5,11 @@ const jsonata = require('jsonata');
 
 const getRecipe = async (req = request, res = response) => {
     try {
-        // const recipes = await getRecipesToDatabase()
-        const recipes = await JSONataExpression(await getRecipesToDatabase())
+        const recipes = await getRecipesToDatabase()
+        const recipesJSON = await JSONataExpression(recipes)
         res.status(200).json({
             msg: 'Lista de recetas',
+            recipesJSON,
             recipes
         })
     } catch (err) {
@@ -79,12 +80,8 @@ const getRecipesToDatabase = async () => {
     try {
         const recipes = await Recipe.find({ "deleted": false })
             .populate({ path: 'ingredients._idMaterial', select: { name: 1, _id: 1, type: 1, deleted: 1, erp_code: 1, id_controller: 1 } })
-            .populate([{
-                path: 'productionLineUse',
-                model: 'ProductionLine',
-                options: { lean: true },
-                select: { name: 1 }
-            }]).exec();
+            .populate({ path: 'productionLineUse', select: { name: 1 } })
+            .exec();
         return recipes;
     } catch (err) {
         message: err.message
