@@ -27,6 +27,7 @@ var getRecipe = /*#__PURE__*/function () {
     var req,
         res,
         recipes,
+        recipesJSON,
         _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -35,37 +36,37 @@ var getRecipe = /*#__PURE__*/function () {
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
-            _context.t0 = JSONataExpression;
-            _context.next = 6;
+            _context.next = 5;
             return getRecipesToDatabase();
 
-          case 6:
-            _context.t1 = _context.sent;
-            _context.next = 9;
-            return (0, _context.t0)(_context.t1);
-
-          case 9:
+          case 5:
             recipes = _context.sent;
+            _context.next = 8;
+            return JSONataExpression(recipes);
+
+          case 8:
+            recipesJSON = _context.sent;
             res.status(200).json({
               msg: 'Lista de recetas',
+              recipesJSON: recipesJSON,
               recipes: recipes
             });
-            _context.next = 16;
+            _context.next = 15;
             break;
 
-          case 13:
-            _context.prev = 13;
-            _context.t2 = _context["catch"](2);
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](2);
             return _context.abrupt("return", res.status(500).json({
-              message: _context.t2.message
+              message: _context.t0.message
             }));
 
-          case 16:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[2, 13]]);
+    }, _callee, null, [[2, 12]]);
   }));
 
   return function getRecipe() {
@@ -264,16 +265,12 @@ var getRecipesToDatabase = /*#__PURE__*/function () {
                 erp_code: 1,
                 id_controller: 1
               }
-            }).populate([{
+            }).populate({
               path: 'productionLineUse',
-              model: 'ProductionLine',
-              options: {
-                lean: true
-              },
               select: {
                 name: 1
               }
-            }]).exec();
+            }).exec();
 
           case 3:
             recipes = _context5.sent;
