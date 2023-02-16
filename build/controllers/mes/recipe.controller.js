@@ -26,8 +26,8 @@ var getRecipe = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
+        recipesComplete,
         recipes,
-        recipesJSON,
         _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -40,16 +40,16 @@ var getRecipe = /*#__PURE__*/function () {
             return getRecipesToDatabase();
 
           case 5:
-            recipes = _context.sent;
+            recipesComplete = _context.sent;
             _context.next = 8;
-            return JSONataExpression(recipes);
+            return JSONataExpression(recipesComplete);
 
           case 8:
-            recipesJSON = _context.sent;
+            recipes = _context.sent;
             res.status(200).json({
               msg: 'Lista de recetas',
-              recipesJSON: recipesJSON,
-              recipes: recipes
+              recipes: recipes,
+              recipesComplete: recipesComplete
             });
             _context.next = 15;
             break;
@@ -303,7 +303,7 @@ var JSONataExpression = /*#__PURE__*/function () {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            queryJSONata = "[$.{\"id\":_id,\"name\":name,\"erp_code\":erp_code,\"id_controller\":id_controller,\n        \"ingredients\":[ingredients.$.{\"_idIngredient\":_id,\"_idMaterial\":_idMaterial._id,\"name\":_idMaterial.name,\"id_controller\":_idMaterial.id_controller,\"type\":_idMaterial.type,\"deleted\":_idMaterial.deleted,\"qty\":qty}]}]";
+            queryJSONata = "[$.{\"id\":_id,\"name\":name,\"erp_code\":erp_code,\"id_controller\":id_controller,\n        \"productionLineUse\":[productionLineUse.$.{\"_id\":_id,\"name\":name}],\n        \"ingredients\":[ingredients.$.{\"_idIngredient\":_id,\"_idMaterial\":_idMaterial._id,\"name\":_idMaterial.name,\"id_controller\":_idMaterial.id_controller,\"type\":_idMaterial.type,\"deleted\":_idMaterial.deleted,\"qty\":qty}]}]";
             expression = jsonata(queryJSONata);
             result = expression.evaluate(dataPromise);
             return _context6.abrupt("return", result);

@@ -5,12 +5,12 @@ const jsonata = require('jsonata');
 
 const getRecipe = async (req = request, res = response) => {
     try {
-        const recipes = await getRecipesToDatabase()
-        const recipesJSON = await JSONataExpression(recipes)
+        const recipesComplete = await getRecipesToDatabase()
+        const recipes = await JSONataExpression(recipesComplete)
         res.status(200).json({
             msg: 'Lista de recetas',
-            recipesJSON,
-            recipes
+            recipes,
+            recipesComplete
         })
     } catch (err) {
         return res.status(500).json({ message: err.message });
@@ -91,6 +91,7 @@ const getRecipesToDatabase = async () => {
 //Function - List recipe apply a JSONata Expression
 const JSONataExpression = async (dataPromise) => {
     const queryJSONata = `[$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,
+        "productionLineUse":[productionLineUse.$.{"_id":_id,"name":name}],
         "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"id_controller":_idMaterial.id_controller,"type":_idMaterial.type,"deleted":_idMaterial.deleted,"qty":qty}]}]`;
     const expression = jsonata(queryJSONata);
 
