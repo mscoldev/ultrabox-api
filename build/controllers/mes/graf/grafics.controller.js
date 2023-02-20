@@ -49,7 +49,7 @@ var getGraficsMolinos = /*#__PURE__*/function () {
               }
             }, {
               $sort: {
-                createdAt: 1
+                _id: 1
               }
             }]);
 
@@ -74,7 +74,7 @@ var getGraficsMolinos = /*#__PURE__*/function () {
               }
             }, {
               $sort: {
-                createdAt: 1
+                _id: 1
               }
             }]);
 

@@ -14,7 +14,7 @@ const getGraficsMolinos = async (req = request, res = response) => {
             },
             {
                 $sort: {
-                    createdAt: 1
+                    _id: 1
                 }
             }
         ]);
@@ -28,7 +28,7 @@ const getGraficsMolinos = async (req = request, res = response) => {
             },
             {
                 $sort: {
-                    createdAt: 1
+                    _id: 1
                 }
             }
         ]);
