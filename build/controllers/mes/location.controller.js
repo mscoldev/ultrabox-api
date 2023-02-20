@@ -8,20 +8,17 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var _require = require('express'),
+var _require = require("express"),
     response = _require.response,
     request = _require.request;
 
-var ProductionLog = require('../../../models/mes/productionLog.model');
+var Location = require("../../models/location.model");
 
-var nataFunction = require('../../../helpers/JSONata');
-
-var getGraficsMolinos = /*#__PURE__*/function () {
+var getLocation = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
-        result1,
-        result2,
+        productionLines,
         _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -31,177 +28,305 @@ var getGraficsMolinos = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             _context.prev = 2;
             _context.next = 5;
-            return ProductionLog.aggregate([{
-              $match: {
-                molino: 1
-              }
-            }, {
-              $group: {
-                _id: {
-                  $dateToString: {
-                    format: "%Y-%m-%d",
-                    date: "$createdAt"
-                  }
-                },
-                kgTotales: {
-                  $sum: "$cantidad"
-                }
-              }
-            }, {
-              $sort: {
-                createdAt: 1
-              }
-            }]);
+            return ProductionLine.find();
 
           case 5:
-            result1 = _context.sent;
-            _context.next = 8;
-            return ProductionLog.aggregate([{
-              $match: {
-                molino: 2
-              }
-            }, {
-              $group: {
-                _id: {
-                  $dateToString: {
-                    format: "%Y-%m-%d",
-                    date: "$createdAt"
-                  }
-                },
-                kgTotales: {
-                  $sum: "$cantidad"
-                }
-              }
-            }, {
-              $sort: {
-                createdAt: 1
-              }
-            }]);
-
-          case 8:
-            result2 = _context.sent;
+            productionLines = _context.sent;
             res.status(200).json({
-              msg: 'Grafico Molinos',
-              molino1: result1,
-              molino2: result2
+              msg: 'Lineas de producción',
+              productionLines: productionLines
             });
-            _context.next = 15;
+            _context.next = 12;
             break;
 
-          case 12:
-            _context.prev = 12;
+          case 9:
+            _context.prev = 9;
             _context.t0 = _context["catch"](2);
-            res.status(500).json({
-              msg: _context.t0.message
-            });
+            return _context.abrupt("return", res.status(500).json({
+              message: _context.t0.message
+            }));
 
-          case 15:
+          case 12:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[2, 12]]);
+    }, _callee, null, [[2, 9]]);
   }));
 
-  return function getGraficsMolinos() {
+  return function getLocation() {
     return _ref.apply(this, arguments);
   };
 }();
 
-var getGraficskwton = /*#__PURE__*/function () {
+var getNameProdLinesByIdController = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
-        _req$query,
-        startDate,
-        endDate,
-        setStartDateSet,
-        setEndDate,
-        queryResult,
-        ex,
-        data,
+        idc,
+        productionLine,
         _args2 = arguments;
-
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
-            _context2.prev = 2;
-            _req$query = req.query, startDate = _req$query.startDate, endDate = _req$query.endDate; //*PREPARACION CONSULTA.
-
-            console.log(startDate);
-            console.log(endDate);
-            setStartDateSet = new Date(startDate);
-            setEndDate = new Date(endDate);
-            console.log(setStartDateSet);
-            console.log(setEndDate); //*Buscar datos entre las fechas starDate y endDate
-
-            _context2.next = 12;
-            return ProductionLog.find({
-              cantidad: {
-                $gt: 0
-              },
-              $and: [{
-                createdAt: {
-                  $gte: setStartDateSet
-                }
-              }, {
-                createdAt: {
-                  $lt: setEndDate
-                }
-              }]
-            }).then(function (productionLogs) {
-              var modifiedProductionLogs = productionLogs.map(function (productionLog) {
-                var modifiedProductionLog = productionLog.toObject();
-                modifiedProductionLog.kwTot = productionLog.kwhpd004 + productionLog.kwhpd005 + productionLog.kwhpd006;
-                modifiedProductionLog.kwTon = Math.floor10(modifiedProductionLog.kwTot / productionLog.cantidad, -3);
-                return modifiedProductionLog;
-              });
-              return modifiedProductionLogs;
-            })["catch"](function (err) {
-              console.error(err);
+            idc = req.params.idc;
+            _context2.prev = 3;
+            _context2.next = 6;
+            return ProductionLine.findOne({
+              'id_controller': idc
             });
 
-          case 12:
-            queryResult = _context2.sent;
-            // //*Expresion JSONata
-            ex = "{\"molino1\":$average($filter($, function ($v, $i, $a) {$v.molino = \"1\"}).kwTon),\n        \"molino2\": $average($filter($, function ($v, $i, $a) { $v.molino = \"2\" }).kwTon)}";
-            _context2.next = 16;
-            return nataFunction(queryResult, ex);
-
-          case 16:
-            data = _context2.sent;
+          case 6:
+            productionLine = _context2.sent;
             res.status(200).json({
-              msg: 'Grafico Molinos',
-              data: data
-            }); // console.log(test.req.body);
-
-            _context2.next = 23;
+              msg: 'Informacion de linea de produccion',
+              productionLine: productionLine
+            });
+            _context2.next = 13;
             break;
 
-          case 20:
-            _context2.prev = 20;
-            _context2.t0 = _context2["catch"](2);
-            res.status(500).json({
-              msg: _context2.t0.message
-            });
+          case 10:
+            _context2.prev = 10;
+            _context2.t0 = _context2["catch"](3);
+            return _context2.abrupt("return", res.status(500).json({
+              message: _context2.t0.message
+            }));
 
-          case 23:
+          case 13:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[2, 20]]);
+    }, _callee2, null, [[3, 10]]);
   }));
 
-  return function getGraficskwton() {
+  return function getNameProdLinesByIdController() {
     return _ref2.apply(this, arguments);
   };
 }();
 
+var createProductionLine = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var req,
+        res,
+        body,
+        productionLine,
+        productionLineSaved,
+        _args3 = arguments;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
+            res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
+            _context3.prev = 2;
+            body = req.body;
+            productionLine = new ProductionLine(body);
+            _context3.next = 7;
+            return productionLine.save();
+
+          case 7:
+            productionLineSaved = _context3.sent;
+            res.status(201).json({
+              msg: 'Linea de producción creada',
+              productionLineSaved: productionLineSaved
+            });
+            _context3.next = 14;
+            break;
+
+          case 11:
+            _context3.prev = 11;
+            _context3.t0 = _context3["catch"](2);
+            return _context3.abrupt("return", res.status(500).json({
+              message: _context3.t0.message
+            }));
+
+          case 14:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[2, 11]]);
+  }));
+
+  return function createProductionLine() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var getProductionLineById = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var req,
+        res,
+        productionLine,
+        _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
+            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
+            _context4.prev = 2;
+            _context4.next = 5;
+            return ProductionLine.findById(req.params._id);
+
+          case 5:
+            productionLine = _context4.sent;
+
+            if (productionLine != null) {
+              res.status(200).json({
+                msg: 'Linea de producción por Id',
+                productionLine: productionLine
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Linea de produccion no encontrada'
+              });
+            }
+
+            _context4.next = 12;
+            break;
+
+          case 9:
+            _context4.prev = 9;
+            _context4.t0 = _context4["catch"](2);
+            res.status(500).json({
+              message: _context4.t0.message
+            });
+
+          case 12:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[2, 9]]);
+  }));
+
+  return function getProductionLineById() {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var updateProductionLineById = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+    var req,
+        res,
+        paramsId,
+        body,
+        updatedProductionLine,
+        _args5 = arguments;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
+            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
+            _context5.prev = 2;
+            paramsId = req.params._id;
+            body = req.body;
+            _context5.next = 7;
+            return ProductionLine.findByIdAndUpdate(paramsId, body, {
+              "new": true
+            });
+
+          case 7:
+            updatedProductionLine = _context5.sent;
+
+            if (updatedProductionLine != null) {
+              res.status(200).json({
+                msg: 'Linea de produccion actualizada por Id',
+                updatedProductionLine: updatedProductionLine
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Id de Linea de produccion no econtrado'
+              });
+            }
+
+            _context5.next = 14;
+            break;
+
+          case 11:
+            _context5.prev = 11;
+            _context5.t0 = _context5["catch"](2);
+            return _context5.abrupt("return", res.status(500).json({
+              message: _context5.t0.message
+            }));
+
+          case 14:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[2, 11]]);
+  }));
+
+  return function updateProductionLineById() {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var deleteProductionLineById = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+    var req,
+        res,
+        paramsId,
+        body,
+        deletedProductionLine,
+        _args6 = arguments;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
+            res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
+            _context6.prev = 2;
+            paramsId = req.params._id;
+            body = {
+              deleted: true
+            };
+            _context6.next = 7;
+            return ProductionLine.findByIdAndUpdate(paramsId, body);
+
+          case 7:
+            deletedProductionLine = _context6.sent;
+
+            if (deletedProductionLine != null) {
+              res.status(202).json({
+                msg: 'Linea de produccion eliminada Id:' + paramsId
+              });
+            } else {
+              res.status(404).json({
+                msg: 'Linea de produccion no encontrada, verifique los datos'
+              });
+            }
+
+            _context6.next = 14;
+            break;
+
+          case 11:
+            _context6.prev = 11;
+            _context6.t0 = _context6["catch"](2);
+            res.status(500).json({
+              message: _context6.t0.message
+            });
+
+          case 14:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[2, 11]]);
+  }));
+
+  return function deleteProductionLineById() {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
 module.exports = {
-  getGraficsMolinos: getGraficsMolinos,
-  getGraficskwton: getGraficskwton
+  getLocation: getLocation
 };

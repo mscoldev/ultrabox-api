@@ -75,9 +75,9 @@ var productionLogSchema = Schema({
 productionLogSchema.methods.toJSON = function () {
   var productionLog = this.toObject();
   productionLog.createdAt = moment(productionLog.createdAt).format('DD-MM-YYYY HH:mm');
-  productionLog.updatedAt = moment(productionLog.updatedAt).format('DD-MM-YYYY HH:mm');
-  productionLog.kwtot = this.kwhpd004 + this.kwhpd005 + this.kwhpd006;
-  productionLog.kwTon = Math.floor10(productionLog.kwtot / this.cantidad, -3);
+  productionLog.updatedAt = moment(productionLog.updatedAt).format('DD-MM-YYYY HH:mm'); // productionLog.kwTot = this.kwhpd004 + this.kwhpd005 + this.kwhpd006;
+  // productionLog.kwTon = Math.floor10(productionLog.kwTot / this.cantidad, -3);
+
   return productionLog;
 };
 

@@ -47,36 +47,47 @@ const getGraficsMolinos = async (req = request, res = response) => {
 
 const getGraficskwton = async (req = request, res = response) => {
     try {
-        const data = await ProductionLog.find({ cantidad: { $gt: 0 } }).select({
-            codigo: 1,
-            unidad: 1,
-            cantidad: 1,
-            estado: 1,
-            molino: 1,
-            receta: 1,
-            silo: 1,
-            kwhpd004: 1,
-            kwhpd005: 1,
-            kwhpd006: 1,
-            m3gas: 1,
-            m3ton: 1,
-            createdAt: { $toString: "$createdAt" },
-            updatedAt: { $toString: "$updatedAt" }
-        }).lean()
-        const molino = {
-            data
-        };
+        const { startDate, endDate } = req.query
+        //*PREPARACION CONSULTA.
+        console.log(startDate);
+        console.log(endDate);
 
-        console.log(molino);
+        const setStartDateSet = new Date(startDate);
+        const setEndDate = new Date(endDate);
 
-        //*Expresion JSONata
-        const ex = `$filter($, function ($v, $i, $a) {$v.createdAt <= "2023-01-21"}).kwTon`
-        const result = await nataFunction(data, ex)
-        console.log(result);
-        //Resultado
-        const test = res.status(200).json({
+        console.log(setStartDateSet);
+        console.log(setEndDate);
+
+
+        //*Buscar datos entre las fechas starDate y endDate
+        const queryResult = await ProductionLog.find({
+            cantidad: { $gt: 0 },
+            $and: [
+                { createdAt: { $gte: setStartDateSet } },
+                { createdAt: { $lt: setEndDate } },
+            ]
+        }).then((productionLogs) => {
+            const modifiedProductionLogs = productionLogs.map((productionLog) => {
+                const modifiedProductionLog = productionLog.toObject();
+                modifiedProductionLog.kwTot = productionLog.kwhpd004 + productionLog.kwhpd005 + productionLog.kwhpd006;
+                modifiedProductionLog.kwTon = Math.floor10(modifiedProductionLog.kwTot / productionLog.cantidad, -3);
+                return modifiedProductionLog;
+            });
+            return modifiedProductionLogs
+        }).catch((err) => {
+            console.error(err);
+        });
+
+
+        // //*Expresion JSONata
+        const ex = `{"molino1":$average($filter($, function ($v, $i, $a) {$v.molino = "1"}).kwTon),
+        "molino2": $average($filter($, function ($v, $i, $a) { $v.molino = "2" }).kwTon)}`
+
+        const data = await nataFunction(queryResult, ex)
+
+        res.status(200).json({
             msg: 'Grafico Molinos',
-            molino1: data
+            data
         })
         // console.log(test.req.body);
     } catch (err) {
