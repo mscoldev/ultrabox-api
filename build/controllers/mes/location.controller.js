@@ -12,13 +12,19 @@ var _require = require("express"),
     response = _require.response,
     request = _require.request;
 
-var Location = require("../../models/location.model");
+var boom = require('@hapi/boom');
+
+var _require2 = require('mongoose'),
+    Types = _require2.Types;
+
+var Location = require("../../models/mes/location.model");
 
 var getLocation = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
-        productionLines,
+        next,
+        location,
         _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -26,32 +32,44 @@ var getLocation = /*#__PURE__*/function () {
           case 0:
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
-            _context.prev = 2;
-            _context.next = 5;
-            return ProductionLine.find();
+            next = _args.length > 2 ? _args[2] : undefined;
+            _context.prev = 3;
+            _context.next = 6;
+            return Location.find();
 
-          case 5:
-            productionLines = _context.sent;
+          case 6:
+            location = _context.sent;
+
+            if (!(location.length !== 0)) {
+              _context.next = 11;
+              break;
+            }
+
             res.status(200).json({
-              msg: 'Lineas de producción',
-              productionLines: productionLines
+              msg: 'Lista de ubicaciones',
+              location: location
             });
             _context.next = 12;
             break;
 
-          case 9:
-            _context.prev = 9;
-            _context.t0 = _context["catch"](2);
-            return _context.abrupt("return", res.status(500).json({
-              message: _context.t0.message
-            }));
+          case 11:
+            throw boom.notFound('Oops!, ubicaciones no encontradas');
 
           case 12:
+            _context.next = 17;
+            break;
+
+          case 14:
+            _context.prev = 14;
+            _context.t0 = _context["catch"](3);
+            next(_context.t0);
+
+          case 17:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[2, 9]]);
+    }, _callee, null, [[3, 14]]);
   }));
 
   return function getLocation() {
@@ -59,12 +77,14 @@ var getLocation = /*#__PURE__*/function () {
   };
 }();
 
-var getNameProdLinesByIdController = /*#__PURE__*/function () {
+var createNewLocation = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
-        idc,
-        productionLine,
+        next,
+        body,
+        newLocation,
+        location,
         _args2 = arguments;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
@@ -72,261 +92,168 @@ var getNameProdLinesByIdController = /*#__PURE__*/function () {
           case 0:
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
-            idc = req.params.idc;
-            _context2.prev = 3;
-            _context2.next = 6;
-            return ProductionLine.findOne({
-              'id_controller': idc
-            });
+            next = _args2.length > 2 ? _args2[2] : undefined;
+            body = req.body;
+            _context2.prev = 4;
+            newLocation = new Location(body);
+            _context2.next = 8;
+            return newLocation.save();
 
-          case 6:
-            productionLine = _context2.sent;
-            res.status(200).json({
-              msg: 'Informacion de linea de produccion',
-              productionLine: productionLine
+          case 8:
+            location = _context2.sent;
+            res.status(201).json({
+              message: 'Nueva ubicación creada con exito!',
+              location: location
             });
-            _context2.next = 13;
+            _context2.next = 15;
             break;
 
-          case 10:
-            _context2.prev = 10;
-            _context2.t0 = _context2["catch"](3);
-            return _context2.abrupt("return", res.status(500).json({
-              message: _context2.t0.message
-            }));
+          case 12:
+            _context2.prev = 12;
+            _context2.t0 = _context2["catch"](4);
+            next(_context2.t0);
 
-          case 13:
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[3, 10]]);
+    }, _callee2, null, [[4, 12]]);
   }));
 
-  return function getNameProdLinesByIdController() {
+  return function createNewLocation() {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var createProductionLine = /*#__PURE__*/function () {
+var updateLocationById = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var req,
         res,
+        next,
+        _id,
         body,
-        productionLine,
-        productionLineSaved,
+        updateLocation,
         _args3 = arguments;
+
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
-            _context3.prev = 2;
+            next = _args3.length > 2 ? _args3[2] : undefined;
+            _context3.prev = 3;
+            _id = req.params._id;
             body = req.body;
-            productionLine = new ProductionLine(body);
-            _context3.next = 7;
-            return productionLine.save();
+            _context3.next = 8;
+            return Location.findByIdAndUpdate(_id, body, {
+              "new": true
+            });
 
-          case 7:
-            productionLineSaved = _context3.sent;
-            res.status(201).json({
-              msg: 'Linea de producción creada',
-              productionLineSaved: productionLineSaved
+          case 8:
+            updateLocation = _context3.sent;
+
+            if (!(updateLocation != null)) {
+              _context3.next = 13;
+              break;
+            }
+
+            res.status(200).json({
+              msg: 'Linea de produccion actualizada por Id',
+              updateLocation: updateLocation
             });
             _context3.next = 14;
             break;
 
-          case 11:
-            _context3.prev = 11;
-            _context3.t0 = _context3["catch"](2);
-            return _context3.abrupt("return", res.status(500).json({
-              message: _context3.t0.message
-            }));
+          case 13:
+            throw boom.notFound('Oops!, ubicacion no encontrada');
 
           case 14:
+            _context3.next = 19;
+            break;
+
+          case 16:
+            _context3.prev = 16;
+            _context3.t0 = _context3["catch"](3);
+            next(_context3.t0);
+
+          case 19:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[2, 11]]);
+    }, _callee3, null, [[3, 16]]);
   }));
 
-  return function createProductionLine() {
+  return function updateLocationById() {
     return _ref3.apply(this, arguments);
   };
 }();
 
-var getProductionLineById = /*#__PURE__*/function () {
+var deleteLocationById = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
-        productionLine,
+        next,
+        _id,
+        deletedLocation,
         _args4 = arguments;
+
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
-            _context4.prev = 2;
-            _context4.next = 5;
-            return ProductionLine.findById(req.params._id);
+            next = _args4.length > 2 ? _args4[2] : undefined;
+            _context4.prev = 3;
+            _id = Types.ObjectId(req.params._id);
+            _context4.next = 7;
+            return Location.findByIdAndDelete(_id);
 
-          case 5:
-            productionLine = _context4.sent;
+          case 7:
+            deletedLocation = _context4.sent;
 
-            if (productionLine != null) {
-              res.status(200).json({
-                msg: 'Linea de producción por Id',
-                productionLine: productionLine
-              });
-            } else {
-              res.status(404).json({
-                msg: 'Linea de produccion no encontrada'
-              });
+            if (!(deletedLocation != null)) {
+              _context4.next = 12;
+              break;
             }
 
-            _context4.next = 12;
+            res.status(202).json({
+              msg: 'Linea de producción eliminada Id:' + _id
+            });
+            _context4.next = 13;
             break;
 
-          case 9:
-            _context4.prev = 9;
-            _context4.t0 = _context4["catch"](2);
-            res.status(500).json({
-              message: _context4.t0.message
-            });
-
           case 12:
+            throw boom.notFound('Oops!, ubicación no encontrada, verifique el id');
+
+          case 13:
+            _context4.next = 18;
+            break;
+
+          case 15:
+            _context4.prev = 15;
+            _context4.t0 = _context4["catch"](3);
+            next(_context4.t0);
+
+          case 18:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 9]]);
+    }, _callee4, null, [[3, 15]]);
   }));
 
-  return function getProductionLineById() {
+  return function deleteLocationById() {
     return _ref4.apply(this, arguments);
   };
 }();
 
-var updateProductionLineById = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-    var req,
-        res,
-        paramsId,
-        body,
-        updatedProductionLine,
-        _args5 = arguments;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
-            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
-            _context5.prev = 2;
-            paramsId = req.params._id;
-            body = req.body;
-            _context5.next = 7;
-            return ProductionLine.findByIdAndUpdate(paramsId, body, {
-              "new": true
-            });
-
-          case 7:
-            updatedProductionLine = _context5.sent;
-
-            if (updatedProductionLine != null) {
-              res.status(200).json({
-                msg: 'Linea de produccion actualizada por Id',
-                updatedProductionLine: updatedProductionLine
-              });
-            } else {
-              res.status(404).json({
-                msg: 'Id de Linea de produccion no econtrado'
-              });
-            }
-
-            _context5.next = 14;
-            break;
-
-          case 11:
-            _context5.prev = 11;
-            _context5.t0 = _context5["catch"](2);
-            return _context5.abrupt("return", res.status(500).json({
-              message: _context5.t0.message
-            }));
-
-          case 14:
-          case "end":
-            return _context5.stop();
-        }
-      }
-    }, _callee5, null, [[2, 11]]);
-  }));
-
-  return function updateProductionLineById() {
-    return _ref5.apply(this, arguments);
-  };
-}();
-
-var deleteProductionLineById = /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-    var req,
-        res,
-        paramsId,
-        body,
-        deletedProductionLine,
-        _args6 = arguments;
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-      while (1) {
-        switch (_context6.prev = _context6.next) {
-          case 0:
-            req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
-            res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
-            _context6.prev = 2;
-            paramsId = req.params._id;
-            body = {
-              deleted: true
-            };
-            _context6.next = 7;
-            return ProductionLine.findByIdAndUpdate(paramsId, body);
-
-          case 7:
-            deletedProductionLine = _context6.sent;
-
-            if (deletedProductionLine != null) {
-              res.status(202).json({
-                msg: 'Linea de produccion eliminada Id:' + paramsId
-              });
-            } else {
-              res.status(404).json({
-                msg: 'Linea de produccion no encontrada, verifique los datos'
-              });
-            }
-
-            _context6.next = 14;
-            break;
-
-          case 11:
-            _context6.prev = 11;
-            _context6.t0 = _context6["catch"](2);
-            res.status(500).json({
-              message: _context6.t0.message
-            });
-
-          case 14:
-          case "end":
-            return _context6.stop();
-        }
-      }
-    }, _callee6, null, [[2, 11]]);
-  }));
-
-  return function deleteProductionLineById() {
-    return _ref6.apply(this, arguments);
-  };
-}();
-
 module.exports = {
-  getLocation: getLocation
+  getLocation: getLocation,
+  createNewLocation: createNewLocation,
+  updateLocationById: updateLocationById,
+  deleteLocationById: deleteLocationById
 };

@@ -67,6 +67,7 @@ var Server = /*#__PURE__*/function () {
       role: '/api/role',
       typesDocument: '/api/typesDocument',
       productionLog: '/api/mes/productionLog',
+      location: '/api/mes/location',
       //*PATHS MES - GRAFICOS
       graf: '/api/mes/graf',
       //*PATHS SCALE
@@ -156,7 +157,8 @@ var Server = /*#__PURE__*/function () {
       this.app.use(this.paths.productionLine, require('../routes/mes/productionLine.routes'));
       this.app.use(this.paths.role, require('../routes/mes/role.routes'));
       this.app.use(this.paths.typesDocument, require('../routes/mes/typesDocument.routes'));
-      this.app.use(this.paths.productionLog, require('../routes/mes/productionLogs.routes')); //*ROUTES APP MES - GRAFICOS
+      this.app.use(this.paths.productionLog, require('../routes/mes/productionLogs.routes'));
+      this.app.use(this.paths.location, require('../routes/mes/location.routes')); //*ROUTES APP MES - GRAFICOS
 
       this.app.use(this.paths.graf, require('../routes/mes/query/graf.routes')); //*ROUTES APP SCALE
 

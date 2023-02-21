@@ -1,111 +1,82 @@
 const { response, request } = require("express");
-const Location = require("../../models/location.model");
+const boom = require('@hapi/boom');
+const { Types } = require('mongoose');
+const Location = require("../../models/mes/location.model");
 
 
-const getLocation = async (req = request, res = response) => {
+
+const getLocation = async (req = request, res = response, next) => {
     try {
-        const productionLines = await ProductionLine.find();
-        res.status(200).json({
-            msg: 'Lineas de producción',
-            productionLines
-        })
+        const location = await Location.find();
+        if (location.length !== 0) {
+            res.status(200).json({
+                msg: 'Lista de ubicaciones',
+                location
+            })
+        } else {
+            throw boom.notFound('Oops!, ubicaciones no encontradas')
+        }
+
     } catch (err) {
-        return res.status(500).json({ message: err.message });
+        next(err);
     }
 }
 
-const getNameProdLinesByIdController = async (req = request, res = response) => {
-    const { idc } = req.params
+const createNewLocation = async (req = request, res = response, next) => {
+
+    const body = req.body
     try {
-        const productionLine = await ProductionLine.findOne({ 'id_controller': idc })
-        res.status(200).json({
-            msg: 'Informacion de linea de produccion',
-            productionLine
-        })
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
-    }
-}
-
-
-const createProductionLine = async (req = request, res = response) => {
-    try {
-        const body = req.body;
-        const productionLine = new ProductionLine(body);
-
-        const productionLineSaved = await productionLine.save();
+        const newLocation = new Location(body);
+        const location = await newLocation.save();
 
         res.status(201).json({
-            msg: 'Linea de producción creada',
-            productionLineSaved
+            message: 'Nueva ubicación creada con exito!',
+            location
         })
     } catch (err) {
-        return res.status(500).json({ message: err.message });
+        next(err);
     }
-
 }
 
-
-const getProductionLineById = async (req = request, res = response) => {
+const updateLocationById = async (req = request, res = response, next) => {
     try {
-        const productionLine = await ProductionLine.findById(req.params._id);
-        if (productionLine != null) {
-            res.status(200).json({
-                msg: 'Linea de producción por Id',
-                productionLine
-            });
-        } else {
-            res.status(404).json({
-                msg: 'Linea de produccion no encontrada'
-            })
-        }
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-
-}
-
-const updateProductionLineById = async (req = request, res = response) => {
-    try {
-        const paramsId = req.params._id;
+        const _id = req.params._id;
         const body = req.body;
-        const updatedProductionLine = await ProductionLine.findByIdAndUpdate(paramsId, body, { new: true });
-        if (updatedProductionLine != null) {
+        const updateLocation = await Location.findByIdAndUpdate(_id, body, { new: true });
+        if (updateLocation != null) {
             res.status(200).json({
                 msg: 'Linea de produccion actualizada por Id',
-                updatedProductionLine
+                updateLocation
             });
         } else {
-            res.status(404).json({
-                msg: 'Id de Linea de produccion no econtrado'
-            })
+            throw boom.notFound('Oops!, ubicacion no encontrada')
         }
     }
     catch (err) {
-        return res.status(500).json({ message: err.message });
+        next(err);
     }
 
 }
 
-const deleteProductionLineById = async (req = request, res = response) => {
+const deleteLocationById = async (req = request, res = response, next) => {
     try {
-        const paramsId = req.params._id;
-        const body = { deleted: true }
-        const deletedProductionLine = await ProductionLine.findByIdAndUpdate(paramsId, body);
-        if (deletedProductionLine != null) {
+        const _id = Types.ObjectId(req.params._id);
+        const deletedLocation = await Location.findByIdAndDelete(_id);
+        if (deletedLocation != null) {
             res.status(202).json({
-                msg: 'Linea de produccion eliminada Id:' + paramsId
+                msg: 'Linea de producción eliminada Id:' + _id
             });
         } else {
-            res.status(404).json({
-                msg: 'Linea de produccion no encontrada, verifique los datos'
-            })
+            throw boom.notFound('Oops!, ubicación no encontrada, verifique el id')
         }
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        next(err);
     }
 }
 
 module.exports = {
-    getLocation
+    getLocation,
+    createNewLocation,
+    updateLocationById,
+    deleteLocationById
 }
