@@ -1,9 +1,17 @@
 "use strict";
 
+var _excluded = ["dateStart", "dateEnd"];
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
 var _require = require("mongoose"),
     Schema = _require.Schema,
     model = _require.model,
     now = _require.now;
+
+var moment = require("moment");
 
 var scheduleSchema = Schema({
   qtyProduce: {
@@ -63,4 +71,20 @@ var scheduleSchema = Schema({
   timestamps: true,
   versionKey: false
 });
+
+scheduleSchema.methods.toJSON = function () {
+  var _this$toObject = this.toObject(),
+      dateStart = _this$toObject.dateStart,
+      dateEnd = _this$toObject.dateEnd,
+      schedule = _objectWithoutProperties(_this$toObject, _excluded);
+
+  schedule.dateTimeScheduleStart = dateStart;
+  schedule.dateTimeScheduleEnd = dateEnd;
+  schedule.dateStart = moment(dateStart).format("YYYY-MM-DD");
+  schedule.dateEnd = moment(dateEnd).format("YYYY-MM-DD");
+  schedule.hourStart = moment(dateStart).format("HH:mm");
+  schedule.hourEnd = moment(dateEnd).format("HH:mm");
+  return schedule;
+};
+
 module.exports = model('Schedule', scheduleSchema);

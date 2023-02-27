@@ -1,4 +1,5 @@
 const { Schema, model, now } = require("mongoose")
+const moment = require("moment");
 
 const scheduleSchema = Schema({
     qtyProduce: {
@@ -58,5 +59,17 @@ const scheduleSchema = Schema({
     timestamps: true,
     versionKey: false
 })
+
+scheduleSchema.methods.toJSON = function () {
+    const { dateStart, dateEnd, ...schedule } = this.toObject();
+    schedule.dateTimeScheduleStart = dateStart;
+    schedule.dateTimeScheduleEnd = dateEnd;
+    schedule.dateStart = moment(dateStart).format("YYYY-MM-DD");
+    schedule.dateEnd = moment(dateEnd).format("YYYY-MM-DD");
+    schedule.hourStart = moment(dateStart).format("HH:mm");
+    schedule.hourEnd = moment(dateEnd).format("HH:mm");
+    return schedule
+}
+
 
 module.exports = model('Schedule', scheduleSchema);
