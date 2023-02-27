@@ -13,6 +13,8 @@ var _require = require("mongoose"),
 
 var moment = require("moment");
 
+var jsonata = require('jsonata');
+
 var scheduleSchema = Schema({
   qtyProduce: {
     type: Number,
@@ -84,7 +86,15 @@ scheduleSchema.methods.toJSON = function () {
   schedule.dateEnd = moment(dateEnd).format("YYYY-MM-DD");
   schedule.hourStart = moment(dateStart).format("HH:mm");
   schedule.hourEnd = moment(dateEnd).format("HH:mm");
-  return schedule;
+  var formatSchedule = JSONataExpression(schedule);
+  return formatSchedule;
 };
 
+function JSONataExpression(dataPromise) {
+  var expression = jsonata(JSONataExp);
+  var result = expression.evaluate(dataPromise);
+  return result;
+}
+
+var JSONataExp = "$.{\n    \"_id\":_id,\n    \"qtyProduce\":qtyProduce,\n    \"action\":action,\n    \"status\":status,\n    \"dateTimeScheduleStart\":dateTimeScheduleStart,\n    \"dateTimeScheduleEnd\":dateTimeScheduleEnd,\n    \"dateStart\": dateStart,\n    \"dateEnd\": dateEnd,\n    \"hourStart\":hourStart,\n    \"hourEnd\": hourEnd,\n    \"_idProductionLine\":{\n        \"id\":_idProductionLine._id,\n        \"name\":_idProductionLine.name,\n        \"erp_code\":_idProductionLine.erp_code,\n        \"id_controller\":_idProductionLine.id_controller\n    },\n    \"_idRecipe\":{\n        \"_id\":_idRecipe._id,\n        \"name\":_idRecipe.name,\n        \"erp_code\":_idRecipe.erp_code,\n        \"id_controller\":_idRecipe.id_controller,\n        \"ingredients\":$._idRecipe.ingredients.[$.{\n            \"idIngredients\":_id,\n            \"idMaterial\":_idMaterial._id,\n            \"name\":_idMaterial.name,\n            \"qty\":qty\n        }]\n    }\n}";
 module.exports = model('Schedule', scheduleSchema);

@@ -8,9 +8,18 @@ const Schedule = require("../../models/mes/scheduling.model");
 const getSchedule = async (req = request, res = response, next) => {
     try {
         const schedule = await Schedule.find()
-            .populate({ path: '_idRecipe', select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 } })
+            .populate({
+                path: '_idRecipe',
+                select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 },
+                populate: {
+                    path: 'ingredients._idMaterial',
+                    select: { name: 1 }
+                }
+            })
             .populate({ path: '_idProductionLine', select: { name: 1, erp_code: 1, id_controller: 1 } })
-            .populate({ path: '_idUser', select: { username: 1 } })
+            .populate({ path: '_idUser', select: { username: 1 } }).exec()
+
+
         if (schedule.length !== 0) {
             res.status(200).json({
                 msg: 'Lista de Programaciones',
@@ -103,6 +112,18 @@ const deleteScheduleById = async (req = request, res = response, next) => {
         next(err);
     }
 }
+
+const JSONataExpression = async (dataPromise) => {
+    const queryJSONata = `[$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,
+        "productionLineUse":[productionLineUse.$.{"_id":_id,"name":name}],
+        "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"id_controller":_idMaterial.id_controller,"type":_idMaterial.type,"deleted":_idMaterial.deleted,"qty":qty}]}]`;
+    const expression = jsonata(queryJSONata);
+
+    const result = expression.evaluate(dataPromise);
+    return result;
+}
+
+
 
 module.exports = {
     getSchedule,

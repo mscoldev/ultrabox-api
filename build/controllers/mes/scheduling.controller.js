@@ -42,6 +42,12 @@ var getSchedule = /*#__PURE__*/function () {
                 erp_code: 1,
                 id_controller: 1,
                 ingredients: 1
+              },
+              populate: {
+                path: 'ingredients._idMaterial',
+                select: {
+                  name: 1
+                }
               }
             }).populate({
               path: '_idProductionLine',
@@ -55,7 +61,7 @@ var getSchedule = /*#__PURE__*/function () {
               select: {
                 username: 1
               }
-            });
+            }).exec();
 
           case 6:
             schedule = _context.sent;
@@ -356,6 +362,31 @@ var deleteScheduleById = /*#__PURE__*/function () {
 
   return function deleteScheduleById() {
     return _ref5.apply(this, arguments);
+  };
+}();
+
+var JSONataExpression = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(dataPromise) {
+    var queryJSONata, expression, result;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            queryJSONata = "[$.{\"id\":_id,\"name\":name,\"erp_code\":erp_code,\"id_controller\":id_controller,\n        \"productionLineUse\":[productionLineUse.$.{\"_id\":_id,\"name\":name}],\n        \"ingredients\":[ingredients.$.{\"_idIngredient\":_id,\"_idMaterial\":_idMaterial._id,\"name\":_idMaterial.name,\"id_controller\":_idMaterial.id_controller,\"type\":_idMaterial.type,\"deleted\":_idMaterial.deleted,\"qty\":qty}]}]";
+            expression = jsonata(queryJSONata);
+            result = expression.evaluate(dataPromise);
+            return _context6.abrupt("return", result);
+
+          case 4:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }));
+
+  return function JSONataExpression(_x) {
+    return _ref6.apply(this, arguments);
   };
 }();
 
