@@ -131,6 +131,12 @@ var getScheduleById = /*#__PURE__*/function () {
                 erp_code: 1,
                 id_controller: 1,
                 ingredients: 1
+              },
+              populate: {
+                path: 'ingredients._idMaterial',
+                select: {
+                  name: 1
+                }
               }
             }).populate({
               path: '_idProductionLine',
@@ -144,7 +150,7 @@ var getScheduleById = /*#__PURE__*/function () {
               select: {
                 username: 1
               }
-            });
+            }).exec();
 
           case 7:
             schedule = _context2.sent;

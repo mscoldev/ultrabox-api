@@ -38,9 +38,16 @@ const getScheduleById = async (req = request, res = response, next) => {
     try {
         const _id = Types.ObjectId(req.params._id);
         const schedule = await Schedule.findById({ _id })
-            .populate({ path: '_idRecipe', select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 } })
+            .populate({
+                path: '_idRecipe',
+                select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 },
+                populate: {
+                    path: 'ingredients._idMaterial',
+                    select: { name: 1 }
+                }
+            })
             .populate({ path: '_idProductionLine', select: { name: 1, erp_code: 1, id_controller: 1 } })
-            .populate({ path: '_idUser', select: { username: 1 } })
+            .populate({ path: '_idUser', select: { username: 1 } }).exec()
         if (schedule.length !== 0) {
             res.status(200).json({
                 msg: 'Lista de Programaciones',
