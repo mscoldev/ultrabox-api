@@ -8,184 +8,361 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _require = require("express"),
+    response = _require.response,
+    request = _require.request;
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+var boom = require('@hapi/boom');
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+var _require2 = require('mongoose'),
+    Types = _require2.Types;
 
-require('dotenv').config();
+var Schedule = require("../../models/mes/scheduling.model");
 
-var express = require('express');
+var getSchedule = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var req,
+        res,
+        next,
+        schedule,
+        _args = arguments;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
+            res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
+            next = _args.length > 2 ? _args[2] : undefined;
+            _context.prev = 3;
+            _context.next = 6;
+            return Schedule.find().populate({
+              path: '_idRecipe',
+              select: {
+                name: 1,
+                erp_code: 1,
+                id_controller: 1,
+                ingredients: 1
+              }
+            }).populate({
+              path: '_idProductionLine',
+              select: {
+                name: 1,
+                erp_code: 1,
+                id_controller: 1
+              }
+            }).populate({
+              path: '_idUser',
+              select: {
+                username: 1
+              }
+            });
 
-var cors = require('cors');
+          case 6:
+            schedule = _context.sent;
 
-var morgan = require('morgan');
-
-var fileUpload = require('express-fileupload');
-
-var _require = require('../middlewares/error.handler'),
-    logErrors = _require.logErrors,
-    errorHandler = _require.errorHandler,
-    boomErrorHandler = _require.boomErrorHandler;
-
-require('../helpers/auth');
-
-var _require2 = require('../database/config.database'),
-    dbConnection = _require2.dbConnection;
-
-var _require3 = require('../database/config.databasepg'),
-    pgConnection = _require3.pgConnection;
-
-var _require4 = require('../libs/initialSetupDatabase'),
-    createRoles = _require4.createRoles,
-    createInitialConfApp = _require4.createInitialConfApp;
-
-var PORT = process.env.PORT || 3000;
-var corsOptions = {
-  credentials: false,
-  preflightContinue: false,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  optionsSuccessStatusCode: 204,
-  origin: '*'
-};
-
-var Server = /*#__PURE__*/function () {
-  function Server() {
-    _classCallCheck(this, Server);
-
-    this.app = express();
-    this.port = PORT;
-    this.paths = {
-      //*PATHS MES
-      conf: '/api/conf',
-      auth: '/api/auth',
-      recipe: '/api/recipe',
-      material: '/api/material',
-      production: '/api/production',
-      productionLine: '/api/productionline',
-      role: '/api/role',
-      typesDocument: '/api/typesDocument',
-      productionLog: '/api/mes/productionLog',
-      location: '/api/mes/location',
-      scheduling: '/api/mes/scheduling',
-      //*PATHS MES - GRAFICOS
-      graf: '/api/mes/graf',
-      //*PATHS SCALE
-      client: '/api/scale/client',
-      driver: '/api/scale/driver',
-      origin: '/api/scale/origin',
-      product: '/api/scale/product',
-      site: '/api/scale/site',
-      truck: '/api/scale/truck',
-      register: '/api/scale/register',
-      destination: '/api/scale/destination',
-      weight: '/api/scale/weight'
-    }; //Conectar a la base de datos
-
-    this.dbInitialize(); // Middlewares
-
-    this.middlewares(); // Rutas de mi aplicación
-
-    this.routes();
-    this.middlewaresErrors();
-  } //* Connect & Initialize Database
-
-
-  _createClass(Server, [{
-    key: "dbInitialize",
-    value: function () {
-      var _dbInitialize = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return Promise.all([pgConnection(), dbConnection(), createRoles(), createInitialConfApp()]);
-
-              case 2:
-              case "end":
-                return _context.stop();
+            if (!(schedule.length !== 0)) {
+              _context.next = 11;
+              break;
             }
-          }
-        }, _callee);
-      }));
 
-      function dbInitialize() {
-        return _dbInitialize.apply(this, arguments);
+            res.status(200).json({
+              msg: 'Lista de Programaciones',
+              schedule: schedule
+            });
+            _context.next = 12;
+            break;
+
+          case 11:
+            throw boom.notFound('Oops!, ubicaciones no encontradas');
+
+          case 12:
+            _context.next = 17;
+            break;
+
+          case 14:
+            _context.prev = 14;
+            _context.t0 = _context["catch"](3);
+            next(_context.t0);
+
+          case 17:
+          case "end":
+            return _context.stop();
+        }
       }
+    }, _callee, null, [[3, 14]]);
+  }));
 
-      return dbInitialize;
-    }() // async connectToDatabase (){
-    //     await dbConnection();
-    // }
-    // async initialSetupDatabase (){
-    //     await createRoles();
-    // }
-
-  }, {
-    key: "middlewares",
-    value: function middlewares() {
-      // CORS
-      this.app.use(cors(corsOptions)); // this.app.use('/', express.static(process.cwd() + '/src/public'));
-      //Morgan
-
-      this.app.use(morgan('dev')); // Lectura y parseo del body
-
-      this.app.use(express.json()); // Directorio Público
-      // this.app.use(fileUpload({
-      //     useTempFiles: true,
-      //     tempFileDir: '/tmp/'
-      // }));
-    }
-  }, {
-    key: "middlewaresErrors",
-    value: function middlewaresErrors() {
-      //Error Handler
-      this.app.use(logErrors);
-      this.app.use(boomErrorHandler);
-      this.app.use(errorHandler);
-    }
-  }, {
-    key: "routes",
-    value: function routes() {
-      //*ROUTES APP MES
-      this.app.use(this.paths.conf, require('../routes/conf.routes'));
-      this.app.use(this.paths.auth, require('../routes/auth.routes'));
-      this.app.use(this.paths.recipe, require('../routes/mes/recipe.routes'));
-      this.app.use(this.paths.material, require('../routes/mes/material.routes'));
-      this.app.use(this.paths.production, require('../routes/mes/production.routes'));
-      this.app.use(this.paths.productionLine, require('../routes/mes/productionLine.routes'));
-      this.app.use(this.paths.role, require('../routes/mes/role.routes'));
-      this.app.use(this.paths.typesDocument, require('../routes/mes/typesDocument.routes'));
-      this.app.use(this.paths.productionLog, require('../routes/mes/productionLogs.routes'));
-      this.app.use(this.paths.location, require('../routes/mes/location.routes'));
-      this.app.use(this.paths.scheduling, require('../routes/mes/scheduling.routes')); //*ROUTES APP MES - GRAFICOS
-
-      this.app.use(this.paths.graf, require('../routes/mes/query/graf.routes')); //*ROUTES APP SCALE
-
-      this.app.use(this.paths.client, require('../routes/scale/client.routes'));
-      this.app.use(this.paths.driver, require('../routes/scale/driver.routes'));
-      this.app.use(this.paths.origin, require('../routes/scale/origin.routes'));
-      this.app.use(this.paths.product, require('../routes/scale/product.routes'));
-      this.app.use(this.paths.site, require('../routes/scale/site.routes'));
-      this.app.use(this.paths.truck, require('../routes/scale/truck.routes'));
-      this.app.use(this.paths.register, require('../routes/scale/register.routes'));
-      this.app.use(this.paths.destination, require('../routes/scale/destination.routes'));
-      this.app.use(this.paths.weight, require('../routes/scale/weight.routes'));
-    }
-  }, {
-    key: "listen",
-    value: function listen() {
-      var _this = this;
-
-      this.app.listen(this.port, function () {
-        console.log('Server running on port: ', _this.port);
-      });
-    }
-  }]);
-
-  return Server;
+  return function getSchedule() {
+    return _ref.apply(this, arguments);
+  };
 }();
 
-module.exports = Server;
+var getScheduleById = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var req,
+        res,
+        next,
+        _id,
+        schedule,
+        _args2 = arguments;
+
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
+            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            next = _args2.length > 2 ? _args2[2] : undefined;
+            _context2.prev = 3;
+            _id = Types.ObjectId(req.params._id);
+            _context2.next = 7;
+            return Schedule.findById({
+              _id: _id
+            }).populate({
+              path: '_idRecipe',
+              select: {
+                name: 1,
+                erp_code: 1,
+                id_controller: 1,
+                ingredients: 1
+              }
+            }).populate({
+              path: '_idProductionLine',
+              select: {
+                name: 1,
+                erp_code: 1,
+                id_controller: 1
+              }
+            }).populate({
+              path: '_idUser',
+              select: {
+                username: 1
+              }
+            });
+
+          case 7:
+            schedule = _context2.sent;
+
+            if (!(schedule.length !== 0)) {
+              _context2.next = 12;
+              break;
+            }
+
+            res.status(200).json({
+              msg: 'Lista de Programaciones',
+              schedule: schedule
+            });
+            _context2.next = 13;
+            break;
+
+          case 12:
+            throw boom.notFound('Oops!, ubicaciones no encontradas');
+
+          case 13:
+            _context2.next = 18;
+            break;
+
+          case 15:
+            _context2.prev = 15;
+            _context2.t0 = _context2["catch"](3);
+            next(_context2.t0);
+
+          case 18:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[3, 15]]);
+  }));
+
+  return function getScheduleById() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var setSchedule = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var req,
+        res,
+        next,
+        body,
+        newSchedule,
+        scheduleSaved,
+        _args3 = arguments;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
+            res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
+            next = _args3.length > 2 ? _args3[2] : undefined;
+            _context3.prev = 3;
+            body = req.body;
+            body.dateStart = body.dateStart + " " + body.hourStart;
+            body.dateEnd = body.dateEnd + " " + body.hourEnd;
+            newSchedule = new Schedule(body);
+            _context3.next = 10;
+            return newSchedule.save();
+
+          case 10:
+            scheduleSaved = _context3.sent;
+            console.log(scheduleSaved);
+            res.status(200).json({
+              msg: 'Linea de producción actualizada por Id',
+              scheduleSaved: scheduleSaved
+            });
+            _context3.next = 18;
+            break;
+
+          case 15:
+            _context3.prev = 15;
+            _context3.t0 = _context3["catch"](3);
+            next(_context3.t0);
+
+          case 18:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[3, 15]]);
+  }));
+
+  return function setSchedule() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var updateScheduleById = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var req,
+        res,
+        next,
+        body,
+        _id,
+        updateSchedule,
+        _args4 = arguments;
+
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
+            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
+            next = _args4.length > 2 ? _args4[2] : undefined;
+            _context4.prev = 3;
+            body = req.body;
+            body.dateStart = body.dateStart + " " + body.hourStart;
+            body.dateEnd = body.dateEnd + " " + body.hourEnd;
+            _id = Types.ObjectId(req.params._id);
+            _context4.next = 10;
+            return Schedule.findByIdAndUpdate(_id, body, {
+              "new": true
+            });
+
+          case 10:
+            updateSchedule = _context4.sent;
+
+            if (!(updateSchedule != null)) {
+              _context4.next = 15;
+              break;
+            }
+
+            res.status(200).json({
+              msg: 'Programación actualizada',
+              updateSchedule: updateSchedule
+            });
+            _context4.next = 16;
+            break;
+
+          case 15:
+            throw boom.notFound('Oops!, programación no encontrada');
+
+          case 16:
+            _context4.next = 21;
+            break;
+
+          case 18:
+            _context4.prev = 18;
+            _context4.t0 = _context4["catch"](3);
+            next(_context4.t0);
+
+          case 21:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[3, 18]]);
+  }));
+
+  return function updateScheduleById() {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var deleteScheduleById = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+    var req,
+        res,
+        next,
+        _id,
+        deletedSchedule,
+        _args5 = arguments;
+
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
+            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
+            next = _args5.length > 2 ? _args5[2] : undefined;
+            _context5.prev = 3;
+            _id = Types.ObjectId(req.params._id);
+            _context5.next = 7;
+            return Schedule.findByIdAndDelete(_id);
+
+          case 7:
+            deletedSchedule = _context5.sent;
+
+            if (!(deletedSchedule != null)) {
+              _context5.next = 12;
+              break;
+            }
+
+            res.status(202).json({
+              msg: "Plan eliminado con exito _id:".concat(_id)
+            });
+            _context5.next = 13;
+            break;
+
+          case 12:
+            throw boom.notFound('Oops!, plan no encontrado, verifique el id');
+
+          case 13:
+            _context5.next = 18;
+            break;
+
+          case 15:
+            _context5.prev = 15;
+            _context5.t0 = _context5["catch"](3);
+            next(_context5.t0);
+
+          case 18:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[3, 15]]);
+  }));
+
+  return function deleteScheduleById() {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+module.exports = {
+  getSchedule: getSchedule,
+  getScheduleById: getScheduleById,
+  setSchedule: setSchedule,
+  updateScheduleById: updateScheduleById,
+  deleteScheduleById: deleteScheduleById
+};
