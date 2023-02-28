@@ -8,14 +8,19 @@ const Schedule = require("../../models/mes/scheduling.model");
 const getSchedule = async (req = request, res = response, next) => {
     try {
         const schedule = await Schedule.find()
-            .populate({
+            .populate([{
                 path: '_idRecipe',
                 select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 },
                 populate: {
-                    path: 'ingredients._idMaterial',
-                    select: { name: 1 }
+                    path: 'ingredients._idMaterial'
                 }
-            })
+            }, {
+                path: '_idRecipe',
+                select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 },
+                populate: {
+                    path: 'ingredients._idLocation'
+                }
+            }])
             .populate({ path: '_idProductionLine', select: { name: 1, erp_code: 1, id_controller: 1 } })
             .populate({ path: '_idUser', select: { username: 1 } }).exec()
 
@@ -43,8 +48,11 @@ const getScheduleById = async (req = request, res = response, next) => {
                 select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 },
                 populate: {
                     path: 'ingredients._idMaterial',
-                    select: { name: 1 }
-                }
+                    select: { name: 1, type: 1 }
+                },
+                populate: {
+                    path: 'ingredients._idLocation'
+                },
             })
             .populate({ path: '_idProductionLine', select: { name: 1, erp_code: 1, id_controller: 1 } })
             .populate({ path: '_idUser', select: { username: 1 } }).exec()

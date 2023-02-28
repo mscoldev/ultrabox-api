@@ -91,23 +91,30 @@ const JSONataExp = `$.{
     "dateEnd": dateEnd,
     "hourStart":hourStart,
     "hourEnd": hourEnd,
-    "_idProductionLine":{
-        "id":_idProductionLine._id,
+    "productionLine":{
+        "_id":_idProductionLine._id,
         "name":_idProductionLine.name,
         "erp_code":_idProductionLine.erp_code,
         "id_controller":_idProductionLine.id_controller
     },
-    "_idRecipe":{
+    "recipe":{
         "_id":_idRecipe._id,
         "name":_idRecipe.name,
         "erp_code":_idRecipe.erp_code,
         "id_controller":_idRecipe.id_controller,
-        "ingredients":$._idRecipe.ingredients.[$.{
-            "idIngredients":_id,
-            "idMaterial":_idMaterial._id,
+        "ingredients":$._idRecipe.ingredients.$.{
+            "_id":_id,
+            "_idMaterial":_idMaterial._id,
             "name":_idMaterial.name,
-            "qty":qty
-        }]
+            "type":_idMaterial.type,
+            "qty":qty,
+            "location":{
+                "_id":_idLocation._id,
+                "name":_idLocation.name,
+                "id_controller":_idLocation.id_controller,
+                "productionLineUse":_idLocation.productionLineUse
+            }
+        }
     }
 }`
 

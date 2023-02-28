@@ -270,6 +270,8 @@ var getRecipesToDatabase = /*#__PURE__*/function () {
               select: {
                 name: 1
               }
+            }).populate({
+              path: 'ingredients._idLocation'
             }).exec();
 
           case 3:
@@ -303,7 +305,7 @@ var JSONataExpression = /*#__PURE__*/function () {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            queryJSONata = "[$.{\"id\":_id,\"name\":name,\"erp_code\":erp_code,\"id_controller\":id_controller,\"temp\":temp,\"deleted\":deleted,\n        \"productionLineUse\":[productionLineUse.$.{\"_id\":_id,\"name\":name}],\n        \"ingredients\":[ingredients.$.{\"_idIngredient\":_id,\"_idMaterial\":_idMaterial._id,\"name\":_idMaterial.name,\"id_controller\":_idMaterial.id_controller,\"type\":_idMaterial.type,\"deleted\":_idMaterial.deleted,\"qty\":qty}]}]";
+            queryJSONata = "[$.{\"id\":_id,\"name\":name,\"erp_code\":erp_code,\"id_controller\":id_controller,\"temp\":temp,\"deleted\":deleted,\n        \"productionLineUse\":[productionLineUse.$.{\"_id\":_id,\"name\":name}],\n        \"ingredients\":[ingredients.$.{\"_idIngredient\":_id,\"_idMaterial\":_idMaterial._id,\"name\":_idMaterial.name,\"id_controller\":_idMaterial.id_controller,\"type\":_idMaterial.type,\"deleted\":_idMaterial.deleted,\"qty\":qty,\"location\":_idLocation}]}]";
             expression = jsonata(queryJSONata);
             result = expression.evaluate(dataPromise);
             return _context6.abrupt("return", result);

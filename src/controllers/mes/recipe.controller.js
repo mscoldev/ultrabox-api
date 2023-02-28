@@ -81,6 +81,7 @@ const getRecipesToDatabase = async () => {
         const recipes = await Recipe.find({ "deleted": false })
             .populate({ path: 'ingredients._idMaterial', select: { name: 1, _id: 1, type: 1, deleted: 1, erp_code: 1, id_controller: 1 } })
             .populate({ path: 'productionLineUse', select: { name: 1 } })
+            .populate({ path: 'ingredients._idLocation' })
             .exec();
         return recipes;
     } catch (err) {
@@ -92,7 +93,7 @@ const getRecipesToDatabase = async () => {
 const JSONataExpression = async (dataPromise) => {
     const queryJSONata = `[$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,"temp":temp,"deleted":deleted,
         "productionLineUse":[productionLineUse.$.{"_id":_id,"name":name}],
-        "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"id_controller":_idMaterial.id_controller,"type":_idMaterial.type,"deleted":_idMaterial.deleted,"qty":qty}]}]`;
+        "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"id_controller":_idMaterial.id_controller,"type":_idMaterial.type,"deleted":_idMaterial.deleted,"qty":qty,"location":_idLocation}]}]`;
     const expression = jsonata(queryJSONata);
 
     const result = expression.evaluate(dataPromise);

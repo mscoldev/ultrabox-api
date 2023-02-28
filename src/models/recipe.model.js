@@ -33,6 +33,10 @@ const recipeSchema = Schema({
         qty: {
             type: Number,
             required: [true, 'Defina la cantidad a utilizar del material']
+        },
+        _idLocation: {
+            ref: 'Location',
+            type: Schema.Types.ObjectId
         }
     })],
     productionLineUse: [{

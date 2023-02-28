@@ -41,7 +41,7 @@ const materialSchema = Schema({
     productionLineUse: [{
         ref: 'ProductionLine',
         type: Schema.Types.ObjectId
-    }],
+    }]
 }, {
     timestamps: true,
     versionKey: false
