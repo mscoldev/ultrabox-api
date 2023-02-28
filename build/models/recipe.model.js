@@ -23,6 +23,11 @@ var recipeSchema = Schema({
     required: [true, 'El estado deleted es requerido no puede dejarlo en blanco T/F'],
     "default": false
   },
+  temp: {
+    type: Boolean,
+    required: false,
+    "default": false
+  },
   ingredients: [new Schema({
     _idMaterial: {
       type: Schema.Types.ObjectId,

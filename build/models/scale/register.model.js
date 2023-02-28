@@ -37,17 +37,8 @@ var register = sequelize.define('registers', {
     defaultValue: DataTypes.NOW
   },
   serialScale: {
-    type: DataTypes.INTEGER,
-    unique: {
-      args: true,
-      msg: 'El consecutivo de bascula debe ser unico'
-    },
-    validate: {
-      isNumeric: {
-        args: true,
-        msg: 'El consecutivo de bascula debe ser de tipo número'
-      }
-    },
+    type: DataTypes.STRING,
+    unique: false,
     required: true,
     allowNull: false
   },
