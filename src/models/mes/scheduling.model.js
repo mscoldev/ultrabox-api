@@ -102,6 +102,7 @@ const JSONataExp = `$.{
         "name":_idRecipe.name,
         "erp_code":_idRecipe.erp_code,
         "id_controller":_idRecipe.id_controller,
+        "productionLineUse":_idRecipe.productionLineUse,
         "ingredients":$._idRecipe.ingredients.$.{
             "_id":_id,
             "_idMaterial":_idMaterial._id,

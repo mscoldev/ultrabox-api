@@ -10,13 +10,11 @@ const getSchedule = async (req = request, res = response, next) => {
         const schedule = await Schedule.find()
             .populate([{
                 path: '_idRecipe',
-                select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 },
                 populate: {
                     path: 'ingredients._idMaterial'
                 }
             }, {
                 path: '_idRecipe',
-                select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 },
                 populate: {
                     path: 'ingredients._idLocation'
                 }
@@ -45,10 +43,8 @@ const getScheduleById = async (req = request, res = response, next) => {
         const schedule = await Schedule.findById({ _id })
             .populate({
                 path: '_idRecipe',
-                select: { name: 1, erp_code: 1, id_controller: 1, ingredients: 1 },
                 populate: {
-                    path: 'ingredients._idMaterial',
-                    select: { name: 1, type: 1 }
+                    path: 'ingredients._idMaterial'
                 },
                 populate: {
                     path: 'ingredients._idLocation'

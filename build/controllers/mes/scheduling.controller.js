@@ -39,23 +39,11 @@ var getSchedule = /*#__PURE__*/function () {
             _context.next = 6;
             return Schedule.find().populate([{
               path: '_idRecipe',
-              select: {
-                name: 1,
-                erp_code: 1,
-                id_controller: 1,
-                ingredients: 1
-              },
               populate: {
                 path: 'ingredients._idMaterial'
               }
             }, {
               path: '_idRecipe',
-              select: {
-                name: 1,
-                erp_code: 1,
-                id_controller: 1,
-                ingredients: 1
-              },
               populate: {
                 path: 'ingredients._idLocation'
               }
@@ -136,18 +124,8 @@ var getScheduleById = /*#__PURE__*/function () {
               _id: _id
             }).populate(_defineProperty({
               path: '_idRecipe',
-              select: {
-                name: 1,
-                erp_code: 1,
-                id_controller: 1,
-                ingredients: 1
-              },
               populate: {
-                path: 'ingredients._idMaterial',
-                select: {
-                  name: 1,
-                  type: 1
-                }
+                path: 'ingredients._idMaterial'
               }
             }, "populate", {
               path: 'ingredients._idLocation'
