@@ -116,6 +116,10 @@ const JSONataExp = `$.{
                 "productionLineUse":_idLocation.productionLineUse
             }
         }
+    },
+    "user":{
+        "_id":_idUser._id,
+        "username":_idUser.username
     }
 }`
 
