@@ -89,7 +89,7 @@ const getLastRegisterByNumberPlate = async (req = request, res = response) => {
 const updateRegisterById = async (req = request, res = response) => {
     try {
         const { id } = req.params;
-        const { weight, status, userRecorder } = req.body;
+        const { weight, status, userRecorder, qty } = req.body;
         const newRegister = await Register.findByPk(id);
 
         if (newRegister != null) {
@@ -104,6 +104,7 @@ const updateRegisterById = async (req = request, res = response) => {
             newRegister.secondDateWeight = null; //trigger setValue
             newRegister.status = status;
             newRegister.userRecorder = userRecorder;
+            newRegister.qty = qty;
 
 
             //*Identificar Cargando o Descargando
