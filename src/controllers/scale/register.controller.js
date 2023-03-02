@@ -86,7 +86,7 @@ const getLastRegisterByNumberPlate = async (req = request, res = response) => {
     }
 }
 
-const updateRegisterById = async (req = request, res = response) => {
+const updateRegisterById = async (req = request, res = response, next) => {
     try {
         const { id } = req.params;
         const { weight, status, userRecorder, qty } = req.body;
@@ -160,7 +160,7 @@ const updateRegisterById = async (req = request, res = response) => {
         }
 
     } catch (err) {
-        return res.status(500).json({ message: `Se ha producido un error, ${err.message}` });
+        next(err);
     }
 }
 
@@ -188,7 +188,7 @@ const deleteRegisterById = async (req = request, res = response) => {
     }
 }
 
-const createRegister = async (req = request, res = response) => {
+const createRegister = async (req = request, res = response, next) => {
     const {
         weight,
         serialScale,
@@ -200,6 +200,7 @@ const createRegister = async (req = request, res = response) => {
         _idClient,
         _idOrigin,
         _idSite,
+        qty,
         enabled } = req.body;
 
     if (driver._idDriver != null) {
@@ -220,6 +221,7 @@ const createRegister = async (req = request, res = response) => {
                 _idClient,
                 _idOrigin,
                 _idSite,
+                qty,
                 enabled
             });
 
@@ -229,7 +231,7 @@ const createRegister = async (req = request, res = response) => {
             })
 
         } catch (err) {
-            return res.status(500).json({ message: `Oops! ha producido un error: ${err.message}` })
+            next(err);
         }
 
     } else {
@@ -259,7 +261,7 @@ const createRegister = async (req = request, res = response) => {
             })
 
         } catch (err) {
-            return res.status(500).json({ message: `Oops! ha producido un error: ${err.message}` })
+            next(err);
         }
 
     }

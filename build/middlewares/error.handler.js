@@ -9,7 +9,8 @@ function logErrors(err, req, res, next) {
 function errorHandler(err, req, res, next) {
   console.log("*****ERROR HANDLER********");
   res.status(500).json({
-    messages: err.message
+    messages: err.message,
+    stack: err.stack
   });
 }
 
