@@ -250,6 +250,7 @@ var updateRegisterById = /*#__PURE__*/function () {
         status,
         userRecorder,
         qty,
+        serialScale,
         newRegister,
         dateRegister,
         fechaTexto,
@@ -268,7 +269,7 @@ var updateRegisterById = /*#__PURE__*/function () {
             next = _args4.length > 2 ? _args4[2] : undefined;
             _context4.prev = 3;
             id = req.params.id;
-            _req$body = req.body, weight = _req$body.weight, status = _req$body.status, userRecorder = _req$body.userRecorder, qty = _req$body.qty;
+            _req$body = req.body, weight = _req$body.weight, status = _req$body.status, userRecorder = _req$body.userRecorder, qty = _req$body.qty, serialScale = _req$body.serialScale;
             _context4.next = 8;
             return Register.findByPk(id);
 
@@ -276,7 +277,7 @@ var updateRegisterById = /*#__PURE__*/function () {
             newRegister = _context4.sent;
 
             if (!(newRegister != null)) {
-              _context4.next = 28;
+              _context4.next = 29;
               break;
             }
 
@@ -291,7 +292,8 @@ var updateRegisterById = /*#__PURE__*/function () {
 
             newRegister.status = status;
             newRegister.userRecorder = userRecorder;
-            newRegister.qty = qty; //*Identificar Cargando o Descargando
+            newRegister.qty = qty;
+            newRegister.serialScale = serialScale; //*Identificar Cargando o Descargando
 
             if (newRegister.secondWeight > newRegister.weight) {
               //Estaba Cargando
@@ -324,39 +326,39 @@ var updateRegisterById = /*#__PURE__*/function () {
 
 
             console.log(newRegister);
-            _context4.next = 24;
+            _context4.next = 25;
             return newRegister.save();
 
-          case 24:
+          case 25:
             registerSaved = _context4.sent;
             res.status(200).json({
               msg: 'Registro actualizado con exito',
               registerSaved: registerSaved
             });
-            _context4.next = 30;
+            _context4.next = 31;
             break;
 
-          case 28:
+          case 29:
             console.log('Not found');
             res.status(200).json({
               msg: 'Registro con encontrado, verifique el Id ingresado'
             });
 
-          case 30:
-            _context4.next = 35;
+          case 31:
+            _context4.next = 36;
             break;
 
-          case 32:
-            _context4.prev = 32;
+          case 33:
+            _context4.prev = 33;
             _context4.t0 = _context4["catch"](3);
             next(_context4.t0);
 
-          case 35:
+          case 36:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[3, 32]]);
+    }, _callee4, null, [[3, 33]]);
   }));
 
   return function updateRegisterById() {

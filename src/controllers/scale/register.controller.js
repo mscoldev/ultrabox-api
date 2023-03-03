@@ -89,7 +89,7 @@ const getLastRegisterByNumberPlate = async (req = request, res = response) => {
 const updateRegisterById = async (req = request, res = response, next) => {
     try {
         const { id } = req.params;
-        const { weight, status, userRecorder, qty } = req.body;
+        const { weight, status, userRecorder, qty, serialScale, } = req.body;
         const newRegister = await Register.findByPk(id);
 
         if (newRegister != null) {
@@ -105,6 +105,7 @@ const updateRegisterById = async (req = request, res = response, next) => {
             newRegister.status = status;
             newRegister.userRecorder = userRecorder;
             newRegister.qty = qty;
+            newRegister.serialScale = serialScale;
 
 
             //*Identificar Cargando o Descargando
