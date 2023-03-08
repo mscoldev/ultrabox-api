@@ -7,17 +7,33 @@ var _require = require("mongoose"),
 var productionLineSchema = Schema({
   name: {
     type: String,
-    required: [true, 'name is required']
+    required: [true, 'name is required'],
+    unique: true
   },
   erp_code: {
     type: Number,
     required: false,
-    unique: [true, 'the erp_code is unique']
+    unique: true
   },
   id_controller: {
     type: Number,
     required: false,
-    unique: [true, 'Este id ya se encuentra registrado en otra linea de produccion']
+    unique: true
+  },
+  backgroundColor: {
+    type: String,
+    required: [true, 'Define un color de fondo a utilizar en el calendario, esta característica es necesaria para el componente calendario.'],
+    "default": 'EBEEFD'
+  },
+  textColor: {
+    type: String,
+    required: [true, 'Define un color de texto a utilizar en el calendario, esta característica es necesaria para el componente calendario.'],
+    "default": '3A57E8'
+  },
+  borderColor: {
+    type: String,
+    required: [true, 'Define un color de borde a utilizar en el calendario, esta característica es necesaria para el componente calendario.'],
+    "default": '3A57E8'
   },
   deleted: {
     type: Boolean,

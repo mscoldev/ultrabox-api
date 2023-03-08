@@ -48,12 +48,7 @@ var getSchedule = /*#__PURE__*/function () {
                 path: 'ingredients._idLocation'
               }
             }]).populate({
-              path: '_idProductionLine',
-              select: {
-                name: 1,
-                erp_code: 1,
-                id_controller: 1
-              }
+              path: '_idProductionLine'
             }).populate({
               path: '_idUser',
               select: {

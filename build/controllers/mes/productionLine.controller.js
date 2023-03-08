@@ -12,12 +12,15 @@ var _require = require("express"),
     response = _require.response,
     request = _require.request;
 
+var boom = require('@hapi/boom');
+
 var ProductionLine = require("../../models/productionLine.model");
 
 var getProductionLines = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
+        next,
         productionLines,
         _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -26,32 +29,33 @@ var getProductionLines = /*#__PURE__*/function () {
           case 0:
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
-            _context.prev = 2;
-            _context.next = 5;
+            next = _args.length > 2 ? _args[2] : undefined;
+            _context.prev = 3;
+            _context.next = 6;
             return ProductionLine.find();
 
-          case 5:
+          case 6:
             productionLines = _context.sent;
             res.status(200).json({
               msg: 'Lineas de producción',
               productionLines: productionLines
             });
-            _context.next = 12;
+            _context.next = 13;
             break;
 
-          case 9:
-            _context.prev = 9;
-            _context.t0 = _context["catch"](2);
+          case 10:
+            _context.prev = 10;
+            _context.t0 = _context["catch"](3);
             return _context.abrupt("return", res.status(500).json({
               message: _context.t0.message
             }));
 
-          case 12:
+          case 13:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[2, 9]]);
+    }, _callee, null, [[3, 10]]);
   }));
 
   return function getProductionLines() {
@@ -63,6 +67,7 @@ var getNameProdLinesByIdController = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
+        next,
         idc,
         productionLine,
         _args2 = arguments;
@@ -72,35 +77,36 @@ var getNameProdLinesByIdController = /*#__PURE__*/function () {
           case 0:
             req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            next = _args2.length > 2 ? _args2[2] : undefined;
             idc = req.params.idc;
-            _context2.prev = 3;
-            _context2.next = 6;
+            _context2.prev = 4;
+            _context2.next = 7;
             return ProductionLine.findOne({
               'id_controller': idc
             });
 
-          case 6:
+          case 7:
             productionLine = _context2.sent;
             res.status(200).json({
               msg: 'Informacion de linea de produccion',
               productionLine: productionLine
             });
-            _context2.next = 13;
+            _context2.next = 14;
             break;
 
-          case 10:
-            _context2.prev = 10;
-            _context2.t0 = _context2["catch"](3);
+          case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](4);
             return _context2.abrupt("return", res.status(500).json({
               message: _context2.t0.message
             }));
 
-          case 13:
+          case 14:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[3, 10]]);
+    }, _callee2, null, [[4, 11]]);
   }));
 
   return function getNameProdLinesByIdController() {
@@ -112,7 +118,9 @@ var createProductionLine = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var req,
         res,
+        next,
         body,
+        validatorUniqueErpCode,
         productionLine,
         productionLineSaved,
         _args3 = arguments;
@@ -122,34 +130,62 @@ var createProductionLine = /*#__PURE__*/function () {
           case 0:
             req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
-            _context3.prev = 2;
+            next = _args3.length > 2 ? _args3[2] : undefined;
+            _context3.prev = 3;
             body = req.body;
-            productionLine = new ProductionLine(body);
             _context3.next = 7;
-            return productionLine.save();
+            return ProductionLine.findOne({
+              $or: [{
+                erp_code: body.erp_code
+              }, {
+                name: body.name
+              }, {
+                id_controller: body.id_controller
+              }]
+            });
 
           case 7:
+            validatorUniqueErpCode = _context3.sent;
+            console.log({
+              validatorUniqueErpCode: validatorUniqueErpCode
+            });
+
+            if (validatorUniqueErpCode) {
+              _context3.next = 17;
+              break;
+            }
+
+            productionLine = new ProductionLine(body);
+            _context3.next = 13;
+            return productionLine.save();
+
+          case 13:
             productionLineSaved = _context3.sent;
             res.status(201).json({
-              msg: 'Linea de producción creada',
+              message: 'Linea de producción creada',
               productionLineSaved: productionLineSaved
             });
-            _context3.next = 14;
+            _context3.next = 18;
             break;
 
-          case 11:
-            _context3.prev = 11;
-            _context3.t0 = _context3["catch"](2);
-            return _context3.abrupt("return", res.status(500).json({
-              message: _context3.t0.message
-            }));
+          case 17:
+            throw boom.badRequest('Oops!, verifique el Request.Existe por lo menos un registro con name, erp_code o id_controlador registrado. Estos atributos deben ser únicos');
 
-          case 14:
+          case 18:
+            _context3.next = 23;
+            break;
+
+          case 20:
+            _context3.prev = 20;
+            _context3.t0 = _context3["catch"](3);
+            next(_context3.t0);
+
+          case 23:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[2, 11]]);
+    }, _callee3, null, [[3, 20]]);
   }));
 
   return function createProductionLine() {
@@ -161,6 +197,7 @@ var getProductionLineById = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
+        next,
         productionLine,
         _args4 = arguments;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -169,11 +206,12 @@ var getProductionLineById = /*#__PURE__*/function () {
           case 0:
             req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
-            _context4.prev = 2;
-            _context4.next = 5;
+            next = _args4.length > 2 ? _args4[2] : undefined;
+            _context4.prev = 3;
+            _context4.next = 6;
             return ProductionLine.findById(req.params._id);
 
-          case 5:
+          case 6:
             productionLine = _context4.sent;
 
             if (productionLine != null) {
@@ -187,22 +225,22 @@ var getProductionLineById = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 12;
+            _context4.next = 13;
             break;
 
-          case 9:
-            _context4.prev = 9;
-            _context4.t0 = _context4["catch"](2);
+          case 10:
+            _context4.prev = 10;
+            _context4.t0 = _context4["catch"](3);
             res.status(500).json({
               message: _context4.t0.message
             });
 
-          case 12:
+          case 13:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 9]]);
+    }, _callee4, null, [[3, 10]]);
   }));
 
   return function getProductionLineById() {
@@ -214,54 +252,60 @@ var updateProductionLineById = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
     var req,
         res,
-        paramsId,
+        next,
+        _id,
         body,
         updatedProductionLine,
         _args5 = arguments;
+
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
             res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
-            _context5.prev = 2;
-            paramsId = req.params._id;
+            next = _args5.length > 2 ? _args5[2] : undefined;
+            _context5.prev = 3;
+            _id = req.params._id;
             body = req.body;
-            _context5.next = 7;
-            return ProductionLine.findByIdAndUpdate(paramsId, body, {
+            _context5.next = 8;
+            return ProductionLine.findByIdAndUpdate(_id, body, {
               "new": true
             });
 
-          case 7:
+          case 8:
             updatedProductionLine = _context5.sent;
 
-            if (updatedProductionLine != null) {
-              res.status(200).json({
-                msg: 'Linea de produccion actualizada por Id',
-                updatedProductionLine: updatedProductionLine
-              });
-            } else {
-              res.status(404).json({
-                msg: 'Id de Linea de produccion no econtrado'
-              });
+            if (!(updatedProductionLine != null)) {
+              _context5.next = 13;
+              break;
             }
 
+            res.status(200).json({
+              message: 'Linea de producción actualizada por Id',
+              updatedProductionLine: updatedProductionLine
+            });
             _context5.next = 14;
             break;
 
-          case 11:
-            _context5.prev = 11;
-            _context5.t0 = _context5["catch"](2);
-            return _context5.abrupt("return", res.status(500).json({
-              message: _context5.t0.message
-            }));
+          case 13:
+            throw boom.badRequest('Oops!, _id no encontrado. Verifica el registro que deseas actualizar.');
 
           case 14:
+            _context5.next = 19;
+            break;
+
+          case 16:
+            _context5.prev = 16;
+            _context5.t0 = _context5["catch"](3);
+            next(_context5.t0);
+
+          case 19:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 11]]);
+    }, _callee5, null, [[3, 16]]);
   }));
 
   return function updateProductionLineById() {
@@ -273,6 +317,7 @@ var deleteProductionLineById = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
     var req,
         res,
+        next,
         paramsId,
         body,
         deletedProductionLine,
@@ -283,15 +328,16 @@ var deleteProductionLineById = /*#__PURE__*/function () {
           case 0:
             req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
             res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
-            _context6.prev = 2;
+            next = _args6.length > 2 ? _args6[2] : undefined;
+            _context6.prev = 3;
             paramsId = req.params._id;
             body = {
               deleted: true
             };
-            _context6.next = 7;
+            _context6.next = 8;
             return ProductionLine.findByIdAndUpdate(paramsId, body);
 
-          case 7:
+          case 8:
             deletedProductionLine = _context6.sent;
 
             if (deletedProductionLine != null) {
@@ -304,22 +350,22 @@ var deleteProductionLineById = /*#__PURE__*/function () {
               });
             }
 
-            _context6.next = 14;
+            _context6.next = 15;
             break;
 
-          case 11:
-            _context6.prev = 11;
-            _context6.t0 = _context6["catch"](2);
+          case 12:
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](3);
             res.status(500).json({
               message: _context6.t0.message
             });
 
-          case 14:
+          case 15:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[2, 11]]);
+    }, _callee6, null, [[3, 12]]);
   }));
 
   return function deleteProductionLineById() {
