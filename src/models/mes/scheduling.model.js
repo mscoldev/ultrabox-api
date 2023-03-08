@@ -95,7 +95,10 @@ const JSONataExp = `$.{
         "_id":_idProductionLine._id,
         "name":_idProductionLine.name,
         "erp_code":_idProductionLine.erp_code,
-        "id_controller":_idProductionLine.id_controller
+        "id_controller":_idProductionLine.id_controller,
+        "backgroundColor": _idProductionLine.backgroundColor,
+        "textColor": _idProductionLine.textColor,
+        "borderColor": _idProductionLine.borderColor
     },
     "recipe":{
         "_id":_idRecipe._id,
