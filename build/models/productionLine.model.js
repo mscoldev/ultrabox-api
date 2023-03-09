@@ -23,17 +23,17 @@ var productionLineSchema = Schema({
   backgroundColor: {
     type: String,
     required: [true, 'Define un color de fondo a utilizar en el calendario, esta característica es necesaria para el componente calendario.'],
-    "default": 'EBEEFD'
+    "default": '#EBEEFD'
   },
   textColor: {
     type: String,
     required: [true, 'Define un color de texto a utilizar en el calendario, esta característica es necesaria para el componente calendario.'],
-    "default": '3A57E8'
+    "default": '#3A57E8'
   },
   borderColor: {
     type: String,
     required: [true, 'Define un color de borde a utilizar en el calendario, esta característica es necesaria para el componente calendario.'],
-    "default": '3A57E8'
+    "default": '#3A57E8'
   },
   deleted: {
     type: Boolean,
