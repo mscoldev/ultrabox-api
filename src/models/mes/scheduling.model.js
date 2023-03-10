@@ -15,7 +15,7 @@ const scheduleSchema = Schema({
         type: Date,
         required: [true, 'Define una fecha de inicio para el plan'],
         validate: {
-            validator: function (v) {
+            validator: function(v) {
                 return /\S+/.test(v);
             },
             message: 'El campo name no puede estar en blanco'
@@ -27,7 +27,7 @@ const scheduleSchema = Schema({
         type: Date,
         required: [true, 'Define una fecha de fin para el plan'],
         validate: {
-            validator: function (v) {
+            validator: function(v) {
                 return /\S+/.test(v);
             },
             message: 'El campo name no puede estar en blanco'
@@ -61,7 +61,7 @@ const scheduleSchema = Schema({
     versionKey: false
 })
 
-scheduleSchema.methods.toJSON = function () {
+scheduleSchema.methods.toJSON = function() {
     const { dateStart, dateEnd, ...schedule } = this.toObject();
     schedule.dateTimeScheduleStart = dateStart;
     schedule.dateTimeScheduleEnd = dateEnd;
@@ -111,6 +111,11 @@ const JSONataExp = `$.{
             "_idMaterial":_idMaterial._id,
             "name":_idMaterial.name,
             "type":_idMaterial.type,
+            "unit":{
+              "_id":unit._id,
+              "name":unit.name,
+              "symbol":unit.symbol
+            },
             "qty":qty,
             "location":{
                 "_id":_idLocation._id,

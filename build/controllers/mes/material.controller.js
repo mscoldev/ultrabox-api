@@ -44,7 +44,10 @@ var getMaterials = /*#__PURE__*/function () {
               select: {
                 name: 1
               }
-            }]).exec();
+            }]).populate({
+              path: 'unit',
+              model: 'Unit'
+            }).exec();
 
           case 5:
             materials = _context.sent;
@@ -172,7 +175,10 @@ var getMaterialsByLine = /*#__PURE__*/function () {
               select: {
                 name: 1
               }
-            }]).exec();
+            }]).populate({
+              path: 'unit',
+              model: 'Unit'
+            }).exec();
 
           case 10:
             material = _context3.sent;

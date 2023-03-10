@@ -5,7 +5,7 @@ const Schedule = require("../../models/mes/scheduling.model");
 
 
 
-const getSchedule = async (req = request, res = response, next) => {
+const getSchedule = async(req = request, res = response, next) => {
     try {
         const schedule = await Schedule.find()
             .populate([{
@@ -37,7 +37,7 @@ const getSchedule = async (req = request, res = response, next) => {
     }
 }
 
-const getScheduleById = async (req = request, res = response, next) => {
+const getScheduleById = async(req = request, res = response, next) => {
     try {
         const _id = Types.ObjectId(req.params._id);
         const schedule = await Schedule.findById({ _id })
@@ -66,7 +66,7 @@ const getScheduleById = async (req = request, res = response, next) => {
     }
 }
 
-const setSchedule = async (req = request, res = response, next) => {
+const setSchedule = async(req = request, res = response, next) => {
     try {
         let body = req.body
         body.dateStart = body.dateStart + " " + body.hourStart;
@@ -85,7 +85,7 @@ const setSchedule = async (req = request, res = response, next) => {
     }
 }
 
-const updateScheduleById = async (req = request, res = response, next) => {
+const updateScheduleById = async(req = request, res = response, next) => {
     try {
         let body = req.body
         body.dateStart = body.dateStart + " " + body.hourStart;
@@ -101,14 +101,13 @@ const updateScheduleById = async (req = request, res = response, next) => {
         } else {
             throw boom.notFound('Oops!, programación no encontrada')
         }
-    }
-    catch (err) {
+    } catch (err) {
         next(err);
     }
 
 }
 
-const deleteScheduleById = async (req = request, res = response, next) => {
+const deleteScheduleById = async(req = request, res = response, next) => {
     try {
         const _id = Types.ObjectId(req.params._id);
         const deletedSchedule = await Schedule.findByIdAndDelete(_id);
@@ -124,7 +123,7 @@ const deleteScheduleById = async (req = request, res = response, next) => {
     }
 }
 
-const JSONataExpression = async (dataPromise) => {
+const JSONataExpression = async(dataPromise) => {
     const queryJSONata = `[$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,
         "productionLineUse":[productionLineUse.$.{"_id":_id,"name":name}],
         "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"id_controller":_idMaterial.id_controller,"type":_idMaterial.type,"deleted":_idMaterial.deleted,"qty":qty}]}]`;

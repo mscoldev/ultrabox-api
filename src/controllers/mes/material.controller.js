@@ -5,14 +5,19 @@ const Material = require("../../models/material.model");
 
 
 
-const getMaterials = async (req = request, res = response,) => {
+const getMaterials = async(req = request, res = response, ) => {
     try {
         const materials = await Material.find({ "deleted": false }).populate([{
-            path: 'productionLineUse',
-            model: 'ProductionLine',
-            options: { lean: true },
-            select: { name: 1 }
-        }]).exec();
+                path: 'productionLineUse',
+                model: 'ProductionLine',
+                options: { lean: true },
+                select: { name: 1 }
+            }])
+            .populate({
+                path: 'unit',
+                model: 'Unit',
+            })
+            .exec();
         res.status(200).json({
             msg: 'List of materials',
             materials
@@ -25,7 +30,7 @@ const getMaterials = async (req = request, res = response,) => {
 
 //TODO: Implementar verificacion de tipo de datos al realizar busquedas por ID.
 
-const getMaterialsById = async (req = request, res = response, next) => {
+const getMaterialsById = async(req = request, res = response, next) => {
     try {
         const material = await Material.findById(req.params.materialId);
         if (material != null) {
@@ -41,7 +46,7 @@ const getMaterialsById = async (req = request, res = response, next) => {
     }
 }
 
-const getMaterialsByLine = async (req = request, res = response, next) => {
+const getMaterialsByLine = async(req = request, res = response, next) => {
 
     try {
 
@@ -57,7 +62,12 @@ const getMaterialsByLine = async (req = request, res = response, next) => {
                 model: 'ProductionLine',
                 options: { lean: true },
                 select: { name: 1 }
-            }]).exec();
+            }])
+            .populate({
+                path: 'unit',
+                model: 'Unit',
+            })
+            .exec();
 
         if (material != null) {
             res.status(200).json({
@@ -75,7 +85,7 @@ const getMaterialsByLine = async (req = request, res = response, next) => {
 
 }
 
-const updateMaterialById = async (req = request, res = response) => {
+const updateMaterialById = async(req = request, res = response) => {
     try {
         const paramsId = req.params.materialId;
         const body = req.body;
@@ -98,7 +108,7 @@ const updateMaterialById = async (req = request, res = response) => {
     }
 }
 
-const deleteMaterialById = async (req = request, res = response) => {
+const deleteMaterialById = async(req = request, res = response) => {
     try {
         const paramsId = req.params.materialId;
         const body = { deleted: true }
@@ -123,7 +133,7 @@ const deleteMaterialById = async (req = request, res = response) => {
     };
 }
 
-const createMaterial = async (req = request, res = response) => {
+const createMaterial = async(req = request, res = response) => {
     //TODO: Usar desestructuracion de objetos
     try {
         const body = req.body;

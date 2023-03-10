@@ -45,7 +45,11 @@ var materialSchema = Schema({
   productionLineUse: [{
     ref: 'ProductionLine',
     type: Schema.Types.ObjectId
-  }]
+  }],
+  unit: {
+    ref: 'Unit',
+    type: Schema.Types.ObjectId
+  }
 }, {
   timestamps: true,
   versionKey: false

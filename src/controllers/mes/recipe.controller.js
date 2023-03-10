@@ -3,7 +3,7 @@ const Recipe = require("../../models/recipe.model");
 const jsonata = require('jsonata');
 
 
-const getRecipe = async (req = request, res = response) => {
+const getRecipe = async(req = request, res = response) => {
     try {
         const recipesComplete = await getRecipesToDatabase()
         const recipes = await JSONataExpression(recipesComplete)
@@ -17,7 +17,7 @@ const getRecipe = async (req = request, res = response) => {
     }
 }
 
-const createRecipe = async (req = request, res = response) => {
+const createRecipe = async(req = request, res = response) => {
     try {
         //TODO: Usar desestructuracion de  objetos
         const body = req.body;
@@ -34,7 +34,7 @@ const createRecipe = async (req = request, res = response) => {
     }
 }
 
-const updateRecipe = async (req = request, res = response) => {
+const updateRecipe = async(req = request, res = response) => {
     try {
         const paramsId = req.params.recipeId;
         const body = req.body;
@@ -56,7 +56,7 @@ const updateRecipe = async (req = request, res = response) => {
     }
 }
 
-const deleteRecipeById = async (req = request, res = response) => {
+const deleteRecipeById = async(req = request, res = response) => {
     try {
         const paramsId = req.params.recipeId;
         const body = { deleted: true }
@@ -76,10 +76,10 @@ const deleteRecipeById = async (req = request, res = response) => {
 }
 
 //get Data to database mongo.
-const getRecipesToDatabase = async () => {
+const getRecipesToDatabase = async() => {
     try {
         const recipes = await Recipe.find({ "deleted": false })
-            .populate({ path: 'ingredients._idMaterial', select: { name: 1, _id: 1, type: 1, deleted: 1, erp_code: 1, id_controller: 1 } })
+            .populate({ path: 'ingredients._idMaterial', select: { name: 1, _id: 1, type: 1, deleted: 1, erp_code: 1, id_controller: 1, unit: 1 } })
             .populate({ path: 'productionLineUse', select: { name: 1 } })
             .populate({ path: 'ingredients._idLocation' })
             .exec();
@@ -90,10 +90,30 @@ const getRecipesToDatabase = async () => {
 }
 
 //Function - List recipe apply a JSONata Expression
-const JSONataExpression = async (dataPromise) => {
-    const queryJSONata = `[$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,"temp":temp,"deleted":deleted,
-        "productionLineUse":[productionLineUse.$.{"_id":_id,"name":name}],
-        "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"id_controller":_idMaterial.id_controller,"type":_idMaterial.type,"deleted":_idMaterial.deleted,"qty":qty,"location":_idLocation}]}]`;
+const JSONataExpression = async(dataPromise) => {
+    const queryJSONata = `[$.{
+      "id":_id,
+      "name":name,
+      "erp_code":erp_code,
+      "id_controller":id_controller,
+      "temp":temp,
+      "deleted":deleted,
+        "productionLineUse":[productionLineUse.$.{
+          "_id":_id,
+          "name":name}
+        ],
+        "ingredients":[ingredients.$.{
+          "_idIngredient":_id,
+          "_idMaterial":_idMaterial._id,
+          "name":_idMaterial.name,
+          "id_controller":_idMaterial.id_controller,
+          "type":_idMaterial.type,
+          "unit":_idMaterial.unit,
+          "deleted":_idMaterial.deleted,
+          "qty":qty,
+          "location":_idLocation
+        }]
+      }]`;
     const expression = jsonata(queryJSONata);
 
     const result = expression.evaluate(dataPromise);

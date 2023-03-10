@@ -69,6 +69,7 @@ var Server = /*#__PURE__*/function () {
       productionLog: '/api/mes/productionLog',
       location: '/api/mes/location',
       scheduling: '/api/mes/scheduling',
+      tools: '/api/mes/tools',
       //*PATHS MES - GRAFICOS
       graf: '/api/mes/graf',
       //*PATHS SCALE
@@ -160,7 +161,8 @@ var Server = /*#__PURE__*/function () {
       this.app.use(this.paths.typesDocument, require('../routes/mes/typesDocument.routes'));
       this.app.use(this.paths.productionLog, require('../routes/mes/productionLogs.routes'));
       this.app.use(this.paths.location, require('../routes/mes/location.routes'));
-      this.app.use(this.paths.scheduling, require('../routes/mes/scheduling.routes')); //*ROUTES APP MES - GRAFICOS
+      this.app.use(this.paths.scheduling, require('../routes/mes/scheduling.routes'));
+      this.app.use(this.paths.tools, require('../routes/tools/units.routes')); //*ROUTES APP MES - GRAFICOS
 
       this.app.use(this.paths.graf, require('../routes/mes/query/graf.routes')); //*ROUTES APP SCALE
 

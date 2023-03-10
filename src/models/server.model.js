@@ -41,6 +41,7 @@ class Server {
             productionLog: '/api/mes/productionLog',
             location: '/api/mes/location',
             scheduling: '/api/mes/scheduling',
+            tools: '/api/mes/tools',
 
             //*PATHS MES - GRAFICOS
             graf: '/api/mes/graf',
@@ -133,6 +134,7 @@ class Server {
         this.app.use(this.paths.productionLog, require('../routes/mes/productionLogs.routes'));
         this.app.use(this.paths.location, require('../routes/mes/location.routes'));
         this.app.use(this.paths.scheduling, require('../routes/mes/scheduling.routes'));
+        this.app.use(this.paths.tools, require('../routes/tools/units.routes'));
 
         //*ROUTES APP MES - GRAFICOS
 
