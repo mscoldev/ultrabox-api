@@ -1,8 +1,6 @@
-const { Schema, model, default: mongoose } = require("mongoose")
+const { Schema, model } = require("mongoose")
 const moment = require('moment');
-const productionLineModel = require("../productionLine.model");
 
-//*contador, punto de carge(De donde se toma),
 
 const productionLogSchema = Schema({
     codigo: {
@@ -23,19 +21,19 @@ const productionLogSchema = Schema({
     },
     molino: {
         type: String,
-        required: [true, 'Debe indicar el punto de produccion molino']
+        required: [true, 'Debe indicar el punto de producción molino']
     },
-    linea_produccion: {
+    linea_producción: {
         type: Schema.Types.ObjectId,
-        required: [true, 'El id de una linea de produccion']
+        required: [true, 'El id de una linea de producción']
     },
     receta: {
         type: Number,
-        required: [true, 'Debe definir una receta para el registro de produccion']
+        required: [true, 'Debe definir una receta para el registro de producción']
     },
     silo: {
         type: Number,
-        required: [true, 'Debe seleccionar un lugar de destino para la produccion']
+        required: [true, 'Debe seleccionar un lugar de destino para la producción']
     },
     kwhpd004: {
         type: Number,
@@ -69,7 +67,7 @@ const productionLogSchema = Schema({
 
 
 
-productionLogSchema.methods.toJSON = function () {
+productionLogSchema.methods.toJSON = function() {
     const productionLog = this.toObject();
     productionLog.createdAt = moment(productionLog.createdAt).format('DD-MM-YYYY HH:mm');
     productionLog.updatedAt = moment(productionLog.updatedAt).format('DD-MM-YYYY HH:mm');

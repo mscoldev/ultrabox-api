@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose")
 const locationSchema = Schema({
     name: {
         type: String,
-        required: [true, 'Defina un nombre para la ubicacion']
+        required: [true, 'Defina un nombre para la ubicación']
     },
     id_controller: {
         type: Number,

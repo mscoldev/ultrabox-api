@@ -1,4 +1,4 @@
-const { Schema, model, default: mongoose } = require("mongoose")
+const { Schema, model } = require("mongoose")
 const moment = require('moment');
 
 require('../../libs/round.lib')
@@ -68,7 +68,7 @@ const productionLogSchema = Schema({
 
 
 
-productionLogSchema.methods.toJSON = function () {
+productionLogSchema.methods.toJSON = function() {
     const productionLog = this.toObject();
     productionLog.createdAt = moment(productionLog.createdAt).format('DD-MM-YYYY HH:mm');
     productionLog.updatedAt = moment(productionLog.updatedAt).format('DD-MM-YYYY HH:mm');
