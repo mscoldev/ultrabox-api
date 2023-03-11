@@ -2,8 +2,7 @@
 
 var _require = require("mongoose"),
     Schema = _require.Schema,
-    model = _require.model,
-    mongoose = _require["default"];
+    model = _require.model;
 
 var moment = require('moment');
 

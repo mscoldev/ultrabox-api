@@ -7,7 +7,7 @@ var _require = require("mongoose"),
 var locationSchema = Schema({
   name: {
     type: String,
-    required: [true, 'Defina un nombre para la ubicacion']
+    required: [true, 'Defina un nombre para la ubicación']
   },
   id_controller: {
     type: Number,

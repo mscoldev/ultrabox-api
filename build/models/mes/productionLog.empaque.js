@@ -2,13 +2,9 @@
 
 var _require = require("mongoose"),
     Schema = _require.Schema,
-    model = _require.model,
-    mongoose = _require["default"];
+    model = _require.model;
 
 var moment = require('moment');
-
-var productionLineModel = require("../productionLine.model"); //*contador, punto de carge(De donde se toma),
-
 
 var productionLogSchema = Schema({
   codigo: {
@@ -29,19 +25,19 @@ var productionLogSchema = Schema({
   },
   molino: {
     type: String,
-    required: [true, 'Debe indicar el punto de produccion molino']
+    required: [true, 'Debe indicar el punto de producción molino']
   },
-  linea_produccion: {
+  linea_producción: {
     type: Schema.Types.ObjectId,
-    required: [true, 'El id de una linea de produccion']
+    required: [true, 'El id de una linea de producción']
   },
   receta: {
     type: Number,
-    required: [true, 'Debe definir una receta para el registro de produccion']
+    required: [true, 'Debe definir una receta para el registro de producción']
   },
   silo: {
     type: Number,
-    required: [true, 'Debe seleccionar un lugar de destino para la produccion']
+    required: [true, 'Debe seleccionar un lugar de destino para la producción']
   },
   kwhpd004: {
     type: Number,
