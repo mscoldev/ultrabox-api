@@ -15,11 +15,6 @@ var productionLineSchema = Schema({
     required: false,
     unique: true
   },
-  id_controller: {
-    type: Number,
-    required: false,
-    unique: true
-  },
   backgroundColor: {
     type: String,
     required: [true, 'Define un color de fondo a utilizar en el calendario, esta característica es necesaria para el componente calendario.'],
