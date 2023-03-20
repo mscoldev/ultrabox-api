@@ -29,9 +29,9 @@ var productionLogSchema = Schema({
     type: String,
     required: [true, 'Debe indicar el punto de produccion molino']
   },
-  linea_produccion: {
-    type: Schema.Types.ObjectId,
-    required: [true, 'El id de una linea de produccion']
+  _idProductionLine: {
+    ref: 'ProductionLine',
+    type: Schema.Types.ObjectId
   },
   receta: {
     type: Number,
