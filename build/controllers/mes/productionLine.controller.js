@@ -139,8 +139,6 @@ var createProductionLine = /*#__PURE__*/function () {
                 erp_code: body.erp_code
               }, {
                 name: body.name
-              }, {
-                id_controller: body.id_controller
               }]
             });
 
