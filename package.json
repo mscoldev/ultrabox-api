@@ -26,6 +26,7 @@
     "cli-color": "^2.0.3",
     "cors": "2.8.5",
     "dotenv": "8.2.0",
+    "ethernet-ip": "^1.2.5",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
     "express-validator": "^6.14.3",
@@ -43,6 +44,7 @@
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.25.6",
+    "st-ethernet-ip": "^2.5.2",
     "validator": "^13.7.0"
   },
   "devDependencies": {
