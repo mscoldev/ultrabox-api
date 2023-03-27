@@ -19,11 +19,16 @@ var _require2 = require('mongoose'),
 
 var Material = require("../../models/material.model");
 
-var getMaterials = /*#__PURE__*/function () {
+var setValuesToPLC = require("../../controllers/mes/PLCs/plcs.controller");
+
+var updateMaterialToPLC = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
+        next,
+        infoPLC,
         materials,
+        responsePLC,
         _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -31,8 +36,86 @@ var getMaterials = /*#__PURE__*/function () {
           case 0:
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
-            _context.prev = 2;
-            _context.next = 5;
+            next = _args.length > 2 ? _args[2] : undefined;
+            infoPLC = {
+              ip: '192.168.201.108',
+              slot: 3,
+              nameTagChannelIn: 'TOLVA',
+              limitInputs: 14,
+              limitMaterials: 14
+            };
+            materials = [{
+              name: 'CLINKER',
+              _idController: 0
+            }, {
+              name: 'CALIZA',
+              _idController: 1
+            }, {
+              name: 'YESO',
+              _idController: 2
+            }, {
+              name: 'ESCORIA',
+              _idController: 3
+            }, {
+              name: 'CENIZA',
+              _idController: 4
+            }, {
+              name: 'ARCILLA T',
+              _idController: 5
+            },, {
+              name: 'ANDESITA',
+              _idController: 8
+            }];
+            _context.prev = 5;
+            responsePLC = setValuesToPLC(infoPLC, materials);
+
+            if (responsePLC) {
+              _context.next = 9;
+              break;
+            }
+
+            throw boom.failedDependency('Falla en el modulo de conexion con controlador');
+
+          case 9:
+            res.status(200).json({
+              msg: 'Materiales actualizados en PLC',
+              responsePLC: responsePLC
+            });
+            _context.next = 15;
+            break;
+
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](5);
+            next(_context.t0);
+
+          case 15:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[5, 12]]);
+  }));
+
+  return function updateMaterialToPLC() {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+var getMaterials = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var req,
+        res,
+        materials,
+        _args2 = arguments;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
+            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
+            _context2.prev = 2;
+            _context2.next = 5;
             return Material.find({
               "deleted": false
             }).populate([{
@@ -50,101 +133,40 @@ var getMaterials = /*#__PURE__*/function () {
             }).exec();
 
           case 5:
-            materials = _context.sent;
+            materials = _context2.sent;
             res.status(200).json({
               msg: 'List of materials',
               materials: materials
             });
-            _context.next = 12;
+            _context2.next = 12;
             break;
 
           case 9:
-            _context.prev = 9;
-            _context.t0 = _context["catch"](2);
-            return _context.abrupt("return", res.status(500).json({
-              message: _context.t0.message
+            _context2.prev = 9;
+            _context2.t0 = _context2["catch"](2);
+            return _context2.abrupt("return", res.status(500).json({
+              message: _context2.t0.message
             }));
 
           case 12:
           case "end":
-            return _context.stop();
+            return _context2.stop();
         }
       }
-    }, _callee, null, [[2, 9]]);
+    }, _callee2, null, [[2, 9]]);
   }));
 
   return function getMaterials() {
-    return _ref.apply(this, arguments);
+    return _ref2.apply(this, arguments);
   };
 }(); //TODO: Implementar verificacion de tipo de datos al realizar busquedas por ID.
 
 
 var getMaterialsById = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    var req,
-        res,
-        next,
-        material,
-        _args2 = arguments;
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            req = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : request;
-            res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
-            next = _args2.length > 2 ? _args2[2] : undefined;
-            _context2.prev = 3;
-            _context2.next = 6;
-            return Material.findById(req.params.materialId);
-
-          case 6:
-            material = _context2.sent;
-
-            if (!(material != null)) {
-              _context2.next = 11;
-              break;
-            }
-
-            res.status(200).json({
-              msg: 'Material por Id',
-              material: material
-            });
-            _context2.next = 12;
-            break;
-
-          case 11:
-            throw boom.notFound('Material not found');
-
-          case 12:
-            _context2.next = 17;
-            break;
-
-          case 14:
-            _context2.prev = 14;
-            _context2.t0 = _context2["catch"](3);
-            next(_context2.t0);
-
-          case 17:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2, null, [[3, 14]]);
-  }));
-
-  return function getMaterialsById() {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
-var getMaterialsByLine = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var req,
         res,
         next,
-        productionLineUse,
-        arrayProductionLineUse,
-        objectIdArray,
         material,
         _args3 = arguments;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -155,13 +177,74 @@ var getMaterialsByLine = /*#__PURE__*/function () {
             res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
             next = _args3.length > 2 ? _args3[2] : undefined;
             _context3.prev = 3;
+            _context3.next = 6;
+            return Material.findById(req.params.materialId);
+
+          case 6:
+            material = _context3.sent;
+
+            if (!(material != null)) {
+              _context3.next = 11;
+              break;
+            }
+
+            res.status(200).json({
+              msg: 'Material por Id',
+              material: material
+            });
+            _context3.next = 12;
+            break;
+
+          case 11:
+            throw boom.notFound('Material not found');
+
+          case 12:
+            _context3.next = 17;
+            break;
+
+          case 14:
+            _context3.prev = 14;
+            _context3.t0 = _context3["catch"](3);
+            next(_context3.t0);
+
+          case 17:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[3, 14]]);
+  }));
+
+  return function getMaterialsById() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var getMaterialsByLine = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var req,
+        res,
+        next,
+        productionLineUse,
+        arrayProductionLineUse,
+        objectIdArray,
+        material,
+        _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
+            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
+            next = _args4.length > 2 ? _args4[2] : undefined;
+            _context4.prev = 3;
             productionLineUse = req.query.productionLineUse;
             arrayProductionLineUse = productionLineUse.split(",");
             objectIdArray = arrayProductionLineUse.map(function (id) {
               return Types.ObjectId(id);
             });
             console.log(objectIdArray);
-            _context3.next = 10;
+            _context4.next = 10;
             return Material.find({
               'productionLineUse': {
                 $in: objectIdArray
@@ -181,10 +264,10 @@ var getMaterialsByLine = /*#__PURE__*/function () {
             }).exec();
 
           case 10:
-            material = _context3.sent;
+            material = _context4.sent;
 
             if (!(material != null)) {
-              _context3.next = 15;
+              _context4.next = 15;
               break;
             }
 
@@ -192,58 +275,58 @@ var getMaterialsByLine = /*#__PURE__*/function () {
               msg: 'Materiales por linea de produccion',
               material: material
             });
-            _context3.next = 16;
+            _context4.next = 16;
             break;
 
           case 15:
             throw boom.notFound('Material no encontrado');
 
           case 16:
-            _context3.next = 21;
+            _context4.next = 21;
             break;
 
           case 18:
-            _context3.prev = 18;
-            _context3.t0 = _context3["catch"](3);
-            next(_context3.t0);
+            _context4.prev = 18;
+            _context4.t0 = _context4["catch"](3);
+            next(_context4.t0);
 
           case 21:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3, null, [[3, 18]]);
+    }, _callee4, null, [[3, 18]]);
   }));
 
   return function getMaterialsByLine() {
-    return _ref3.apply(this, arguments);
+    return _ref4.apply(this, arguments);
   };
 }();
 
 var updateMaterialById = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
     var req,
         res,
         paramsId,
         body,
         updatedMaterial,
-        _args4 = arguments;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        _args5 = arguments;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            req = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : request;
-            res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
-            _context4.prev = 2;
+            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
+            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
+            _context5.prev = 2;
             paramsId = req.params.materialId;
             body = req.body;
-            _context4.next = 7;
+            _context5.next = 7;
             return Material.findByIdAndUpdate(paramsId, body, {
               "new": true
             });
 
           case 7:
-            updatedMaterial = _context4.sent;
+            updatedMaterial = _context5.sent;
 
             if (updatedMaterial != null) {
               res.status(200).json({
@@ -256,54 +339,54 @@ var updateMaterialById = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 14;
+            _context5.next = 14;
             break;
 
           case 11:
-            _context4.prev = 11;
-            _context4.t0 = _context4["catch"](2);
-            return _context4.abrupt("return", res.status(500).json({
-              message: _context4.t0.message
+            _context5.prev = 11;
+            _context5.t0 = _context5["catch"](2);
+            return _context5.abrupt("return", res.status(500).json({
+              message: _context5.t0.message
             }));
 
           case 14:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee4, null, [[2, 11]]);
+    }, _callee5, null, [[2, 11]]);
   }));
 
   return function updateMaterialById() {
-    return _ref4.apply(this, arguments);
+    return _ref5.apply(this, arguments);
   };
 }();
 
 var deleteMaterialById = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
     var req,
         res,
         paramsId,
         body,
         deletedMaterial,
         errMsg,
-        _args5 = arguments;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+        _args6 = arguments;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
-            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
-            _context5.prev = 2;
+            req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
+            res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
+            _context6.prev = 2;
             paramsId = req.params.materialId;
             body = {
               deleted: true
             };
-            _context5.next = 7;
+            _context6.next = 7;
             return Material.findByIdAndUpdate(paramsId, body);
 
           case 7:
-            deletedMaterial = _context5.sent;
+            deletedMaterial = _context6.sent;
 
             if (deletedMaterial != null) {
               res.status(202).json({
@@ -315,18 +398,18 @@ var deleteMaterialById = /*#__PURE__*/function () {
               });
             }
 
-            _context5.next = 15;
+            _context6.next = 15;
             break;
 
           case 11:
-            _context5.prev = 11;
-            _context5.t0 = _context5["catch"](2);
+            _context6.prev = 11;
+            _context6.t0 = _context6["catch"](2);
 
             // Set custom error for unique keys
-            if (_context5.t0.code == 11000) {
-              errMsg = Object.keys(_context5.t0.keyValue)[0] + " already exists.";
+            if (_context6.t0.code == 11000) {
+              errMsg = Object.keys(_context6.t0.keyValue)[0] + " already exists.";
             } else {
-              errMsg = _context5.t0.message;
+              errMsg = _context6.t0.message;
             }
 
             res.status(400).json({
@@ -339,64 +422,64 @@ var deleteMaterialById = /*#__PURE__*/function () {
 
           case 16:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, null, [[2, 11]]);
+    }, _callee6, null, [[2, 11]]);
   }));
 
   return function deleteMaterialById() {
-    return _ref5.apply(this, arguments);
+    return _ref6.apply(this, arguments);
   };
 }();
 
 var createMaterial = /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
     var req,
         res,
         body,
         material,
         materialSaved,
-        _args6 = arguments;
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+        _args7 = arguments;
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context7.prev = _context7.next) {
           case 0:
-            req = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : request;
-            res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : response;
-            _context6.prev = 2;
+            req = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : request;
+            res = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : response;
+            _context7.prev = 2;
             body = req.body;
             console.log(body);
             material = new Material(body);
-            _context6.next = 8;
+            _context7.next = 8;
             return material.save();
 
           case 8:
-            materialSaved = _context6.sent;
+            materialSaved = _context7.sent;
             res.status(201).json({
               msg: 'Material created successfully',
               materialSaved: materialSaved
             });
-            _context6.next = 15;
+            _context7.next = 15;
             break;
 
           case 12:
-            _context6.prev = 12;
-            _context6.t0 = _context6["catch"](2);
-            return _context6.abrupt("return", res.status(500).json({
-              message: _context6.t0.message
+            _context7.prev = 12;
+            _context7.t0 = _context7["catch"](2);
+            return _context7.abrupt("return", res.status(500).json({
+              message: _context7.t0.message
             }));
 
           case 15:
           case "end":
-            return _context6.stop();
+            return _context7.stop();
         }
       }
-    }, _callee6, null, [[2, 12]]);
+    }, _callee7, null, [[2, 12]]);
   }));
 
   return function createMaterial() {
-    return _ref6.apply(this, arguments);
+    return _ref7.apply(this, arguments);
   };
 }();
 
@@ -406,5 +489,6 @@ module.exports = {
   getMaterialsById: getMaterialsById,
   getMaterialsByLine: getMaterialsByLine,
   updateMaterialById: updateMaterialById,
-  deleteMaterialById: deleteMaterialById
+  deleteMaterialById: deleteMaterialById,
+  updateMaterialToPLC: updateMaterialToPLC
 };

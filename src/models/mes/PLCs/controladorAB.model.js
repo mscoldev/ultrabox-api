@@ -15,6 +15,9 @@ class ControladorABMES {
     // this.materials = infoPLC.materials;
   };
 
+  //TODO : Error con crash de la API si la variable del PLC no existe. (Corregir)
+  //! Error potencial si la variable del PLC no existe. (Corregir)
+
   setValuesToPLC(materials) {
     const PLC = new Controller();
     PLC.connect(this.ip, this.slot).then(async () => {
