@@ -1,0 +1,48 @@
+{
+    "_codeProjectERP": "PJ2203-0106",
+    "_idProjectERP": 28,
+    "dateAcceptance": "2023-01-27 20:00",
+    "serviceObject": "Asistencia tecnica para la instalacion de 5 alarmas",
+    "dateInit": "2023-01-27 20:00",
+    "dateEnd": "2023-01-27 20:00",
+    "client": {
+        "company": "ULTRACEM",
+        "Name": "Pedro Perez",
+        "Position": "Jefe de Compras",
+        "Email": "perdro.perez@prueba.com"
+    },
+    "controller": {
+        "Name": "Pedro Perez",
+        "Position": "Jefe de Compras",
+        "Email": "perdro.perez@prueba.com"
+    },
+    "contractor": {
+        "Name": "Pedro Perez",
+        "Position": "Jefe de Compras",
+        "Email": "perdro.perez@prueba.com"
+    },
+    "deliverables": [{
+            "_id": "uuid",
+            "description": "Este es entregable 1",
+            "compliance": 100,
+            "accepted": true
+        },
+        {
+            "_id": "uuid",
+            "description": "Este es entregable 2",
+            "compliance": 100,
+            "accepted": true
+        }
+    ],
+    "signatory": {
+        "client": "jkasdbnfkljbnsdlikfjbasdkljb",
+        "contractor": "asdkjnfblksjadbfhjklasdbfhjklb",
+        "controller": "kjsdbklfjbsdhjklfblhjksdbfjklsdb"
+    },
+    "dateSign": "2023-01-01T00:00:00",
+    "citySign": "Barranquilla",
+    "officeSign": "el cliente",
+    "serviceValue": 5,
+    "recommendations": "Estas son nuestras recomendaciones",
+    "status": "close"
+}

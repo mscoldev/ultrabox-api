@@ -43,8 +43,11 @@ class Server {
             scheduling: '/api/mes/scheduling',
             tools: '/api/mes/tools',
 
+
             //*PATHS MES - GRAFICOS
             graf: '/api/mes/graf',
+
+
             //*PATHS SCALE
             client: '/api/scale/client',
             driver: '/api/scale/driver',
@@ -54,7 +57,13 @@ class Server {
             truck: '/api/scale/truck',
             register: '/api/scale/register',
             destination: '/api/scale/destination',
-            weight: '/api/scale/weight'
+            weight: '/api/scale/weight',
+
+            //*PATHS PROJECTS
+            project: '/api/project',
+
+            //*PATHS GENERALS
+            file: '/api/file'
 
         }
 
@@ -153,6 +162,12 @@ class Server {
         this.app.use(this.paths.destination, require('../routes/scale/destination.routes'));
         this.app.use(this.paths.weight, require('../routes/scale/weight.routes'));
 
+        //*ROUTES APP PROJECT
+
+        this.app.use(this.paths.project, require('../routes/projects/projects.routes'));
+
+        //*ROUTER GENERAL
+        this.app.use(this.paths.file, require('../routes/files.routes'));
 
     }
 
