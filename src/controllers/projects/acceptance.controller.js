@@ -1,7 +1,7 @@
 const { response, request } = require("express");
 const boom = require('@hapi/boom');
 const { Types } = require('mongoose');
-const Acceptance = require("../../models/projects/acceptance.model");
+const PjAcceptance = require("../../models/projects/acceptance.model");
 
 
 
@@ -40,7 +40,7 @@ const getSchedule = async(req = request, res = response, next) => {
 const getAcceptanceById = async(req = request, res = response, next) => {
     try {
         const _id = Types.ObjectId(req.params._id);
-        const acceptance = await Acceptance.findById({ _id })
+        const acceptance = await PjAcceptance.findById({ _id }).populate({ path: '_idFiles' })
         if (acceptance.length !== 0) {
             res.status(200).json({
                 msg: 'Acta de aceptación',
@@ -58,7 +58,7 @@ const getAcceptanceById = async(req = request, res = response, next) => {
 const setAcceptance = async(req = request, res = response, next) => {
     try {
         const body = req.body
-        const newAcceptance = new Acceptance(body);
+        const newAcceptance = new PjAcceptance(body);
         const acceptanceSaved = await newAcceptance.save();
         console.log(acceptanceSaved);
         res.status(200).json({

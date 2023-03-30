@@ -16,7 +16,3 @@ server.app.get('/api', (req, res) => {
         url_docs: server.app.get('pkg').url_docs
     })
 })
-
-
-
-

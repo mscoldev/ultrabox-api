@@ -44,5 +44,7 @@
     "officeSign": "el cliente",
     "serviceValue": 5,
     "recommendations": "Estas son nuestras recomendaciones",
-    "status": "close"
+    "status": "close",
+    "typeAcceptance": "Total",
+    "_idFiles": ["6423d14841e41d896e7fed09", "6423d14841e41d896e7fed05", "6423d14841e41d896e7fed08"]
 }

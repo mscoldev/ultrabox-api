@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const { model, Schema } = require('mongoose');
 
-const projectAcceptanceSchema = new mongoose.Schema({
+const pjAcceptanceSchema = Schema({
     _codeProjectERP: {
         type: String,
         required: true
@@ -123,15 +123,22 @@ const projectAcceptanceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    typeAcceptance: {
+        type: String,
+        required: true
+    },
     status: {
         type: String,
         required: true
-    }
+    },
+    _idFiles: [{
+        ref: 'File',
+        type: Schema.Types.ObjectId,
+    }]
 }, {
     timestamps: true,
     versionKey: false
 });
 
-const ProjectERP = mongoose.model('ProjectERP', projectAcceptanceSchema);
 
-module.exports = ProjectERP;
+module.exports = model('PjAcceptance', pjAcceptanceSchema);

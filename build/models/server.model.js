@@ -22,8 +22,6 @@ var cors = require('cors');
 
 var morgan = require('morgan');
 
-var fileUpload = require('express-fileupload');
-
 var _require = require('../middlewares/error.handler'),
     logErrors = _require.logErrors,
     errorHandler = _require.errorHandler,
@@ -81,7 +79,11 @@ var Server = /*#__PURE__*/function () {
       truck: '/api/scale/truck',
       register: '/api/scale/register',
       destination: '/api/scale/destination',
-      weight: '/api/scale/weight'
+      weight: '/api/scale/weight',
+      //*PATHS PROJECTS
+      project: '/api/project',
+      //*PATHS GENERALS
+      file: '/api/file'
     }; //Conectar a la base de datos
 
     this.dbInitialize(); // Middlewares
@@ -174,7 +176,11 @@ var Server = /*#__PURE__*/function () {
       this.app.use(this.paths.truck, require('../routes/scale/truck.routes'));
       this.app.use(this.paths.register, require('../routes/scale/register.routes'));
       this.app.use(this.paths.destination, require('../routes/scale/destination.routes'));
-      this.app.use(this.paths.weight, require('../routes/scale/weight.routes'));
+      this.app.use(this.paths.weight, require('../routes/scale/weight.routes')); //*ROUTES APP PROJECT
+
+      this.app.use(this.paths.project, require('../routes/projects/projects.routes')); //*ROUTER GENERAL
+
+      this.app.use(this.paths.file, require('../routes/files.routes'));
     }
   }, {
     key: "listen",

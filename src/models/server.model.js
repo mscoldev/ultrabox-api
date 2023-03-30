@@ -2,8 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const fileUpload = require('express-fileupload');
-
 
 const { logErrors, errorHandler, boomErrorHandler } = require('../middlewares/error.handler');
 require('../helpers/auth')
