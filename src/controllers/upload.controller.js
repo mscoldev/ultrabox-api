@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs-extra');
 const File = require('../models/tools/file.model')
+require('dotenv').config();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -56,7 +57,7 @@ async function uploadFiles(req = request, res = response, next) {
         const filesSaved = [];
         Promise.all(
                 files.map(async(file) => {
-                    const newFile = new File(file);
+                    let newFile = new File(file);
                     const fileSaved = await newFile.save();
                     filesSaved.push(fileSaved);
                 })

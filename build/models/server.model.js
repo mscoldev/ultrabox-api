@@ -16,6 +16,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 require('dotenv').config();
 
+var path = require('path');
+
 var express = require('express');
 
 var cors = require('cors');
@@ -40,6 +42,8 @@ var _require4 = require('../libs/initialSetupDatabase'),
     createInitialConfApp = _require4.createInitialConfApp;
 
 var PORT = process.env.PORT || 3000;
+var uploadPath = path.join(__dirname, '..', '..', 'uploads');
+var staticUrl = path.join(__dirname, '../public');
 var corsOptions = {
   credentials: false,
   preflightContinue: false,
@@ -135,8 +139,11 @@ var Server = /*#__PURE__*/function () {
 
       this.app.use(morgan('dev')); // Lectura y parseo del body
 
-      this.app.use(express.json()); // Directorio Público
-      // this.app.use(fileUpload({
+      this.app.use(express.json()); // Contenido Statico
+
+      this.app.use('/uploads', express["static"](uploadPath));
+      console.log(staticUrl);
+      console.log(uploadPath); // this.app.use(fileUpload({
       //     useTempFiles: true,
       //     tempFileDir: '/tmp/'
       // }));

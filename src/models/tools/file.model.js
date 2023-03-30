@@ -21,7 +21,7 @@ const fileSchema = Schema({
     },
     size: {
         type: Number
-    },
+    }
 }, {
     timestamps: false,
     versionKey: false

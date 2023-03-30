@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -10,7 +11,8 @@ const { pgConnection } = require('../database/config.databasepg');
 const { createRoles, createInitialConfApp } = require('../libs/initialSetupDatabase');
 const PORT = process.env.PORT || 3000;
 
-
+const uploadPath = path.join(__dirname, '..', '..', 'uploads');
+const staticUrl = path.join(__dirname, '../public');
 
 const corsOptions = {
     credentials: false,
@@ -111,7 +113,11 @@ class Server {
         // Lectura y parseo del body
         this.app.use(express.json());
 
-        // Directorio Público
+        // Contenido Statico
+
+        this.app.use('/uploads', express.static(uploadPath));
+        console.log(staticUrl);
+        console.log(uploadPath);
 
         // this.app.use(fileUpload({
         //     useTempFiles: true,

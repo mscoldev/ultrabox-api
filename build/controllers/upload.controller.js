@@ -20,6 +20,8 @@ var fs = require('fs-extra');
 
 var File = require('../models/tools/file.model');
 
+require('dotenv').config();
+
 var storage = multer.diskStorage({
   destination: function destination(req, file, cb) {
     var _req$query = req.query,
