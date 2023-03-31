@@ -121,9 +121,12 @@ var getAcceptanceById = /*#__PURE__*/function () {
 
           case 7:
             acceptance = _context2.sent;
+            console.log({
+              acceptance: acceptance
+            });
 
-            if (!(acceptance.length !== 0)) {
-              _context2.next = 12;
+            if (!(acceptance != null)) {
+              _context2.next = 13;
               break;
             }
 
@@ -131,27 +134,27 @@ var getAcceptanceById = /*#__PURE__*/function () {
               msg: 'Acta de aceptación',
               acceptance: acceptance
             });
-            _context2.next = 13;
+            _context2.next = 14;
             break;
-
-          case 12:
-            throw boom.notFound('Oops!, no se encontraron actas de fin de proyecto');
 
           case 13:
-            _context2.next = 18;
+            throw boom.notFound("Oops!, no se encontraron actas de fin de proyecto con _id:".concat(_id, ", verifique e intente nuevamente"));
+
+          case 14:
+            _context2.next = 19;
             break;
 
-          case 15:
-            _context2.prev = 15;
+          case 16:
+            _context2.prev = 16;
             _context2.t0 = _context2["catch"](3);
             next(_context2.t0);
 
-          case 18:
+          case 19:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[3, 15]]);
+    }, _callee2, null, [[3, 16]]);
   }));
 
   return function getAcceptanceById() {

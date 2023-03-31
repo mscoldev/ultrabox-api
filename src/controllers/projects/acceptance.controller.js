@@ -41,13 +41,14 @@ const getAcceptanceById = async(req = request, res = response, next) => {
     try {
         const _id = Types.ObjectId(req.params._id);
         const acceptance = await PjAcceptance.findById({ _id }).populate({ path: '_idFiles' })
-        if (acceptance.length !== 0) {
+        console.log({ acceptance });
+        if (acceptance != null) {
             res.status(200).json({
                 msg: 'Acta de aceptación',
                 acceptance
             })
         } else {
-            throw boom.notFound('Oops!, no se encontraron actas de fin de proyecto')
+            throw boom.notFound(`Oops!, no se encontraron actas de fin de proyecto con _id:${_id}, verifique e intente nuevamente`)
         }
 
     } catch (err) {
