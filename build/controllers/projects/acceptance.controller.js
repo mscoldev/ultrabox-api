@@ -19,13 +19,15 @@ var _require2 = require('mongoose'),
 
 var PjAcceptance = require("../../models/projects/acceptance.model");
 
-var getSchedule = /*#__PURE__*/function () {
+var getAcceptanceById = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
         next,
-        schedule,
+        _id,
+        acceptance,
         _args = arguments;
+
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -34,75 +36,67 @@ var getSchedule = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             next = _args.length > 2 ? _args[2] : undefined;
             _context.prev = 3;
-            _context.next = 6;
-            return Schedule.find().populate([{
-              path: '_idRecipe',
-              populate: {
-                path: 'ingredients._idMaterial'
-              }
-            }, {
-              path: '_idRecipe',
-              populate: {
-                path: 'ingredients._idLocation'
-              }
-            }]).populate({
-              path: '_idProductionLine'
+            _id = Types.ObjectId(req.params._id);
+            _context.next = 7;
+            return PjAcceptance.findById({
+              _id: _id
             }).populate({
-              path: '_idUser',
-              select: {
-                username: 1
-              }
-            }).exec();
+              path: '_idFiles',
+              model: 'File'
+            });
 
-          case 6:
-            schedule = _context.sent;
+          case 7:
+            acceptance = _context.sent;
+            console.log({
+              acceptance: acceptance
+            });
 
-            if (!(schedule.length !== 0)) {
-              _context.next = 11;
+            if (!(acceptance != null)) {
+              _context.next = 13;
               break;
             }
 
             res.status(200).json({
-              msg: 'Lista de Programaciones',
-              schedule: schedule
+              msg: 'Acta de aceptación',
+              acceptance: acceptance
             });
-            _context.next = 12;
+            _context.next = 14;
             break;
 
-          case 11:
-            throw boom.notFound('Oops!, ubicaciones no encontradas');
-
-          case 12:
-            _context.next = 17;
-            break;
+          case 13:
+            throw boom.notFound("Oops!, no se encontraron actas de fin de proyecto con _id:".concat(_id, ", verifique e intente nuevamente"));
 
           case 14:
-            _context.prev = 14;
+            _context.next = 19;
+            break;
+
+          case 16:
+            _context.prev = 16;
             _context.t0 = _context["catch"](3);
             next(_context.t0);
 
-          case 17:
+          case 19:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 14]]);
+    }, _callee, null, [[3, 16]]);
   }));
 
-  return function getSchedule() {
+  return function getAcceptanceById() {
     return _ref.apply(this, arguments);
   };
 }();
 
-var getAcceptanceById = /*#__PURE__*/function () {
+var setAcceptance = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var req,
         res,
         next,
-        _id,
-        acceptance,
+        body,
+        newAcceptance,
+        acceptanceSaved,
         _args2 = arguments;
-
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -111,66 +105,49 @@ var getAcceptanceById = /*#__PURE__*/function () {
             res = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : response;
             next = _args2.length > 2 ? _args2[2] : undefined;
             _context2.prev = 3;
-            _id = Types.ObjectId(req.params._id);
-            _context2.next = 7;
-            return PjAcceptance.findById({
-              _id: _id
-            }).populate({
-              path: '_idFiles'
-            });
+            body = req.body;
+            newAcceptance = new PjAcceptance(body);
+            _context2.next = 8;
+            return newAcceptance.save();
 
-          case 7:
-            acceptance = _context2.sent;
-            console.log({
-              acceptance: acceptance
-            });
-
-            if (!(acceptance != null)) {
-              _context2.next = 13;
-              break;
-            }
-
+          case 8:
+            acceptanceSaved = _context2.sent;
+            console.log(acceptanceSaved);
             res.status(200).json({
-              msg: 'Acta de aceptación',
-              acceptance: acceptance
+              msg: 'Nueva acta de aceptacion de proyecto almacenada',
+              acceptanceSaved: acceptanceSaved
             });
-            _context2.next = 14;
+            _context2.next = 16;
             break;
 
           case 13:
-            throw boom.notFound("Oops!, no se encontraron actas de fin de proyecto con _id:".concat(_id, ", verifique e intente nuevamente"));
-
-          case 14:
-            _context2.next = 19;
-            break;
-
-          case 16:
-            _context2.prev = 16;
+            _context2.prev = 13;
             _context2.t0 = _context2["catch"](3);
             next(_context2.t0);
 
-          case 19:
+          case 16:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[3, 16]]);
+    }, _callee2, null, [[3, 13]]);
   }));
 
-  return function getAcceptanceById() {
+  return function setAcceptance() {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var setAcceptance = /*#__PURE__*/function () {
+var updateScheduleById = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var req,
         res,
         next,
         body,
-        newAcceptance,
-        acceptanceSaved,
+        _id,
+        updateSchedule,
         _args3 = arguments;
+
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -180,46 +157,61 @@ var setAcceptance = /*#__PURE__*/function () {
             next = _args3.length > 2 ? _args3[2] : undefined;
             _context3.prev = 3;
             body = req.body;
-            newAcceptance = new PjAcceptance(body);
-            _context3.next = 8;
-            return newAcceptance.save();
+            body.dateStart = body.dateStart + " " + body.hourStart;
+            body.dateEnd = body.dateEnd + " " + body.hourEnd;
+            _id = Types.ObjectId(req.params._id);
+            _context3.next = 10;
+            return Schedule.findByIdAndUpdate(_id, body, {
+              "new": true
+            });
 
-          case 8:
-            acceptanceSaved = _context3.sent;
-            console.log(acceptanceSaved);
+          case 10:
+            updateSchedule = _context3.sent;
+
+            if (!(updateSchedule != null)) {
+              _context3.next = 15;
+              break;
+            }
+
             res.status(200).json({
-              msg: 'Nueva acta de aceptacion de proyecto almacenada',
-              acceptanceSaved: acceptanceSaved
+              msg: 'Programación actualizada',
+              updateSchedule: updateSchedule
             });
             _context3.next = 16;
             break;
 
-          case 13:
-            _context3.prev = 13;
+          case 15:
+            throw boom.notFound('Oops!, programación no encontrada');
+
+          case 16:
+            _context3.next = 21;
+            break;
+
+          case 18:
+            _context3.prev = 18;
             _context3.t0 = _context3["catch"](3);
             next(_context3.t0);
 
-          case 16:
+          case 21:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[3, 13]]);
+    }, _callee3, null, [[3, 18]]);
   }));
 
-  return function setAcceptance() {
+  return function updateScheduleById() {
     return _ref3.apply(this, arguments);
   };
 }();
 
-var updateScheduleById = /*#__PURE__*/function () {
+var deleteScheduleById = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
         next,
-        body,
         _id,
-        updateSchedule,
+        deletedSchedule,
         _args4 = arguments;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -230,137 +222,46 @@ var updateScheduleById = /*#__PURE__*/function () {
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
             next = _args4.length > 2 ? _args4[2] : undefined;
             _context4.prev = 3;
-            body = req.body;
-            body.dateStart = body.dateStart + " " + body.hourStart;
-            body.dateEnd = body.dateEnd + " " + body.hourEnd;
             _id = Types.ObjectId(req.params._id);
-            _context4.next = 10;
-            return Schedule.findByIdAndUpdate(_id, body, {
-              "new": true
-            });
-
-          case 10:
-            updateSchedule = _context4.sent;
-
-            if (!(updateSchedule != null)) {
-              _context4.next = 15;
-              break;
-            }
-
-            res.status(200).json({
-              msg: 'Programación actualizada',
-              updateSchedule: updateSchedule
-            });
-            _context4.next = 16;
-            break;
-
-          case 15:
-            throw boom.notFound('Oops!, programación no encontrada');
-
-          case 16:
-            _context4.next = 21;
-            break;
-
-          case 18:
-            _context4.prev = 18;
-            _context4.t0 = _context4["catch"](3);
-            next(_context4.t0);
-
-          case 21:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4, null, [[3, 18]]);
-  }));
-
-  return function updateScheduleById() {
-    return _ref4.apply(this, arguments);
-  };
-}();
-
-var deleteScheduleById = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-    var req,
-        res,
-        next,
-        _id,
-        deletedSchedule,
-        _args5 = arguments;
-
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            req = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : request;
-            res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : response;
-            next = _args5.length > 2 ? _args5[2] : undefined;
-            _context5.prev = 3;
-            _id = Types.ObjectId(req.params._id);
-            _context5.next = 7;
+            _context4.next = 7;
             return Schedule.findByIdAndDelete(_id);
 
           case 7:
-            deletedSchedule = _context5.sent;
+            deletedSchedule = _context4.sent;
 
             if (!(deletedSchedule != null)) {
-              _context5.next = 12;
+              _context4.next = 12;
               break;
             }
 
             res.status(202).json({
               msg: "Plan eliminado con exito _id:".concat(_id)
             });
-            _context5.next = 13;
+            _context4.next = 13;
             break;
 
           case 12:
             throw boom.notFound('Oops!, plan no encontrado, verifique el id');
 
           case 13:
-            _context5.next = 18;
+            _context4.next = 18;
             break;
 
           case 15:
-            _context5.prev = 15;
-            _context5.t0 = _context5["catch"](3);
-            next(_context5.t0);
+            _context4.prev = 15;
+            _context4.t0 = _context4["catch"](3);
+            next(_context4.t0);
 
           case 18:
           case "end":
-            return _context5.stop();
+            return _context4.stop();
         }
       }
-    }, _callee5, null, [[3, 15]]);
+    }, _callee4, null, [[3, 15]]);
   }));
 
   return function deleteScheduleById() {
-    return _ref5.apply(this, arguments);
-  };
-}();
-
-var JSONataExpression = /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(dataPromise) {
-    var queryJSONata, expression, result;
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-      while (1) {
-        switch (_context6.prev = _context6.next) {
-          case 0:
-            queryJSONata = "[$.{\"id\":_id,\"name\":name,\"erp_code\":erp_code,\"id_controller\":id_controller,\n        \"productionLineUse\":[productionLineUse.$.{\"_id\":_id,\"name\":name}],\n        \"ingredients\":[ingredients.$.{\"_idIngredient\":_id,\"_idMaterial\":_idMaterial._id,\"name\":_idMaterial.name,\"id_controller\":_idMaterial.id_controller,\"type\":_idMaterial.type,\"deleted\":_idMaterial.deleted,\"qty\":qty}]}]";
-            expression = jsonata(queryJSONata);
-            result = expression.evaluate(dataPromise);
-            return _context6.abrupt("return", result);
-
-          case 4:
-          case "end":
-            return _context6.stop();
-        }
-      }
-    }, _callee6);
-  }));
-
-  return function JSONataExpression(_x) {
-    return _ref6.apply(this, arguments);
+    return _ref4.apply(this, arguments);
   };
 }();
 

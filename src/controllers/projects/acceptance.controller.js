@@ -5,42 +5,10 @@ const PjAcceptance = require("../../models/projects/acceptance.model");
 
 
 
-const getSchedule = async(req = request, res = response, next) => {
-    try {
-        const schedule = await Schedule.find()
-            .populate([{
-                path: '_idRecipe',
-                populate: {
-                    path: 'ingredients._idMaterial'
-                }
-            }, {
-                path: '_idRecipe',
-                populate: {
-                    path: 'ingredients._idLocation'
-                }
-            }])
-            .populate({ path: '_idProductionLine' })
-            .populate({ path: '_idUser', select: { username: 1 } }).exec()
-
-
-        if (schedule.length !== 0) {
-            res.status(200).json({
-                msg: 'Lista de Programaciones',
-                schedule
-            })
-        } else {
-            throw boom.notFound('Oops!, ubicaciones no encontradas')
-        }
-
-    } catch (err) {
-        next(err);
-    }
-}
-
 const getAcceptanceById = async(req = request, res = response, next) => {
     try {
         const _id = Types.ObjectId(req.params._id);
-        const acceptance = await PjAcceptance.findById({ _id }).populate({ path: '_idFiles' })
+        const acceptance = await PjAcceptance.findById({ _id }).populate({ path: '_idFiles', model: 'File' })
         console.log({ acceptance });
         if (acceptance != null) {
             res.status(200).json({
@@ -108,16 +76,6 @@ const deleteScheduleById = async(req = request, res = response, next) => {
     } catch (err) {
         next(err);
     }
-}
-
-const JSONataExpression = async(dataPromise) => {
-    const queryJSONata = `[$.{"id":_id,"name":name,"erp_code":erp_code,"id_controller":id_controller,
-        "productionLineUse":[productionLineUse.$.{"_id":_id,"name":name}],
-        "ingredients":[ingredients.$.{"_idIngredient":_id,"_idMaterial":_idMaterial._id,"name":_idMaterial.name,"id_controller":_idMaterial.id_controller,"type":_idMaterial.type,"deleted":_idMaterial.deleted,"qty":qty}]}]`;
-    const expression = jsonata(queryJSONata);
-
-    const result = expression.evaluate(dataPromise);
-    return result;
 }
 
 
