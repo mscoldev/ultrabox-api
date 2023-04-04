@@ -48,7 +48,7 @@ const setAcceptance = async(req = request, res = response, next) => {
     }
 }
 
-//TODO: Crear methodo PUT para actualizacion del acta.
+
 
 const updateAcceptanceById = async(req = request, res = response, next) => {
     try {
