@@ -3,11 +3,13 @@ const { model, Schema } = require('mongoose');
 const pjAcceptanceSchema = Schema({
     _codeProjectERP: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     _idProjectERP: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     dateAcceptance: {
         type: Date,
@@ -140,5 +142,7 @@ const pjAcceptanceSchema = Schema({
     versionKey: false
 });
 
+// Agrega un índice en los campos _id y _codeProjectERP
+pjAcceptanceSchema.index({ _id: 1, _codeProjectERP: 1 });
 
 module.exports = model('PjAcceptance', pjAcceptanceSchema);

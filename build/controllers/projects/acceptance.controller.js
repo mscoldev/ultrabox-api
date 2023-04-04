@@ -19,12 +19,17 @@ var _require2 = require('mongoose'),
 
 var PjAcceptance = require("../../models/projects/acceptance.model");
 
+var _require3 = require("sequelize"),
+    and = _require3.and;
+
 var getAcceptanceById = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
         next,
+        _req$query,
         _id,
+        _codeProjectERP,
         acceptance,
         _args = arguments;
 
@@ -36,23 +41,33 @@ var getAcceptanceById = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             next = _args.length > 2 ? _args[2] : undefined;
             _context.prev = 3;
-            _id = Types.ObjectId(req.params._id);
-            _context.next = 7;
-            return PjAcceptance.findById({
-              _id: _id
+            _req$query = req.query, _id = _req$query._id, _codeProjectERP = _req$query._codeProjectERP;
+
+            if (!(_id == undefined & _codeProjectERP == undefined)) {
+              _context.next = 9;
+              break;
+            }
+
+            throw boom.badRequest('Debe definir mínimo un parámetro de consulta: _id o _codeProjectERP');
+
+          case 9:
+            _context.next = 11;
+            return PjAcceptance.findOne({
+              $or: [{
+                _codeProjectERP: _codeProjectERP
+              }, {
+                _id: _id
+              }]
             }).populate({
               path: '_idFiles',
               model: 'File'
             });
 
-          case 7:
+          case 11:
             acceptance = _context.sent;
-            console.log({
-              acceptance: acceptance
-            });
 
             if (!(acceptance != null)) {
-              _context.next = 13;
+              _context.next = 16;
               break;
             }
 
@@ -60,27 +75,27 @@ var getAcceptanceById = /*#__PURE__*/function () {
               msg: 'Acta de aceptación',
               acceptance: acceptance
             });
-            _context.next = 14;
-            break;
-
-          case 13:
-            throw boom.notFound("Oops!, no se encontraron actas de fin de proyecto con _id:".concat(_id, ", verifique e intente nuevamente"));
-
-          case 14:
-            _context.next = 19;
+            _context.next = 17;
             break;
 
           case 16:
-            _context.prev = 16;
+            throw boom.notFound("Oops!, no se encontraron actas con alguno de los par\xE1metros de b\xFAsqueda ingresados.");
+
+          case 17:
+            _context.next = 22;
+            break;
+
+          case 19:
+            _context.prev = 19;
             _context.t0 = _context["catch"](3);
             next(_context.t0);
 
-          case 19:
+          case 22:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 16]]);
+    }, _callee, null, [[3, 19]]);
   }));
 
   return function getAcceptanceById() {
@@ -136,16 +151,17 @@ var setAcceptance = /*#__PURE__*/function () {
   return function setAcceptance() {
     return _ref2.apply(this, arguments);
   };
-}();
+}(); //TODO: Crear methodo PUT para actualizacion del acta.
 
-var updateScheduleById = /*#__PURE__*/function () {
+
+var updateAcceptanceById = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var req,
         res,
         next,
         body,
         _id,
-        updateSchedule,
+        updateAcceptance,
         _args3 = arguments;
 
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -157,50 +173,48 @@ var updateScheduleById = /*#__PURE__*/function () {
             next = _args3.length > 2 ? _args3[2] : undefined;
             _context3.prev = 3;
             body = req.body;
-            body.dateStart = body.dateStart + " " + body.hourStart;
-            body.dateEnd = body.dateEnd + " " + body.hourEnd;
             _id = Types.ObjectId(req.params._id);
-            _context3.next = 10;
-            return Schedule.findByIdAndUpdate(_id, body, {
+            _context3.next = 8;
+            return PjAcceptance.findByIdAndUpdate(_id, body, {
               "new": true
             });
 
-          case 10:
-            updateSchedule = _context3.sent;
+          case 8:
+            updateAcceptance = _context3.sent;
 
-            if (!(updateSchedule != null)) {
-              _context3.next = 15;
+            if (!(updateAcceptance != null)) {
+              _context3.next = 13;
               break;
             }
 
             res.status(200).json({
-              msg: 'Programación actualizada',
-              updateSchedule: updateSchedule
+              msg: 'Acta actualizada',
+              updateAcceptance: updateAcceptance
             });
-            _context3.next = 16;
+            _context3.next = 14;
             break;
 
-          case 15:
-            throw boom.notFound('Oops!, programación no encontrada');
+          case 13:
+            throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
+
+          case 14:
+            _context3.next = 19;
+            break;
 
           case 16:
-            _context3.next = 21;
-            break;
-
-          case 18:
-            _context3.prev = 18;
+            _context3.prev = 16;
             _context3.t0 = _context3["catch"](3);
             next(_context3.t0);
 
-          case 21:
+          case 19:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[3, 18]]);
+    }, _callee3, null, [[3, 16]]);
   }));
 
-  return function updateScheduleById() {
+  return function updateAcceptanceById() {
     return _ref3.apply(this, arguments);
   };
 }();
@@ -267,5 +281,6 @@ var deleteScheduleById = /*#__PURE__*/function () {
 
 module.exports = {
   setAcceptance: setAcceptance,
-  getAcceptanceById: getAcceptanceById
+  getAcceptanceById: getAcceptanceById,
+  updateAcceptanceById: updateAcceptanceById
 };
