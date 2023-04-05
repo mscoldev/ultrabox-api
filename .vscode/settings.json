@@ -13,5 +13,6 @@
     "cSpell.ignoreWords": [
         "databasepg"
     ],
-    "cSpell.language": "en,es,es-ES"
+    "cSpell.language": "en,es,es-ES",
+    "thunder-client.httpLibrary": "axios"
 }
