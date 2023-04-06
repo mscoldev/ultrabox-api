@@ -1,7 +1,5 @@
 "use strict";
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var _require = require('mongoose'),
     model = _require.model,
     Schema = _require.Schema;
@@ -40,15 +38,12 @@ var pjAcceptanceSchema = Schema({
         required: true
       }
     },
-    own: _defineProperty({
+    own: {
       proposal: {
         type: String,
         required: true
       }
-    }, "proposal", {
-      type: String,
-      required: true
-    })
+    }
   },
   client: {
     company: {

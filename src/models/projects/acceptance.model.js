@@ -38,10 +38,6 @@ const pjAcceptanceSchema = Schema({
       proposal: {
         type: String,
         required: true
-      },
-      proposal: {
-        type: String,
-        required: true
       }
     }
   },
