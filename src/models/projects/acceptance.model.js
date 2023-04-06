@@ -147,6 +147,17 @@ const pjAcceptanceSchema = Schema({
     type: String,
     required: true
   },
+  rejectedMessage: [{
+    description: {
+      type: String
+    },
+    date: {
+      type: Date
+    },
+    by: {
+      type: String
+    }
+  }],
   _idFiles: [{
     ref: 'File',
     type: Schema.Types.ObjectId,
