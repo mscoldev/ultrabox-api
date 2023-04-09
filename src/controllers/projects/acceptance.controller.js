@@ -2,7 +2,7 @@ const { response, request } = require("express");
 const boom = require('@hapi/boom');
 const { Types } = require('mongoose');
 const PjAcceptance = require("../../models/projects/acceptance.model");
-const { and } = require("sequelize");
+
 
 
 
@@ -33,13 +33,17 @@ const getAcceptanceById = async(req = request, res = response, next) => {
 
 
 const setAcceptance = async(req = request, res = response, next) => {
+    //* Crear un acta por medio del formulario y asignar por defecto la condición de "new". No permitir el ingreso de firmas en el primer estado.
+
     try {
-        const body = req.body
-        const newAcceptance = new PjAcceptance(body);
+        const stage = { "name": "new", "date": Date.now() }
+        const { signatory, ...data } = req.body;
+        data['stage'] = stage;
+        const newAcceptance = new PjAcceptance(data);
         const acceptanceSaved = await newAcceptance.save();
         console.log(acceptanceSaved);
         res.status(200).json({
-            msg: 'Nueva acta de aceptacion de proyecto almacenada',
+            msg: 'Nueva acta de aceptación de proyecto almacenada',
             acceptanceSaved
         });
 
@@ -50,19 +54,28 @@ const setAcceptance = async(req = request, res = response, next) => {
 
 
 
+
+
 const updateAcceptanceById = async(req = request, res = response, next) => {
     try {
         const body = req.body
+        const { rejectedMessage } = body
         const _id = Types.ObjectId(req.params._id);
 
-        const updateAcceptance = await PjAcceptance
-            .findByIdAndUpdate(_id, body, { new: true });
+        //* Si el Stage del acta es new se reciben los datos para la firma por parte del contractor.
+        //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
+        //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
 
-        if (updateAcceptance != null) {
-            res.status(200).json({
-                msg: 'Acta actualizada',
-                updateAcceptance
-            });
+        if (body.stage.name === 'rejected') {
+            const updateData = { $push: { rejectedMessage } }
+            const updateAcceptance = await PjAcceptance
+                .findByIdAndUpdate({ _id }, updateData, { new: true });
+            if (updateAcceptance != null) {
+                res.status(200).json({
+                    msg: 'Acta actualizada',
+                    updateAcceptance
+                });
+            }
         } else {
             throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`)
         }
@@ -93,5 +106,5 @@ const deleteScheduleById = async(req = request, res = response, next) => {
 module.exports = {
     setAcceptance,
     getAcceptanceById,
-    updateAcceptanceById
+    updateAcceptanceById,
 }

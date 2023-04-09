@@ -112,15 +112,15 @@ var pjAcceptanceSchema = Schema({
   signatory: {
     client: {
       type: String,
-      required: true
+      required: false
     },
     contractor: {
       type: String,
-      required: true
+      required: false
     },
     controller: {
       type: String,
-      required: true
+      required: false
     }
   },
   dateSign: {
@@ -147,16 +147,24 @@ var pjAcceptanceSchema = Schema({
     type: String,
     required: true
   },
-  status: {
-    type: String,
-    required: true
-  },
+  stage: [{
+    name: {
+      type: String,
+      required: true
+    },
+    date: {
+      type: Date,
+      required: true,
+      "default": Date.now
+    }
+  }],
   rejectedMessage: [{
     description: {
       type: String
     },
     date: {
-      type: Date
+      type: Date,
+      "default": Date.now
     },
     by: {
       type: String
