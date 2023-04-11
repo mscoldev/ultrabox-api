@@ -53,12 +53,14 @@ const setAcceptance = async(req = request, res = response, next) => {
 }
 
 
-
+//TODO: Implementar actualizacion general de acta sin mensajes de rechazo.
+//TODO: Implementra cambios de estado del acta automatizados desde el backend.
 
 
 const updateAcceptanceById = async(req = request, res = response, next) => {
     try {
         const body = req.body
+        const { stage } = req.body
         const { rejectedMessage } = body
         const _id = Types.ObjectId(req.params._id);
 
@@ -66,10 +68,16 @@ const updateAcceptanceById = async(req = request, res = response, next) => {
         //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
         //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
 
-        if (body.stage.name === 'rejected') {
-            const updateData = { $push: { rejectedMessage } }
+        if (stage.name === 'rejected') {
+            const update = {
+                $push: {
+                    rejectedMessage: rejectedMessage,
+                },
+                stage: { name: stage.name }
+            };
+
             const updateAcceptance = await PjAcceptance
-                .findByIdAndUpdate({ _id }, updateData, { new: true });
+                .findByIdAndUpdate({ _id }, update, { new: true });
             if (updateAcceptance != null) {
                 res.status(200).json({
                     msg: 'Acta actualizada',

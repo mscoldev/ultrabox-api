@@ -153,6 +153,11 @@ const pjAcceptanceSchema = Schema({
             required: true,
             default: Date.now
         },
+        completed: {
+            type: Boolean,
+            required: true,
+            default: false
+        },
     }],
     rejectedMessage: [{
         description: {

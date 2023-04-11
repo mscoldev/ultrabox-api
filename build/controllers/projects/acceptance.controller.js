@@ -163,7 +163,9 @@ var setAcceptance = /*#__PURE__*/function () {
   return function setAcceptance() {
     return _ref2.apply(this, arguments);
   };
-}();
+}(); //TODO: Implementar actualizacion general de acta sin mensajes de rechazo.
+//TODO: Implementra cambios de estado del acta automatizados desde el backend.
+
 
 var updateAcceptanceById = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
@@ -171,9 +173,10 @@ var updateAcceptanceById = /*#__PURE__*/function () {
         res,
         next,
         body,
+        stage,
         rejectedMessage,
         _id,
-        updateData,
+        update,
         updateAcceptance,
         _args3 = arguments;
 
@@ -186,29 +189,33 @@ var updateAcceptanceById = /*#__PURE__*/function () {
             next = _args3.length > 2 ? _args3[2] : undefined;
             _context3.prev = 3;
             body = req.body;
+            stage = req.body.stage;
             rejectedMessage = body.rejectedMessage;
             _id = Types.ObjectId(req.params._id); //* Si el Stage del acta es new se reciben los datos para la firma por parte del contractor.
             //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
             //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
 
-            if (!(body.stage.name === 'rejected')) {
-              _context3.next = 15;
+            if (!(stage.name === 'rejected')) {
+              _context3.next = 16;
               break;
             }
 
-            updateData = {
+            update = {
               $push: {
                 rejectedMessage: rejectedMessage
+              },
+              stage: {
+                name: stage.name
               }
             };
-            _context3.next = 11;
+            _context3.next = 12;
             return PjAcceptance.findByIdAndUpdate({
               _id: _id
-            }, updateData, {
+            }, update, {
               "new": true
             });
 
-          case 11:
+          case 12:
             updateAcceptance = _context3.sent;
 
             if (updateAcceptance != null) {
@@ -218,27 +225,27 @@ var updateAcceptanceById = /*#__PURE__*/function () {
               });
             }
 
-            _context3.next = 16;
+            _context3.next = 17;
             break;
-
-          case 15:
-            throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
 
           case 16:
-            _context3.next = 21;
+            throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
+
+          case 17:
+            _context3.next = 22;
             break;
 
-          case 18:
-            _context3.prev = 18;
+          case 19:
+            _context3.prev = 19;
             _context3.t0 = _context3["catch"](3);
             next(_context3.t0);
 
-          case 21:
+          case 22:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[3, 18]]);
+    }, _callee3, null, [[3, 19]]);
   }));
 
   return function updateAcceptanceById() {
