@@ -185,7 +185,7 @@ const deleteMaterialById = async (req = request, res = response) => {
   };
 }
 
-const createMaterial = async (req = request, res = response) => {
+const createMaterial = async (req = request, res = response, next) => {
   //TODO: Usar desestructuracion de objetos
   try {
     const body = req.body;
@@ -193,13 +193,17 @@ const createMaterial = async (req = request, res = response) => {
     const material = new Material(body);
 
     const materialSaved = await material.save();
+    if (materialSaved != null) {
+      res.status(201).json({
+        msg: 'Material creado',
+        materialSaved
+      })
+    } else {
+      throw boom.badRequest('Algo salió mal, verifica el requerimiento')
+    }
 
-    res.status(201).json({
-      msg: 'Material created successfully',
-      materialSaved
-    })
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    next(err);
   }
 
 }

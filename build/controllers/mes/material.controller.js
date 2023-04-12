@@ -437,6 +437,7 @@ var createMaterial = /*#__PURE__*/function () {
   var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
     var req,
         res,
+        next,
         body,
         material,
         materialSaved,
@@ -447,35 +448,47 @@ var createMaterial = /*#__PURE__*/function () {
           case 0:
             req = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : request;
             res = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : response;
-            _context7.prev = 2;
+            next = _args7.length > 2 ? _args7[2] : undefined;
+            _context7.prev = 3;
             body = req.body;
             console.log(body);
             material = new Material(body);
-            _context7.next = 8;
+            _context7.next = 9;
             return material.save();
 
-          case 8:
+          case 9:
             materialSaved = _context7.sent;
+
+            if (!(materialSaved != null)) {
+              _context7.next = 14;
+              break;
+            }
+
             res.status(201).json({
-              msg: 'Material created successfully',
+              msg: 'Material creado',
               materialSaved: materialSaved
             });
             _context7.next = 15;
             break;
 
-          case 12:
-            _context7.prev = 12;
-            _context7.t0 = _context7["catch"](2);
-            return _context7.abrupt("return", res.status(500).json({
-              message: _context7.t0.message
-            }));
+          case 14:
+            throw boom.badRequest('Algo salió mal, verifica el requerimiento');
 
           case 15:
+            _context7.next = 20;
+            break;
+
+          case 17:
+            _context7.prev = 17;
+            _context7.t0 = _context7["catch"](3);
+            next(_context7.t0);
+
+          case 20:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[2, 12]]);
+    }, _callee7, null, [[3, 17]]);
   }));
 
   return function createMaterial() {

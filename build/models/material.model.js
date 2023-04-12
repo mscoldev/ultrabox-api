@@ -2,22 +2,30 @@
 
 var _require = require("mongoose"),
     Schema = _require.Schema,
-    model = _require.model;
+    model = _require.model,
+    mongoose = _require.mongoose;
+
+var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 var materialSchema = Schema({
   name: {
     type: String,
-    required: [true, 'El nombre del material es obligatorio']
+    required: [true, 'El nombre del material es obligatorio'],
+    unique: [true, 'El nombre del material debe ser único']
   },
   erp_code: {
     type: Number,
     required: [true, 'El codigo ERP es requerido'],
-    unique: [true, 'El codigo ERP debe ser unico']
+    unique: [true, 'El codigo ERP debe ser único']
   },
-  id_controller: {
+  _idControllerMaterial: {
+    "default": 0,
     type: Number,
-    required: false,
-    unique: false
+    required: [true, 'El id controlador es requerido, proporcione un numero'],
+    unique: {
+      values: true,
+      message: 'El id controlador debe ser único'
+    }
   },
   description: {
     type: String,
@@ -31,10 +39,12 @@ var materialSchema = Schema({
   },
   ppm: {
     type: Number,
+    "default": 0,
     required: [false, 'PPM is required']
   },
   density: {
     type: Number,
+    "default": 1,
     required: [false, 'Density is required']
   },
   deleted: {
@@ -48,10 +58,15 @@ var materialSchema = Schema({
   }],
   unit: {
     ref: 'Unit',
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId,
+    required: [true, 'Defina una unidad para la densidad']
   }
 }, {
   timestamps: true,
   versionKey: false
+});
+materialSchema.plugin(AutoIncrement, {
+  inc_field: '_idControllerMaterial',
+  start_seq: 0
 });
 module.exports = model('Material', materialSchema);

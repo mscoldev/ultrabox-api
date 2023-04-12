@@ -2,14 +2,25 @@
 
 function logErrors(err, req, res, next) {
   console.log("*******LOG ERROR********");
-  console.error(err.stack);
+  console.error(err.message);
   next(err);
 }
 
 function errorHandler(err, req, res, next) {
   console.log("*****ERROR HANDLER********");
+
+  if (err.code === 11000) {
+    var message = "El valor ".concat(err.keyValue.name, " ya existe en la base de datos");
+    console.log({
+      err: err
+    });
+    return res.status(409).json({
+      message: message
+    });
+  }
+
   res.status(500).json({
-    messages: err.message,
+    message: err.message,
     stack: err.stack
   });
 }

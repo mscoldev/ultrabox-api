@@ -31,7 +31,7 @@ var getAcceptanceById = /*#__PURE__*/function () {
         res,
         next,
         _req$query,
-        _id,
+        _id2,
         _codeProjectERP,
         acceptance,
         _args = arguments;
@@ -44,9 +44,9 @@ var getAcceptanceById = /*#__PURE__*/function () {
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             next = _args.length > 2 ? _args[2] : undefined;
             _context.prev = 3;
-            _req$query = req.query, _id = _req$query._id, _codeProjectERP = _req$query._codeProjectERP;
+            _req$query = req.query, _id2 = _req$query._id, _codeProjectERP = _req$query._codeProjectERP;
 
-            if (!(_id == undefined & _codeProjectERP == undefined)) {
+            if (!(_id2 == undefined & _codeProjectERP == undefined)) {
               _context.next = 9;
               break;
             }
@@ -59,7 +59,7 @@ var getAcceptanceById = /*#__PURE__*/function () {
               $or: [{
                 _codeProjectERP: _codeProjectERP
               }, {
-                _id: _id
+                _id: _id2
               }]
             }).populate({
               path: '_idFiles',
@@ -168,98 +168,21 @@ var setAcceptance = /*#__PURE__*/function () {
 
 
 var updateAcceptanceById = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var req,
         res,
         next,
         body,
+        _req$body2,
         stage,
+        signatory,
         rejectedMessage,
-        _id,
+        _id3,
+        _yield$readAcceptance,
+        _stage,
         update,
-        updateAcceptance,
-        _args3 = arguments;
-
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
-            res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
-            next = _args3.length > 2 ? _args3[2] : undefined;
-            _context3.prev = 3;
-            body = req.body;
-            stage = req.body.stage;
-            rejectedMessage = body.rejectedMessage;
-            _id = Types.ObjectId(req.params._id); //* Si el Stage del acta es new se reciben los datos para la firma por parte del contractor.
-            //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
-            //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
-
-            if (!(stage.name === 'rejected')) {
-              _context3.next = 16;
-              break;
-            }
-
-            update = {
-              $push: {
-                rejectedMessage: rejectedMessage
-              },
-              stage: {
-                name: stage.name
-              }
-            };
-            _context3.next = 12;
-            return PjAcceptance.findByIdAndUpdate({
-              _id: _id
-            }, update, {
-              "new": true
-            });
-
-          case 12:
-            updateAcceptance = _context3.sent;
-
-            if (updateAcceptance != null) {
-              res.status(200).json({
-                msg: 'Acta actualizada',
-                updateAcceptance: updateAcceptance
-              });
-            }
-
-            _context3.next = 17;
-            break;
-
-          case 16:
-            throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
-
-          case 17:
-            _context3.next = 22;
-            break;
-
-          case 19:
-            _context3.prev = 19;
-            _context3.t0 = _context3["catch"](3);
-            next(_context3.t0);
-
-          case 22:
-          case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3, null, [[3, 19]]);
-  }));
-
-  return function updateAcceptanceById() {
-    return _ref3.apply(this, arguments);
-  };
-}();
-
-var deleteScheduleById = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-    var req,
-        res,
-        next,
-        _id,
-        deletedSchedule,
+        _update,
+        updatedAcceptance,
         _args4 = arguments;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -270,46 +193,218 @@ var deleteScheduleById = /*#__PURE__*/function () {
             res = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : response;
             next = _args4.length > 2 ? _args4[2] : undefined;
             _context4.prev = 3;
-            _id = Types.ObjectId(req.params._id);
-            _context4.next = 7;
-            return Schedule.findByIdAndDelete(_id);
+            body = req.body;
+            _req$body2 = req.body, stage = _req$body2.stage, signatory = _req$body2.signatory;
+            rejectedMessage = body.rejectedMessage;
+            _id3 = Types.ObjectId(req.params._id); //* Si el Stage del acta es new se reciben los datos para la firma por parte del contractor.
+            //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
+            //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
 
-          case 7:
-            deletedSchedule = _context4.sent;
-
-            if (!(deletedSchedule != null)) {
-              _context4.next = 12;
+            if (!(stage === undefined)) {
+              _context4.next = 21;
               break;
             }
 
-            res.status(202).json({
-              msg: "Plan eliminado con exito _id:".concat(_id)
+            _context4.next = 11;
+            return readAcceptanceById(_id3);
+
+          case 11:
+            _yield$readAcceptance = _context4.sent;
+            _stage = _yield$readAcceptance.stage;
+            _context4.t0 = _stage.name;
+            _context4.next = _context4.t0 === 'new' ? 16 : 19;
+            break;
+
+          case 16:
+            update = {
+              signatory: {
+                contractor: signatory.contractor
+              },
+              $push: {
+                stage: {
+                  name: 'signedByContractor',
+                  completed: true
+                }
+              }
+            };
+
+            /*#__PURE__*/
+            _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+              var updatedAcceptance;
+              return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+                while (1) {
+                  switch (_context3.prev = _context3.next) {
+                    case 0:
+                      _context3.prev = 0;
+                      _context3.next = 3;
+                      return setAcceptanceById(_id3, update);
+
+                    case 3:
+                      updatedAcceptance = _context3.sent;
+                      res.status(200).json({
+                        msg: 'Acta actualizada',
+                        updatedAcceptance: updatedAcceptance
+                      });
+                      _context3.next = 10;
+                      break;
+
+                    case 7:
+                      _context3.prev = 7;
+                      _context3.t0 = _context3["catch"](0);
+                      return _context3.abrupt("return", _context3.t0);
+
+                    case 10:
+                    case "end":
+                      return _context3.stop();
+                  }
+                }
+              }, _callee3, null, [[0, 7]]);
+            }));
+
+            return _context4.abrupt("break", 19);
+
+          case 19:
+            _context4.next = 27;
+            break;
+
+          case 21:
+            if (!(stage.name === 'rejected')) {
+              _context4.next = 27;
+              break;
+            }
+
+            _update = {
+              $push: {
+                rejectedMessage: rejectedMessage
+              },
+              stage: {
+                name: stage.name
+              }
+            };
+            _context4.next = 25;
+            return setAcceptanceById(_id3, _update);
+
+          case 25:
+            updatedAcceptance = _context4.sent;
+            //TODO: Implementar retorno de función.
+            res.status(200).json({
+              msg: 'Acta actualizada',
+              updatedAcceptance: updatedAcceptance
             });
-            _context4.next = 13;
+
+          case 27:
+            _context4.next = 32;
             break;
 
-          case 12:
-            throw boom.notFound('Oops!, plan no encontrado, verifique el id');
+          case 29:
+            _context4.prev = 29;
+            _context4.t1 = _context4["catch"](3);
+            next(_context4.t1);
 
-          case 13:
-            _context4.next = 18;
-            break;
-
-          case 15:
-            _context4.prev = 15;
-            _context4.t0 = _context4["catch"](3);
-            next(_context4.t0);
-
-          case 18:
+          case 32:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[3, 15]]);
+    }, _callee4, null, [[3, 29]]);
   }));
 
-  return function deleteScheduleById() {
-    return _ref4.apply(this, arguments);
+  return function updateAcceptanceById() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var setAcceptanceById = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(id, update) {
+    var updateAcceptance;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.prev = 0;
+            _context5.next = 3;
+            return PjAcceptance.findByIdAndUpdate(id, update, {
+              "new": true
+            });
+
+          case 3:
+            updateAcceptance = _context5.sent;
+
+            if (!(updateAcceptance != null)) {
+              _context5.next = 8;
+              break;
+            }
+
+            return _context5.abrupt("return", updateAcceptance);
+
+          case 8:
+            throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
+
+          case 9:
+            _context5.next = 14;
+            break;
+
+          case 11:
+            _context5.prev = 11;
+            _context5.t0 = _context5["catch"](0);
+            return _context5.abrupt("return", _context5.t0);
+
+          case 14:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[0, 11]]);
+  }));
+
+  return function setAcceptanceById(_x, _x2) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var readAcceptanceById = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(id) {
+    var acceptance;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.prev = 0;
+            _context6.next = 3;
+            return PjAcceptance.findById(id);
+
+          case 3:
+            acceptance = _context6.sent;
+
+            if (!(acceptance != null)) {
+              _context6.next = 8;
+              break;
+            }
+
+            return _context6.abrupt("return", acceptance);
+
+          case 8:
+            throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
+
+          case 9:
+            _context6.next = 14;
+            break;
+
+          case 11:
+            _context6.prev = 11;
+            _context6.t0 = _context6["catch"](0);
+            return _context6.abrupt("return", _context6.t0);
+
+          case 14:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[0, 11]]);
+  }));
+
+  return function readAcceptanceById(_x3) {
+    return _ref6.apply(this, arguments);
   };
 }();
 

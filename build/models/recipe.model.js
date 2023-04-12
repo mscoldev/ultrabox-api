@@ -2,20 +2,26 @@
 
 var _require = require("mongoose"),
     Schema = _require.Schema,
-    model = _require.model;
+    model = _require.model,
+    mongoose = _require.mongoose;
+
+var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 var recipeSchema = Schema({
   name: {
     type: String,
+    unique: [true, 'El nombre de la receta debe ser único'],
     required: [true, 'El nombre de la receta es obligatorio']
   },
   erp_code: {
     type: Number,
-    required: [true, 'El codifo ERP es requerido']
+    required: [true, 'El codigo ERP es requerido'],
+    unique: [true, 'El erp_code debe ser único para la receta']
   },
-  id_controller: {
+  _idControllerRecipe: {
+    "default": 0,
     type: Number,
-    required: false,
+    required: true,
     unique: [true, 'Este id ya se encuentra registrado en otra receta']
   },
   deleted: {
@@ -46,11 +52,15 @@ var recipeSchema = Schema({
   productionLineUse: [{
     ref: 'ProductionLine',
     type: Schema.Types.ObjectId,
-    required: [true, 'Defina la productionlineuse a utilizar del material']
+    required: [true, 'Defina la productionLineUse a utilizar del material']
   }]
 }, {
   timestamps: true,
   versionKey: false
+});
+recipeSchema.plugin(AutoIncrement, {
+  inc_field: '_idControllerRecipe',
+  start_seq: 0
 });
 var Recipe = model('Recipe', recipeSchema);
 module.exports = Recipe;
