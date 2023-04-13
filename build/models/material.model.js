@@ -58,8 +58,8 @@ var materialSchema = Schema({
   }],
   unit: {
     ref: 'Unit',
-    type: Schema.Types.ObjectId,
-    required: [true, 'Defina una unidad para la densidad']
+    type: Schema.Types.ObjectId // required: [true, 'Defina una unidad para la densidad']
+
   }
 }, {
   timestamps: true,
