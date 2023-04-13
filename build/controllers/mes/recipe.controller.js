@@ -263,7 +263,7 @@ var getRecipesToDatabase = /*#__PURE__*/function () {
                 type: 1,
                 deleted: 1,
                 erp_code: 1,
-                id_controller: 1,
+                _idControllerMaterial: 1,
                 unit: 1
               }
             }).populate({
@@ -306,7 +306,7 @@ var JSONataExpression = /*#__PURE__*/function () {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            queryJSONata = "[$.{\n      \"id\":_id,\n      \"name\":name,\n      \"erp_code\":erp_code,\n      \"id_controller\":id_controller,\n      \"temp\":temp,\n      \"deleted\":deleted,\n        \"productionLineUse\":[productionLineUse.$.{\n          \"_id\":_id,\n          \"name\":name}\n        ],\n        \"ingredients\":[ingredients.$.{\n          \"_idIngredient\":_id,\n          \"_idMaterial\":_idMaterial._id,\n          \"name\":_idMaterial.name,\n          \"id_controller\":_idMaterial.id_controller,\n          \"type\":_idMaterial.type,\n          \"unit\":_idMaterial.unit,\n          \"deleted\":_idMaterial.deleted,\n          \"qty\":qty,\n          \"location\":_idLocation\n        }]\n      }]";
+            queryJSONata = "[$.{\n      \"id\":_id,\n      \"name\":name,\n      \"erp_code\":erp_code,\n      \"_idControllerRecipe\":_idControllerRecipe,\n      \"temp\":temp,\n      \"deleted\":deleted,\n        \"productionLineUse\":[productionLineUse.$.{\n          \"_id\":_id,\n          \"name\":name}\n        ],\n        \"ingredients\":[ingredients.$.{\n          \"_idIngredient\":_id,\n          \"_idMaterial\":_idMaterial._id,\n          \"name\":_idMaterial.name,\n          \"_idControllerMaterial\":_idMaterial._idControllerMaterial,\n          \"type\":_idMaterial.type,\n          \"unit\":_idMaterial.unit,\n          \"deleted\":_idMaterial.deleted,\n          \"qty\":qty,\n          \"location\":_idLocation\n        }]\n      }]";
             expression = jsonata(queryJSONata);
             result = expression.evaluate(dataPromise);
             return _context6.abrupt("return", result);
