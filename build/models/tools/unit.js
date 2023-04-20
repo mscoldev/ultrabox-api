@@ -18,3 +18,4 @@ var unitSchema = Schema({
   versionKey: false
 });
 module.exports = model('Unit', unitSchema);
+//# sourceMappingURL=unit.js.map

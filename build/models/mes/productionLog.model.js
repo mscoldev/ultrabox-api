@@ -81,3 +81,4 @@ productionLogSchema.methods.toJSON = function () {
 };
 
 module.exports = model('productionLog', productionLogSchema);
+//# sourceMappingURL=productionLog.model.js.map

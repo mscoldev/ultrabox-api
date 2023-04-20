@@ -34,3 +34,4 @@ var roleSchema = Schema({
   versionKey: false
 });
 module.exports = model('Role', roleSchema);
+//# sourceMappingURL=role.model.js.map

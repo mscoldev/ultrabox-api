@@ -58,3 +58,4 @@ var getWeight = /*#__PURE__*/function () {
 module.exports = {
   getWeight: getWeight
 };
+//# sourceMappingURL=weight.controller.js.map

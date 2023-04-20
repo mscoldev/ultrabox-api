@@ -62,3 +62,4 @@ module.exports = {
   sequelize: sequelize,
   pgConnection: pgConnection
 };
+//# sourceMappingURL=config.databasemysql.js.map

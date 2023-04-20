@@ -19,3 +19,4 @@ router.post('/', createProduction);
 router.put('/:_id', updateProductionById);
 router["delete"]('/:_id', deleteProductionById);
 module.exports = router;
+//# sourceMappingURL=production.routes.js.map

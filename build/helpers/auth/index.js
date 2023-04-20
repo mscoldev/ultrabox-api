@@ -8,3 +8,4 @@ var JwtStrategy = require('../../helpers/auth/strategies/jwt.strategy');
 
 passport.use(LocalStrategy);
 passport.use(JwtStrategy);
+//# sourceMappingURL=index.js.map

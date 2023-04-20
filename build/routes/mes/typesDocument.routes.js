@@ -19,3 +19,4 @@ router.post('/', createTypesDocument);
 router.put('/:_id', updateTypesDocumentById);
 router["delete"]('/:_id', deleteTypesDocumentById);
 module.exports = router;
+//# sourceMappingURL=typesDocument.routes.js.map

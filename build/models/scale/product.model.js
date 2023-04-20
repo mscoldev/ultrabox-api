@@ -38,3 +38,4 @@ var product = sequelize.define('products', {
   }
 });
 module.exports = product;
+//# sourceMappingURL=product.model.js.map

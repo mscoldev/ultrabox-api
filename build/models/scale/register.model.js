@@ -327,3 +327,4 @@ register.belongsTo(Site, {
   targetId: 'id'
 });
 module.exports = register;
+//# sourceMappingURL=register.model.js.map

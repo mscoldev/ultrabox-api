@@ -17,3 +17,4 @@ router.put('/:id', updateSiteById);
 router.post('/', createSite);
 router["delete"]('/:id', deleteSiteById);
 module.exports = router;
+//# sourceMappingURL=site.routes.js.map

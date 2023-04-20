@@ -38,3 +38,4 @@ var truck = sequelize.define('trucks', {
   }
 });
 module.exports = truck;
+//# sourceMappingURL=truck.model.js.map

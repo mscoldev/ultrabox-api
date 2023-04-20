@@ -42,3 +42,4 @@ var productionSchema = Schema({
   versionKey: false
 });
 module.exports = model('Production', productionSchema);
+//# sourceMappingURL=production.model.js.map

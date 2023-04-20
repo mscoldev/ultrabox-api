@@ -323,3 +323,4 @@ module.exports = {
   deleteProductById: deleteProductById,
   createProduct: createProduct
 };
+//# sourceMappingURL=product.controller.js.map

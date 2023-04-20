@@ -318,3 +318,4 @@ module.exports = {
   deleteOriginById: deleteOriginById,
   createOrigin: createOrigin
 };
+//# sourceMappingURL=origin.controller.js.map

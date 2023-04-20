@@ -17,7 +17,8 @@ var pjAcceptanceSchema = Schema({
   },
   dateAcceptance: {
     type: Date,
-    required: true
+    required: true,
+    "default": Date.now
   },
   serviceObject: {
     type: String,
@@ -29,7 +30,8 @@ var pjAcceptanceSchema = Schema({
   },
   dateEnd: {
     type: Date,
-    required: true
+    required: true,
+    "default": Date.now
   },
   erpRef: {
     client: {
@@ -56,7 +58,8 @@ var pjAcceptanceSchema = Schema({
     },
     Position: {
       type: String,
-      required: true
+      required: true,
+      "default": 'No especificado'
     },
     Email: {
       type: String,
@@ -66,15 +69,16 @@ var pjAcceptanceSchema = Schema({
   controller: {
     Name: {
       type: String,
-      required: true
+      required: false
     },
     Position: {
       type: String,
-      required: true
+      required: false,
+      "default": 'No especificado'
     },
     Email: {
       type: String,
-      required: true
+      required: false
     }
   },
   contractor: {
@@ -125,15 +129,18 @@ var pjAcceptanceSchema = Schema({
   },
   dateSign: {
     type: Date,
-    required: true
+    required: true,
+    "default": Date.now
   },
   citySign: {
     type: String,
-    required: true
+    required: true,
+    "default": 'Barranquilla'
   },
   officeSign: {
     type: String,
-    required: true
+    required: true,
+    "default": 'del cliente'
   },
   serviceValue: {
     type: Number,
@@ -141,7 +148,8 @@ var pjAcceptanceSchema = Schema({
   },
   recommendations: {
     type: String,
-    required: true
+    required: true,
+    "default": 'No se especificaron recomendaciones para el contratista'
   },
   typeAcceptance: {
     type: String,
@@ -189,3 +197,4 @@ pjAcceptanceSchema.index({
   _codeProjectERP: 1
 });
 module.exports = model('PjAcceptance', pjAcceptanceSchema);
+//# sourceMappingURL=acceptance.model.js.map

@@ -205,3 +205,4 @@ module.exports = {
   getGraficsMolinos: getGraficsMolinos,
   getGraficskwton: getGraficskwton
 };
+//# sourceMappingURL=grafics.controller.js.map

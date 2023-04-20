@@ -17,3 +17,4 @@ router.put('/:id', updateTruckById);
 router.post('/', createTruck);
 router["delete"]('/:id', deleteTruckById);
 module.exports = router;
+//# sourceMappingURL=truck.routes.js.map

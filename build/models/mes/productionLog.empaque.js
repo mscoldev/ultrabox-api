@@ -77,3 +77,4 @@ productionLogSchema.methods.toJSON = function () {
 };
 
 module.exports = model('productionLog', productionLogSchema);
+//# sourceMappingURL=productionLog.empaque.js.map

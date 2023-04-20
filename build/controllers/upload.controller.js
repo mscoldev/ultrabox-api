@@ -181,3 +181,4 @@ module.exports = {
   uploadFile: uploadFile,
   uploadFiles: uploadFiles
 };
+//# sourceMappingURL=upload.controller.js.map

@@ -31,3 +31,4 @@ var fileSchema = Schema({
   versionKey: false
 });
 module.exports = model('File', fileSchema);
+//# sourceMappingURL=file.model.js.map

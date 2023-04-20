@@ -268,3 +268,4 @@ module.exports = {
   updateUnitById: updateUnitById,
   deleteUnitById: deleteUnitById
 };
+//# sourceMappingURL=units.controller.js.map

@@ -18,3 +18,4 @@ router.post('/', createNewLocation);
 router.put('/:_id', updateLocationById);
 router["delete"]('/:_id', deleteLocationById);
 module.exports = router;
+//# sourceMappingURL=location.routes.js.map

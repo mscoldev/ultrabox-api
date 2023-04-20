@@ -18,3 +18,4 @@ router.get('/', getRecipe);
 router.put('/:recipeId', updateRecipe);
 router["delete"]('/:recipeId', deleteRecipeById);
 module.exports = router;
+//# sourceMappingURL=recipe.routes.js.map

@@ -583,3 +583,4 @@ module.exports = {
   verifyToken: verifyToken,
   login: login
 };
+//# sourceMappingURL=auth.controller.js.map

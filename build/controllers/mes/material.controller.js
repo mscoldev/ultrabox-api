@@ -505,3 +505,4 @@ module.exports = {
   deleteMaterialById: deleteMaterialById,
   updateMaterialToPLC: updateMaterialToPLC
 };
+//# sourceMappingURL=material.controller.js.map

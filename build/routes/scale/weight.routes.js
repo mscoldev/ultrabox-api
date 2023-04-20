@@ -9,3 +9,4 @@ var _require2 = require('../../controllers/scale/weight.controller'),
 var router = Router();
 router.get('/', getWeight);
 module.exports = router;
+//# sourceMappingURL=weight.routes.js.map

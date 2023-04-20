@@ -320,3 +320,4 @@ module.exports = {
   deleteTruckById: deleteTruckById,
   createTruck: createTruck
 };
+//# sourceMappingURL=truck.controller.js.map

@@ -257,3 +257,4 @@ module.exports = {
   updateLocationById: updateLocationById,
   deleteLocationById: deleteLocationById
 };
+//# sourceMappingURL=location.controller.js.map

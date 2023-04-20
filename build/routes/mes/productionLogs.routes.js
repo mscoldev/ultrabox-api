@@ -13,3 +13,4 @@ var router = Router(); //Routes production
 router.get('/', getProductionLogs);
 router.post('/', createProductionLog);
 module.exports = router;
+//# sourceMappingURL=productionLogs.routes.js.map

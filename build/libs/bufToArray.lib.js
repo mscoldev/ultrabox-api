@@ -27,3 +27,4 @@ function bufToArray(buffer) {
 }
 
 module.exports = bufToArray;
+//# sourceMappingURL=bufToArray.lib.js.map

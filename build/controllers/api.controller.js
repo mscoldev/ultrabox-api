@@ -13,3 +13,4 @@ var apiGet = function apiGet() {
 module.exports = {
   apiGet: apiGet
 };
+//# sourceMappingURL=api.controller.js.map

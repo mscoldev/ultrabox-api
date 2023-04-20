@@ -98,3 +98,4 @@ var validateJWT = /*#__PURE__*/function () {
 module.exports = {
   validateJWT: validateJWT
 };
+//# sourceMappingURL=validateJWT.js.map

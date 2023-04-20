@@ -589,3 +589,4 @@ module.exports = {
   deleteRegisterById: deleteRegisterById,
   createRegister: createRegister
 };
+//# sourceMappingURL=register.controller.js.map

@@ -15,3 +15,4 @@ var JwtStrategy = new Strategy(options, function (payload, done) {
   return done(null, payload);
 });
 module.exports = JwtStrategy;
+//# sourceMappingURL=jwt.strategy.js.map

@@ -18,3 +18,4 @@ router.get('/company', [passport.authenticate('jwt', {
 })], getConfActiveCompany);
 router.put('/company', setConfCompany);
 module.exports = router;
+//# sourceMappingURL=conf.routes.js.map

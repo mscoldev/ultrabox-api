@@ -14,3 +14,4 @@ var data = {
 var expression = jsonata("$sum(example.value)");
 var result = expression.evaluate(data);
 console.log(result); // returns 24
+//# sourceMappingURL=queryJsonata.js.map

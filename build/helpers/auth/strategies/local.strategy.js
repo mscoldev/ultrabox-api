@@ -69,3 +69,4 @@ var LocalStrategy = new Strategy( /*#__PURE__*/function () {
   };
 }());
 module.exports = LocalStrategy;
+//# sourceMappingURL=local.strategy.js.map

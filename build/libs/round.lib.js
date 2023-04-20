@@ -89,3 +89,4 @@ Math.ceil10(51, 1); // 60
 Math.ceil10(-55.59, -1); // -55.5
 
 Math.ceil10(-59, 1); // -50
+//# sourceMappingURL=round.lib.js.map

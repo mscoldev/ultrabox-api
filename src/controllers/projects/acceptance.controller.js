@@ -3,6 +3,8 @@ const boom = require('@hapi/boom');
 const { Types } = require('mongoose');
 const PjAcceptance = require("../../models/projects/acceptance.model");
 
+const { updateDynamicAcceptance, setAcceptanceById, findSomeStageComplete } = require('../../helpers/validators/projects/stages')
+
 
 
 
@@ -36,7 +38,7 @@ const setAcceptance = async (req = request, res = response, next) => {
   //* Crear un acta por medio del formulario y asignar por defecto la condición de "new". No permitir el ingreso de firmas en el primer estado.
 
   try {
-    const stage = { "name": "new", "date": Date.now() }
+    const stage = { "name": "new", "date": Date.now(), "completed": true }
     const { signatory, ...data } = req.body;
     data['stage'] = stage;
     const newAcceptance = new PjAcceptance(data);
@@ -68,93 +70,29 @@ const updateAcceptanceById = async (req = request, res = response, next) => {
     //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
     //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
 
-    if (stage === undefined) {
-      const { stage } = await readAcceptanceById(_id)
-      switch (stage.name) {
-        //* Toma los datos del la firma del contratista y lo anexa al registro, pero evita cualquier otro dato
-        //* Enviar email al controller una vez que se ha guardado.
-        case 'new':
-          const update = {
-            signatory: {
-              contractor: signatory.contractor
-            },
-            $push: {
-              stage: {
-                name: 'signedByContractor',
-                completed: true
-              }
-            }
-          }
-          async () => {
-            try {
-              const updatedAcceptance = await setAcceptanceById(_id, update)
-              res.status(200).json({
-                msg: 'Acta actualizada',
-                updatedAcceptance
-              })
-            } catch (err) {
-              return err
-            }
-            //TODO: Implementar el envío de email función sendEmail()
-          }
-          break;
-
-        // case 'signedByContractor':
-        //   break;
-        // case 'signedByController':
-        //   break;
-        // case 'signedByClient':
-        //   break;
-      }
+    if (!stage && rejectedMessage != null) {
+      const RejectedMessage = {
+        $push: {
+          rejectedMessage: rejectedMessage,
+        },
+        stage: { name: stage.name }
+      };
+      const updatedAcceptance = await setAcceptanceById(_id, RejectedMessage);
+      console.log("Activado rejected");
+      res.status(200).json({
+        msg: 'Acta actualizada',
+        updatedAcceptance
+      })
     } else {
-      if (stage.name === 'rejected') {
-        const update = {
-          $push: {
-            rejectedMessage: rejectedMessage,
-          },
-          stage: { name: stage.name }
-        };
-
-        const updatedAcceptance = await setAcceptanceById(_id, update) //TODO: Implementar retorno de función.
-        res.status(200).json({
-          msg: 'Acta actualizada',
-          updatedAcceptance
-        })
-      }
+      const updatedAcceptance = await updateDynamicAcceptance(_id, signatory);
+      console.log("Activado updated");
+      res.status(200).json({
+        msg: 'Acta actualizada',
+        updatedAcceptance
+      })
     }
   } catch (err) {
     next(err);
-  }
-
-}
-
-
-
-const setAcceptanceById = async (id, update) => {
-  try {
-    const updateAcceptance = await PjAcceptance
-      .findByIdAndUpdate(id, update, { new: true });
-    if (updateAcceptance != null) {
-      return updateAcceptance;
-    } else {
-      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`)
-    }
-  } catch (err) {
-    return err;
-  }
-}
-
-const readAcceptanceById = async (id) => {
-  try {
-    const acceptance = await PjAcceptance
-      .findById(id);
-    if (acceptance != null) {
-      return acceptance;
-    } else {
-      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`)
-    }
-  } catch (err) {
-    return err;
   }
 }
 

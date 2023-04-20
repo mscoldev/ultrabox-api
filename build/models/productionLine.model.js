@@ -39,3 +39,4 @@ var productionLineSchema = Schema({
   versionKey: false
 });
 module.exports = model('ProductionLine', productionLineSchema);
+//# sourceMappingURL=productionLine.model.js.map

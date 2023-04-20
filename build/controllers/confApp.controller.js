@@ -126,3 +126,4 @@ module.exports = {
   getConfActiveCompany: getConfActiveCompany,
   setConfCompany: setConfCompany
 };
+//# sourceMappingURL=confApp.controller.js.map

@@ -1,0 +1,24 @@
+{
+    "_id": "asdfggrtty123445",
+    "ipAddress": "127.0.0.1",
+    "slot:": 3,
+    "cycleTime": 500,
+    "name": "PLC_PRINCIPAL",
+    "tags": [{
+            "name": "temperatura1",
+            "type": "INT",
+            "ambit": "GLOBAL"
+        },
+        {
+            "name": "temperatura2",
+            "type": "INT",
+            "ambit": "GLOBAL"
+        },
+        {
+            "name": "temperatura2",
+            "type": "REAL",
+            "ambit": "GLOBAL"
+        }
+    ]
+
+}

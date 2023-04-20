@@ -42,3 +42,4 @@ module.exports = {
   errorHandler: errorHandler,
   boomErrorHandler: boomErrorHandler
 };
+//# sourceMappingURL=error.handler.js.map

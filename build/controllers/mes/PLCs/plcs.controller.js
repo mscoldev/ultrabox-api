@@ -39,3 +39,4 @@ var setValuesToPLC = /*#__PURE__*/function () {
 }();
 
 module.exports = setValuesToPLC;
+//# sourceMappingURL=plcs.controller.js.map

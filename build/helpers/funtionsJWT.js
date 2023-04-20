@@ -50,3 +50,4 @@ module.exports = {
   generateJWT: generateJWT,
   verifyJWT: verifyJWT
 };
+//# sourceMappingURL=funtionsJWT.js.map

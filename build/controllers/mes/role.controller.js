@@ -279,3 +279,4 @@ module.exports = {
   updateRoleById: updateRoleById,
   deleteRoleById: deleteRoleById
 };
+//# sourceMappingURL=role.controller.js.map

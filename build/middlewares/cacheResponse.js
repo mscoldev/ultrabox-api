@@ -23,3 +23,4 @@ module.exports = {
   cacheSuccess: cacheSuccess,
   cache: cache
 };
+//# sourceMappingURL=cacheResponse.js.map

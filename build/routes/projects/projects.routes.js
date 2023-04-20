@@ -15,3 +15,4 @@ router.get('/acceptance/:_id', getAcceptanceById);
 router.post('/acceptance', setAcceptance);
 router.put('/acceptance/:_id', updateAcceptanceById);
 module.exports = router;
+//# sourceMappingURL=projects.routes.js.map

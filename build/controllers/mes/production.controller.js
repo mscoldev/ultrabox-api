@@ -285,3 +285,4 @@ module.exports = {
   updateProductionById: updateProductionById,
   deleteProductionById: deleteProductionById
 };
+//# sourceMappingURL=production.controller.js.map

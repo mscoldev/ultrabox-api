@@ -20,3 +20,4 @@ router.post('/unit', createUnit);
 router.put('/unit/:_id', updateUnitById);
 router["delete"]('/unit/:_id', deleteUnitById);
 module.exports = router;
+//# sourceMappingURL=units.routes.js.map

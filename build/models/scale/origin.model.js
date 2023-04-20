@@ -27,3 +27,4 @@ var origin = sequelize.define('origins', {
   }
 });
 module.exports = origin;
+//# sourceMappingURL=origin.model.js.map

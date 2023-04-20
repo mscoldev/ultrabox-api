@@ -322,3 +322,4 @@ module.exports = {
   deleteClientById: deleteClientById,
   createClient: createClient
 };
+//# sourceMappingURL=client.controller.js.map

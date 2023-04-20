@@ -17,3 +17,4 @@ router.put('/:id', updateProductById);
 router.post('/', createProduct);
 router["delete"]('/:id', deleteProductById);
 module.exports = router;
+//# sourceMappingURL=product.routes.js.map

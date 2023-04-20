@@ -11,3 +11,4 @@ var router = Router();
 router.post('/upload', uploadFile);
 router.post('/images', uploadFiles);
 module.exports = router;
+//# sourceMappingURL=files.routes.js.map

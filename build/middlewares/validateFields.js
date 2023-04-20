@@ -16,3 +16,4 @@ var validateFields = function validateFields(req, res, next) {
 module.exports = {
   validateFields: validateFields
 };
+//# sourceMappingURL=validateFields.js.map

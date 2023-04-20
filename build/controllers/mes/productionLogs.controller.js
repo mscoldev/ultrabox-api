@@ -130,3 +130,4 @@ module.exports = {
   getProductionLogs: getProductionLogs,
   createProductionLog: createProductionLog
 };
+//# sourceMappingURL=productionLogs.controller.js.map

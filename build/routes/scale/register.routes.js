@@ -25,3 +25,4 @@ router.post('/', [passport.authenticate('jwt', {
 })], createRegister);
 router["delete"]('/:id', deleteRegisterById);
 module.exports = router;
+//# sourceMappingURL=register.routes.js.map

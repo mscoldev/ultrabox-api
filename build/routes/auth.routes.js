@@ -59,3 +59,4 @@ updateUser); // [
 // ]
 
 module.exports = router;
+//# sourceMappingURL=auth.routes.js.map

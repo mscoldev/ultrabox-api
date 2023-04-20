@@ -20,3 +20,4 @@ router.put('/:id', updateClientById);
 router.post('/', createClient);
 router["delete"]('/:id', deleteClientById);
 module.exports = router;
+//# sourceMappingURL=client.routes.js.map

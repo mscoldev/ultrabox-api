@@ -17,3 +17,4 @@ router.put('/:id', updateDriverById);
 router.post('/', createDriver);
 router["delete"]('/:id', deleteDriverById);
 module.exports = router;
+//# sourceMappingURL=driver.routes.js.map

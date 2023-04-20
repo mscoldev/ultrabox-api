@@ -74,3 +74,4 @@ var dbConnection = /*#__PURE__*/function () {
 module.exports = {
   dbConnection: dbConnection
 };
+//# sourceMappingURL=config.database.js.map

@@ -331,3 +331,4 @@ module.exports = {
   createRoles: createRoles,
   createInitialConfApp: createInitialConfApp
 };
+//# sourceMappingURL=initialSetupDatabase.js.map

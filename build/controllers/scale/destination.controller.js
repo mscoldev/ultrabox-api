@@ -306,3 +306,4 @@ module.exports = {
   deleteDestinationById: deleteDestinationById,
   createDestination: createDestination
 };
+//# sourceMappingURL=destination.controller.js.map

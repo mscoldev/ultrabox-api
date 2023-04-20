@@ -17,3 +17,4 @@ router.put('/:id', updateDestinationById);
 router.post('/', createDestination);
 router["delete"]('/:id', deleteDestinationById);
 module.exports = router;
+//# sourceMappingURL=destination.routes.js.map

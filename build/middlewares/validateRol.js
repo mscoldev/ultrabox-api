@@ -166,3 +166,4 @@ module.exports = {
   validateAccessModule: validateAccessModule,
   addNameModule: addNameModule
 };
+//# sourceMappingURL=validateRol.js.map

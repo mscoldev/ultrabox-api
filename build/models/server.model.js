@@ -108,7 +108,8 @@ var Server = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return Promise.all([pgConnection(), dbConnection(), createRoles(), createInitialConfApp()]);
+                return Promise.all([// pgConnection(),
+                dbConnection(), createRoles(), createInitialConfApp()]);
 
               case 2:
               case "end":
@@ -204,3 +205,4 @@ var Server = /*#__PURE__*/function () {
 }();
 
 module.exports = Server;
+//# sourceMappingURL=server.model.js.map

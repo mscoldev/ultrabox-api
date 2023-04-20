@@ -19,3 +19,4 @@ router.post('/', setSchedule);
 router.put('/:_id', updateScheduleById);
 router["delete"]('/:_id', deleteScheduleById);
 module.exports = router;
+//# sourceMappingURL=scheduling.routes.js.map

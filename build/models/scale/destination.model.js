@@ -30,3 +30,4 @@ var destination = sequelize.define('destinations', {
   }
 });
 module.exports = destination;
+//# sourceMappingURL=destination.model.js.map

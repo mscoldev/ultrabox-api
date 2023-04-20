@@ -17,3 +17,4 @@ server.app.get('/api', function (req, res) {
     url_docs: server.app.get('pkg').url_docs
   });
 });
+//# sourceMappingURL=app.js.map

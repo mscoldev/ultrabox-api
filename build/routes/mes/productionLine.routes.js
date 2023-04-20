@@ -21,3 +21,4 @@ router.post('/', createProductionLine);
 router.put('/:_id', updateProductionLineById);
 router["delete"]('/:_id', deleteProductionLineById);
 module.exports = router;
+//# sourceMappingURL=productionLine.routes.js.map

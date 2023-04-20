@@ -147,3 +147,4 @@ userSchema.methods.toJSON = function () {
 };
 
 module.exports = model('User', userSchema);
+//# sourceMappingURL=user.model.js.map

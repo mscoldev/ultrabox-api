@@ -27,3 +27,4 @@ var configAppSchema = Schema({
   versionKey: false
 });
 module.exports = model('ConfigApp', configAppSchema);
+//# sourceMappingURL=confApp.model.js.map

@@ -48,3 +48,4 @@ var driver = sequelize.define('drivers', {
   }
 });
 module.exports = driver;
+//# sourceMappingURL=driver.model.js.map

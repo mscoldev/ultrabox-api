@@ -15,3 +15,4 @@ router.get('/kwton', getGraficskwton); //Aqui las rutas necesarias --->
 //Listar todos los materiales en la base de datos
 
 module.exports = router;
+//# sourceMappingURL=graf.routes.js.map

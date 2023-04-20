@@ -365,3 +365,4 @@ module.exports = {
   createDriver: createDriver,
   createDriverFromRegister: createDriverFromRegister
 };
+//# sourceMappingURL=driver.controller.js.map

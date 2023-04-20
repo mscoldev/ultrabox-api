@@ -19,3 +19,4 @@ var typesDocumentSchema = Schema({
   versionKey: false
 });
 module.exports = model('typesDocument', typesDocumentSchema);
+//# sourceMappingURL=typesDocument.model.js.map

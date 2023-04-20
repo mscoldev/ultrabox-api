@@ -379,3 +379,4 @@ module.exports = {
   deleteProductionLineById: deleteProductionLineById,
   getNameProdLinesByIdController: getNameProdLinesByIdController
 };
+//# sourceMappingURL=productionLine.controller.js.map

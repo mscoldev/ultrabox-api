@@ -34,3 +34,4 @@ var client = sequelize.define('clients', {
   }
 });
 module.exports = client;
+//# sourceMappingURL=client.model.js.map

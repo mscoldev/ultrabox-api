@@ -17,3 +17,4 @@ router.put('/:id', updateOriginById);
 router.post('/', createOrigin);
 router["delete"]('/:id', deleteOriginById);
 module.exports = router;
+//# sourceMappingURL=origin.routes.js.map

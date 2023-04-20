@@ -19,3 +19,4 @@ router.post('/', createRole);
 router.put('/:_id', updateRoleById);
 router["delete"]('/:_id', deleteRoleById);
 module.exports = router;
+//# sourceMappingURL=role.routes.js.map

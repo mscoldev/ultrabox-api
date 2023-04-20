@@ -26,3 +26,4 @@ router["delete"]('/:materialId', deleteMaterialById); //Agregar nuevos materiale
 router.post('/updateplc', updateMaterialToPLC);
 router.post('/', createMaterial);
 module.exports = router;
+//# sourceMappingURL=material.routes.js.map

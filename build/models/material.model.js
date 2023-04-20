@@ -70,3 +70,4 @@ materialSchema.plugin(AutoIncrement, {
   start_seq: 0
 });
 module.exports = model('Material', materialSchema);
+//# sourceMappingURL=material.model.js.map

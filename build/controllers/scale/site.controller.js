@@ -316,3 +316,4 @@ module.exports = {
   deleteSiteById: deleteSiteById,
   createSite: createSite
 };
+//# sourceMappingURL=site.controller.js.map

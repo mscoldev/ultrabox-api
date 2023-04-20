@@ -32,3 +32,4 @@ var locationSchema = Schema({
   versionKey: false
 });
 module.exports = model('Location', locationSchema);
+//# sourceMappingURL=location.model.js.map

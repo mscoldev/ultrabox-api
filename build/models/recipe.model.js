@@ -64,3 +64,4 @@ recipeSchema.plugin(AutoIncrement, {
 });
 var Recipe = model('Recipe', recipeSchema);
 module.exports = Recipe;
+//# sourceMappingURL=recipe.model.js.map

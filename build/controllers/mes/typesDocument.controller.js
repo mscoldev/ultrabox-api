@@ -280,3 +280,4 @@ module.exports = {
   updateTypesDocumentById: updateTypesDocumentById,
   deleteTypesDocumentById: deleteTypesDocumentById
 };
+//# sourceMappingURL=typesDocument.controller.js.map

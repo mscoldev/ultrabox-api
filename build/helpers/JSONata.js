@@ -50,3 +50,4 @@ function _nataFunction() {
 }
 
 module.exports = nataFunction;
+//# sourceMappingURL=JSONata.js.map
