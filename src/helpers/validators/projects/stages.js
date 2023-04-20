@@ -1,86 +1,57 @@
+const _ = require('lodash');
 const PjAcceptance = require('../../../models/projects/acceptance.model');
+
 
 const updateDynamicAcceptance = async (_id, signatory) => {
     //Obtener los datos del acta
     try {
+        //Consultar registro
         const data = await readAcceptanceById(_id);
         console.log({ data });
-        const existingStageIncomplete = data.stage.some(stageSome => stageSome.name === 'rejected' && stageSome.completed === false)
-        console.log(existingStageIncomplete);
+        //Ultimo estado reportado
+        const lastStage = await getLastStageName(data);
+        console.log({ lastStage });
+        //Evaluar los Stage y actualizar según el Stage
+        var updatedAcceptance;
+        switch (lastStage) {
+            case 'new':
+                const updateStepOne = {
+                    signatory: {
+                        contractor: signatory.contractor
+                    },
+                    $push: {
+                        stage: {
+                            name: 'signedByContractor',
+                            completed: true
+                        }
+                    }
+                }
+                console.log({ updateStepOne });
+                updatedAcceptance = await setAcceptanceById(_id, updateStepOne)
+                console.log({ updatedAcceptance });
+                //Envía un correo al cliente con los datos para actualizar
+                break;
+            case "signedByContractor":
+                const updateStepTwo = {
+                    signatory: {
+                        client: signatory.client
+                    },
+                    $push: {
+                        stage: {
+                            name: 'signedByClient',
+                            completed: true
+                        }
+                    }
+                }
 
-        if (existingStageIncomplete === true) {
-            console.log('Se encontró un rechazo que aun no ha sido cerrado');
-        } else {
-            console.log(`${data.stage[0].name}`);
-            switch (data.stage[0].name) {
-                case 'new':
-                    const updateStepOne = {
-                        signatory: {
-                            client: signatory.contractor
-                        },
-                        $push: {
-                            stage: {
-                                name: 'signedByContractor',
-                                completed: true
-                            }
-                        }
-                    }
-                    async () => {
-                        try {
-                            const updatedAcceptance = await setAcceptanceById(_id, updateStepOne)
-                            return updatedAcceptance
-                        } catch (err) {
-                            return err
-                        }
-                    }
-                    //Envía un correo al cliente con los datos para actualizar.
-                    break;
-                case "signContractor":
-                    const updateStepTwo = {
-                        signatory: {
-                            client: signatory.client
-                        },
-                        $push: {
-                            stage: {
-                                name: 'signedByClient',
-                                completed: true
-                            }
-                        }
-                    }
-                    async () => {
-                        try {
-                            const updatedAcceptance = await setAcceptanceById(_id, updateStepTwo)
-                            return updatedAcceptance
-                        } catch (err) {
-                            return err
-                        }
-                    }
-                    //Recibe la firma por parte del cliente y cambia el estado a "signClient"
-                    if (data.typeAcceptance === 'Parcial') {
-                        //El estado se mantiene igual
-                        //Se envía correo al gerente de proyecto del contractor para aceptación final.
-                    } else {
-                        //Se empuja el estado de cerrado.
-                        const updateStepThree = {
-                            $push: {
-                                stage: {
-                                    name: 'closed',
-                                    completed: true
-                                }
-                            }
-                        }
-                        async () => {
-                            try {
-                                const updatedAcceptance = await setAcceptanceById(_id, updateStepThree)
-                                console.log(updatedAcceptance);
-                            } catch (err) {
-                                return err
-                            }
-                        }
-                    }
-                    break;
-                case "signClient":
-                    //Se debe enviar una aceptación de los pendientes
+                updatedAcceptance = await setAcceptanceById(_id, updateStepTwo)
+
+                //Recibe la firma por parte del cliente y cambia el estado a "signClient"
+                if (data.typeAcceptance === 'Parcial') {
+                    //El estado se mantiene igual
+                    //Se envía correo al gerente de proyecto del contractor para aceptación final.
+                } else {
+                    //Se empuja el estado de cerrado.
                     const updateStepThree = {
                         $push: {
                             stage: {
@@ -89,22 +60,28 @@ const updateDynamicAcceptance = async (_id, signatory) => {
                             }
                         }
                     }
-                    async () => {
-                        try {
-                            const updatedAcceptance = await setAcceptanceById(_id, updateStepThree)
-                            return updatedAcceptance
-                        } catch (err) {
-                            return err
+                    updatedAcceptance = await setAcceptanceById(_id, updateStepThree)
+                }
+                break;
+            case "signedByClient":
+                //Se debe enviar una aceptación de los pendientes
+                const updateStepThree = {
+                    $push: {
+                        stage: {
+                            name: 'closed',
+                            completed: true
                         }
                     }
-                    break;
-                default:
-                    console.log("No se encontró ningún stage con ese nombre");
-                    const message = "No se encontró ningún stage con ese nombre"
-                    return message
-            }
-        }
+                }
 
+                updatedAcceptance = await setAcceptanceById(_id, updateStepThree)
+
+                break;
+            default:
+                console.log("No se encontró ningún stage con ese nombre");
+                result = "No se encontró ningún stage con ese nombre"
+        }
+        return updatedAcceptance;
     } catch (err) {
         return err
     }
@@ -112,8 +89,9 @@ const updateDynamicAcceptance = async (_id, signatory) => {
 
 const setAcceptanceById = async (_id, update) => {
     try {
+        console.log(`id para setAccep ${_id}`);
         const updateAcceptance = await PjAcceptance
-            .findByIdAndUpdate(id, update, { new: true });
+            .findByIdAndUpdate(_id, update, { new: true });
         if (updateAcceptance != null) {
             return updateAcceptance;
         } else {
@@ -154,6 +132,12 @@ const updateSelectionStage = async (_id, stage) => {
     const confirmStage = await findSomeStageComplete(data, stage);
     return confirmStage;
 }
+
+const getLastStageName = async (data) => {
+    const stages = _.orderBy(data.stage, ['date'], ['desc']);
+    return stages.length > 0 ? stages[0].name : null;
+}
+
 
 const data = {
     "_id": {
@@ -245,6 +229,5 @@ const data = {
     }
 }
 
-// validateStage('rejected', data)
 
-module.exports = { updateDynamicAcceptance, setAcceptanceById, findSomeStageComplete }
+module.exports = { updateDynamicAcceptance, setAcceptanceById, findSomeStageComplete, getLastStageName }
