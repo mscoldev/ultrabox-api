@@ -45,8 +45,8 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
 
           case 12:
             updateStepOne = {
-              signatory: {
-                contractor: signatory.contractor
+              $set: {
+                'signatory.contractor': signatory.contractor
               },
               $push: {
                 stage: {
@@ -71,8 +71,8 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
 
           case 19:
             updateStepTwo = {
-              signatory: {
-                client: signatory.client
+              $set: {
+                'signatory.client': signatory.client
               },
               $push: {
                 stage: {
