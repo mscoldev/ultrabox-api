@@ -116,15 +116,18 @@ var pjAcceptanceSchema = Schema({
   signatory: {
     client: {
       type: String,
-      required: false
+      required: false,
+      "default": null
     },
     contractor: {
       type: String,
-      required: false
+      required: false,
+      "default": null
     },
     controller: {
       type: String,
-      required: false
+      required: false,
+      "default": null
     }
   },
   dateSign: {
