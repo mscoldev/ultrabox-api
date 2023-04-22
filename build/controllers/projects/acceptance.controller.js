@@ -182,6 +182,8 @@ var updateAcceptanceById = /*#__PURE__*/function () {
         _req$body2,
         stage,
         signatory,
+        serviceValue,
+        recommendations,
         rejectedMessage,
         _id,
         RejectedMessage,
@@ -198,13 +200,16 @@ var updateAcceptanceById = /*#__PURE__*/function () {
             next = _args3.length > 2 ? _args3[2] : undefined;
             _context3.prev = 3;
             body = req.body;
-            _req$body2 = req.body, stage = _req$body2.stage, signatory = _req$body2.signatory;
+            _req$body2 = req.body, stage = _req$body2.stage, signatory = _req$body2.signatory, serviceValue = _req$body2.serviceValue, recommendations = _req$body2.recommendations;
             rejectedMessage = body.rejectedMessage;
             _id = Types.ObjectId(req.params._id); //* Si el Stage del acta es new se reciben los datos para la firma por parte del contractor.
             //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
             //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
+            //TODO: Terminar de validar el caso de mensajes rechazados.
+            // const description = data ?.rejectedMessage ?.description
+            // const a = typeof description === 'string';
 
-            if (!(!stage && rejectedMessage != null)) {
+            if (!rejectedMessage) {
               _context3.next = 17;
               break;
             }
@@ -212,13 +217,10 @@ var updateAcceptanceById = /*#__PURE__*/function () {
             RejectedMessage = {
               $push: {
                 rejectedMessage: rejectedMessage
-              },
-              stage: {
-                name: stage.name
               }
             };
             _context3.next = 12;
-            return setAcceptanceById(_id, RejectedMessage);
+            return setAcceptanceById(_id, RejectedMessage, serviceValue, recommendations);
 
           case 12:
             updatedAcceptance = _context3.sent;
@@ -232,7 +234,7 @@ var updateAcceptanceById = /*#__PURE__*/function () {
 
           case 17:
             _context3.next = 19;
-            return updateDynamicAcceptance(_id, signatory);
+            return updateDynamicAcceptance(_id, signatory, serviceValue, recommendations);
 
           case 19:
             _updatedAcceptance = _context3.sent;

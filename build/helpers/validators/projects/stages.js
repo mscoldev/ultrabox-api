@@ -10,10 +10,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var _ = require('lodash');
 
+var boom = require('@hapi/boom');
+
 var PjAcceptance = require('../../../models/projects/acceptance.model');
 
 var updateDynamicAcceptance = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(_id, signatory) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(_id, signatory, serviceValue, recommendations) {
     var _data, lastStage, updatedAcceptance, updateStepOne, updateStepTwo, _updateStepThree, updateStepThree;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -72,7 +74,9 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
           case 19:
             updateStepTwo = {
               $set: {
-                'signatory.client': signatory.client
+                'signatory.client': signatory.client,
+                'serviceValue': serviceValue,
+                'recommendations': recommendations
               },
               $push: {
                 stage: {
@@ -151,7 +155,7 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
     }, _callee, null, [[0, 41]]);
   }));
 
-  return function updateDynamicAcceptance(_x, _x2) {
+  return function updateDynamicAcceptance(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -200,7 +204,7 @@ var setAcceptanceById = /*#__PURE__*/function () {
     }, _callee2, null, [[0, 12]]);
   }));
 
-  return function setAcceptanceById(_x3, _x4) {
+  return function setAcceptanceById(_x5, _x6) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -246,7 +250,7 @@ var readAcceptanceById = /*#__PURE__*/function () {
     }, _callee3, null, [[0, 11]]);
   }));
 
-  return function readAcceptanceById(_x5) {
+  return function readAcceptanceById(_x7) {
     return _ref3.apply(this, arguments);
   };
 }();
@@ -274,7 +278,7 @@ var findSomeStageComplete = /*#__PURE__*/function () {
     }, _callee4);
   }));
 
-  return function findSomeStageComplete(_x6, _x7) {
+  return function findSomeStageComplete(_x8, _x9) {
     return _ref4.apply(this, arguments);
   };
 }();
@@ -306,7 +310,7 @@ var updateSelectionStage = /*#__PURE__*/function () {
     }, _callee5);
   }));
 
-  return function updateSelectionStage(_x8, _x9) {
+  return function updateSelectionStage(_x10, _x11) {
     return _ref5.apply(this, arguments);
   };
 }();
@@ -329,7 +333,7 @@ var getLastStageName = /*#__PURE__*/function () {
     }, _callee6);
   }));
 
-  return function getLastStageName(_x10) {
+  return function getLastStageName(_x12) {
     return _ref6.apply(this, arguments);
   };
 }();
