@@ -98,7 +98,7 @@ const setAcceptanceById = async(_id, update) => {
         if (updateAcceptance != null) {
             return updateAcceptance;
         } else {
-            //TODO: Validar error boom en la funcion setAcceptanceById del archivo stage
+            //TODO: Validar error boom en la funcnpm on setAcceptanceById del archivo stage
             throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`)
         }
     } catch (err) {
