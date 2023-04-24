@@ -8,13 +8,15 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var _require = require("express"),
+var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
-var ProductionLog = require("../../models/mes/productionLog.model");
+var ProductionLog = require('../../models/mes/productionLog.model');
 
-var ProductionLine = require("../../models/productionLine.model");
+var ProductionLine = require('../../models/productionLine.model');
+
+var Boom = require('@hapi/boom');
 
 var getProductionLogs = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -126,8 +128,81 @@ var createProductionLog = /*#__PURE__*/function () {
   };
 }();
 
+var updateFlagProductionLog = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var req,
+        res,
+        next,
+        _id,
+        body,
+        migrate,
+        data,
+        productionLogSaved,
+        _args3 = arguments;
+
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            req = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : request;
+            res = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : response;
+            next = _args3.length > 2 ? _args3[2] : undefined;
+            _context3.prev = 3;
+            _id = req.params._id;
+            body = req.body;
+            console.log(body);
+            migrate = body.migrate;
+            data = {
+              $push: {
+                migrate: migrate
+              }
+            };
+            _context3.next = 11;
+            return ProductionLog.findByIdAndUpdate(_id, data, {
+              "new": true
+            });
+
+          case 11:
+            productionLogSaved = _context3.sent;
+
+            if (productionLogSaved) {
+              _context3.next = 16;
+              break;
+            }
+
+            throw Boom.badRequest('Oops!, _id no encontrado o tienes un error en la consulta. Verifica el registro que deseas actualizar.');
+
+          case 16:
+            res.status(202).json({
+              msg: 'Bandera actualizada con exito!',
+              productionLogSaved: productionLogSaved
+            });
+
+          case 17:
+            _context3.next = 22;
+            break;
+
+          case 19:
+            _context3.prev = 19;
+            _context3.t0 = _context3["catch"](3);
+            next(_context3.t0);
+
+          case 22:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[3, 19]]);
+  }));
+
+  return function updateFlagProductionLog() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
 module.exports = {
   getProductionLogs: getProductionLogs,
-  createProductionLog: createProductionLog
+  createProductionLog: createProductionLog,
+  updateFlagProductionLog: updateFlagProductionLog
 };
 //# sourceMappingURL=productionLogs.controller.js.map
