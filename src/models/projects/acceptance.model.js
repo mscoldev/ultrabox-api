@@ -1,195 +1,211 @@
 const { model, Schema } = require('mongoose');
 
-const pjAcceptanceSchema = Schema({
-  _codeProjectERP: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  _idProjectERP: {
-    type: Number,
-    required: true,
-    unique: true
-  },
-  dateAcceptance: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
-  serviceObject: {
-    type: String,
-    required: true
-  },
-  dateInit: {
-    type: Date,
-    required: true
-  },
-  dateEnd: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
-  erpRef: {
-    client: {
-      purchaseOrder: {
-        type: String,
-        required: true
-      }
-    },
-    own: {
-      proposal: {
-        type: String,
-        required: true
-      }
-    }
-  },
-  client: {
-    company: {
-      type: String,
-      required: true
-    },
-    Name: {
-      type: String,
-      required: true
-    },
-    Position: {
+const pjAcceptanceSchema = Schema(
+  {
+    _codeProjectERP: {
       type: String,
       required: true,
-      default: 'No especificado'
+      unique: true,
     },
-    Email: {
-      type: String,
-      required: true
-    }
-  },
-  controller: {
-    Name: {
-      type: String,
-      required: false
-    },
-    Position: {
-      type: String,
-      required: false,
-      default: 'No especificado'
-    },
-    Email: {
-      type: String,
-      required: false
-    }
-  },
-  contractor: {
-    Name: {
-      type: String,
-      required: true
-    },
-    Position: {
-      type: String,
-      required: true
-    },
-    Email: {
-      type: String,
-      required: true
-    }
-  },
-  deliverables: [{
-    _id: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    compliance: {
+    _idProjectERP: {
       type: Number,
-      required: true
+      required: true,
+      unique: true,
     },
-    accepted: {
-      type: Boolean,
-      required: true
-    }
-  }],
-  signatory: {
+    dateAcceptance: {
+      type: Date,
+      required: true,
+      default: Date.now,
+    },
+    serviceObject: {
+      type: String,
+      required: true,
+    },
+    dateInit: {
+      type: Date,
+      required: true,
+    },
+    dateEnd: {
+      type: Date,
+      required: true,
+      default: Date.now,
+    },
+    erpRef: {
+      client: {
+        purchaseOrder: {
+          type: String,
+          required: true,
+        },
+      },
+      own: {
+        proposal: {
+          type: String,
+          required: true,
+        },
+      },
+    },
     client: {
-      type: String,
-      required: false,
-      default: null
-    },
-    contractor: {
-      type: String,
-      required: false,
-      default: null
+      company: {
+        type: String,
+        required: true,
+      },
+      Name: {
+        type: String,
+        required: true,
+      },
+      Position: {
+        type: String,
+        required: true,
+        default: 'No especificado',
+      },
+      Email: {
+        type: String,
+        required: true,
+      },
     },
     controller: {
-      type: String,
-      required: false,
-      default: null
-    }
-  },
-  dateSign: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
-  citySign: {
-    type: String,
-    required: true,
-    default: 'Barranquilla'
-  },
-  officeSign: {
-    type: String,
-    required: true,
-    default: 'del cliente'
-  },
-  serviceValue: {
-    type: Number,
-    required: true
-  },
-  recommendations: {
-    type: String,
-    required: true,
-    default: 'No se especificaron recomendaciones para el contratista'
-  },
-  typeAcceptance: {
-    type: String,
-    required: true
-  },
-  stage: [{
-    name: {
-      type: String,
-      required: true,
+      Name: {
+        type: String,
+        required: false,
+      },
+      Position: {
+        type: String,
+        required: false,
+        default: 'No especificado',
+      },
+      Email: {
+        type: String,
+        required: false,
+      },
     },
-    date: {
+    contractor: {
+      Name: {
+        type: String,
+        required: true,
+      },
+      Position: {
+        type: String,
+        required: true,
+      },
+      Email: {
+        type: String,
+        required: true,
+      },
+    },
+    deliverables: [
+      {
+        _id: {
+          type: String,
+          required: true,
+        },
+        description: {
+          type: String,
+          required: true,
+        },
+        compliance: {
+          type: Number,
+          required: true,
+        },
+        accepted: {
+          type: Boolean,
+          required: true,
+        },
+      },
+    ],
+    signatory: {
+      client: {
+        type: String,
+        required: false,
+        default: null,
+      },
+      contractor: {
+        type: String,
+        required: false,
+        default: null,
+      },
+      controller: {
+        type: String,
+        required: false,
+        default: null,
+      },
+    },
+    dateSign: {
       type: Date,
       required: true,
-      default: Date.now
+      default: Date.now,
     },
-    completed: {
-      type: Boolean,
+    country: {
+      type: String,
       required: true,
-      default: false
+      default: 'Colombia',
     },
-  }],
-  rejectedMessage: [{
-    description: {
-      type: String
+    citySign: {
+      type: String,
+      required: true,
+      default: 'Barranquilla',
     },
-    date: {
-      type: Date,
-      default: Date.now
+    officeSign: {
+      type: String,
+      required: true,
+      default: 'del cliente',
     },
-    by: {
-      type: String
-    }
-  }],
-  _idFiles: [{
-    ref: 'File',
-    type: Schema.Types.ObjectId,
-  }]
-}, {
-  timestamps: true,
-  versionKey: false
-});
+    serviceValue: {
+      type: Number,
+      required: true,
+    },
+    recommendations: {
+      type: String,
+      required: true,
+      default: 'No se especificaron recomendaciones para el contratista',
+    },
+    typeAcceptance: {
+      type: String,
+      required: true,
+    },
+    stage: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        date: {
+          type: Date,
+          required: true,
+          default: Date.now,
+        },
+        completed: {
+          type: Boolean,
+          required: true,
+          default: false,
+        },
+      },
+    ],
+    rejectedMessage: [
+      {
+        description: {
+          type: String,
+        },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+        by: {
+          type: String,
+        },
+      },
+    ],
+    _idFiles: [
+      {
+        ref: 'File',
+        type: Schema.Types.ObjectId,
+      },
+    ],
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
 
 // Agrega un índice en los campos _id y _codeProjectERP
 pjAcceptanceSchema.index({ _id: 1, _codeProjectERP: 1 });
