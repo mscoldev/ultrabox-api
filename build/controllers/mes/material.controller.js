@@ -17,9 +17,9 @@ var boom = require('@hapi/boom');
 var _require2 = require('mongoose'),
     Types = _require2.Types;
 
-var Material = require("../../models/material.model");
+var Material = require('../../models/material.model');
 
-var setValuesToPLC = require("../../controllers/mes/PLCs/plcs.controller");
+var setValuesToPLC = require('../../controllers/mes/PLCs/plcs.controller');
 
 var updateMaterialToPLC = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -40,7 +40,7 @@ var updateMaterialToPLC = /*#__PURE__*/function () {
             infoPLC = {
               ip: '192.168.201.108',
               slot: 3,
-              nameTagChannelIn: 'TOLVA',
+              nameTagChannelIn: '',
               limitInputs: 14,
               limitMaterials: 14
             };
@@ -117,7 +117,7 @@ var getMaterials = /*#__PURE__*/function () {
             _context2.prev = 2;
             _context2.next = 5;
             return Material.find({
-              "deleted": false
+              deleted: false
             }).populate([{
               path: 'productionLineUse',
               model: 'ProductionLine',
@@ -239,14 +239,14 @@ var getMaterialsByLine = /*#__PURE__*/function () {
             next = _args4.length > 2 ? _args4[2] : undefined;
             _context4.prev = 3;
             productionLineUse = req.query.productionLineUse;
-            arrayProductionLineUse = productionLineUse.split(",");
+            arrayProductionLineUse = productionLineUse.split(',');
             objectIdArray = arrayProductionLineUse.map(function (id) {
               return Types.ObjectId(id);
             });
             console.log(objectIdArray);
             _context4.next = 10;
             return Material.find({
-              'productionLineUse': {
+              productionLineUse: {
                 $in: objectIdArray
               }
             }).populate([{
@@ -407,20 +407,17 @@ var deleteMaterialById = /*#__PURE__*/function () {
 
             // Set custom error for unique keys
             if (_context6.t0.code == 11000) {
-              errMsg = Object.keys(_context6.t0.keyValue)[0] + " already exists.";
+              errMsg = Object.keys(_context6.t0.keyValue)[0] + ' already exists.';
             } else {
               errMsg = _context6.t0.message;
             }
 
             res.status(400).json({
-              statusText: "Bad Request",
+              statusText: 'Bad Request',
               message: errMsg
             });
 
           case 15:
-            ;
-
-          case 16:
           case "end":
             return _context6.stop();
         }
