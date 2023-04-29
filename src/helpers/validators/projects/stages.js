@@ -39,8 +39,8 @@ const updateDynamicAcceptance = async (
         const updateStepTwo = {
           $set: {
             'signatory.client': signatory.client,
-            serviceValue: serviceValue,
-            recommendations: recommendations,
+            'serviceValue': serviceValue,
+            'recommendations': recommendations,
           },
           $push: {
             stage: {

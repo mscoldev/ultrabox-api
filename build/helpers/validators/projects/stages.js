@@ -73,8 +73,8 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
             updateStepTwo = {
               $set: {
                 'signatory.client': signatory.client,
-                serviceValue: serviceValue,
-                recommendations: recommendations
+                'serviceValue': serviceValue,
+                'recommendations': recommendations
               },
               $push: {
                 stage: {
