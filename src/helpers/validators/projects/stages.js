@@ -41,8 +41,8 @@ const updateDynamicAcceptance = async (
         const updateStepTwo = {
           $set: {
             'signatory.client': signatory.client,
-            serviceValue: serviceValue,
-            recommendations: recommendations,
+            'serviceValue': serviceValue,
+            'recommendations': recommendations,
           },
           $push: {
             stage: {
@@ -149,97 +149,7 @@ const getLastStageName = async (data) => {
   return stages.length > 0 ? stages[0].name : null;
 };
 
-const data = {
-  _id: {
-    $oid: '643c3c15ae1896e1e634dbb7',
-  },
-  _codeProjectERP: 'PJ2203-0112',
-  _idProjectERP: 32,
-  dateAcceptance: {
-    $date: '2023-01-28T01:00:00Z',
-  },
-  serviceObject: 'Asistencia tecnica para la instalacion de 5 alarmas',
-  dateInit: {
-    $date: '2023-01-28T01:00:00Z',
-  },
-  dateEnd: {
-    $date: '2023-01-28T01:00:00Z',
-  },
-  erpRef: {
-    client: {
-      purchaseOrder: 'oc123456789',
-    },
-    own: {
-      proposal: 'OF12334567890',
-    },
-  },
-  client: {
-    company: 'ULTRACEM',
-    Name: 'Pedro Perez',
-    Position: 'Jefe de Compras',
-    Email: 'perdro.perez@prueba.com',
-  },
-  controller: {
-    Position: 'No especificado',
-  },
-  contractor: {
-    Name: 'Pedro Perez',
-    Position: 'Jefe de Compras',
-    Email: 'perdro.perez@prueba.com',
-  },
-  deliverables: [
-    {
-      _id: 'uuid',
-      description: 'Este es entregable 1',
-      compliance: 100,
-      accepted: true,
-    },
-    {
-      _id: 'uuid',
-      description: 'Este es entregable 2',
-      compliance: 100,
-      accepted: true,
-    },
-  ],
-  citySign: 'Barranquilla',
-  officeSign: 'el cliente',
-  serviceValue: 5,
-  recommendations: 'Estas son nuestras recomendaciones',
-  typeAcceptance: 'Total',
-  stage: [
-    {
-      name: 'new',
-      date: {
-        $date: '2023-04-16T18:19:01.177Z',
-      },
-      completed: false,
-      _id: {
-        $oid: '643c3c15ae1896e1e634dbb8',
-      },
-    },
-    {
-      name: 'rejected',
-      date: {
-        $date: '2023-04-16T18:19:01.177Z',
-      },
-      completed: true,
-      _id: {
-        $oid: '643c3c15ae1896e1e634dbb8',
-      },
-    },
-  ],
-  _idFiles: [],
-  dateSign: {
-    $date: '2023-04-16T18:19:01.186Z',
-  },
-  rejectedMessage: [],
-  createdAt: {
-    $date: '2023-04-16T18:19:01.191Z',
-  },
-  updatedAt: {
-    $date: '2023-04-16T18:19:01.191Z',
-  },
-};
+
 
 module.exports = {
   updateDynamicAcceptance,
