@@ -16,36 +16,40 @@ var PjAcceptance = require('../../../models/projects/acceptance.model');
 
 var updateDynamicAcceptance = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(_id, signatory, serviceValue, recommendations) {
-    var _data, lastStage, updatedAcceptance, updateStepOne, updateStepTwo, _updateStepThree, updateStepThree;
+    var data, lastStage, updatedAcceptance, updateStepOne, updateStepTwo, _updateStepThree, updateStepThree;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
+            console.log("Consultando id: ".concat(_id)); //Obtener los datos del acta
+
+            _context.prev = 1;
+            //Consultar registro
+            console.log("Consultando id: ".concat(_id));
+            _context.next = 5;
             return readAcceptanceById(_id);
 
-          case 3:
-            _data = _context.sent;
+          case 5:
+            data = _context.sent;
             console.log({
-              data: _data
+              data: data
             }); //Ultimo estado reportado
 
-            _context.next = 7;
-            return getLastStageName(_data);
+            _context.next = 9;
+            return getLastStageName(data);
 
-          case 7:
+          case 9:
             lastStage = _context.sent;
             console.log({
               lastStage: lastStage
             }); //Evaluar los Stage y actualizar según el Stage
 
             _context.t0 = lastStage;
-            _context.next = _context.t0 === 'new' ? 12 : _context.t0 === "signedByContractor" ? 19 : _context.t0 === "signedByClient" ? 31 : 36;
+            _context.next = _context.t0 === 'new' ? 14 : _context.t0 === 'signedByContractor' ? 21 : _context.t0 === 'signedByClient' ? 31 : 36;
             break;
 
-          case 12:
+          case 14:
             updateStepOne = {
               $set: {
                 'signatory.contractor': signatory.contractor
@@ -60,18 +64,18 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
             console.log({
               updateStepOne: updateStepOne
             });
-            _context.next = 16;
+            _context.next = 18;
             return setAcceptanceById(_id, updateStepOne);
 
-          case 16:
+          case 18:
             updatedAcceptance = _context.sent;
             console.log({
               updatedAcceptance: updatedAcceptance
             }); //Envía un correo al cliente con los datos para actualizar
 
-            return _context.abrupt("break", 38);
+            return _context.abrupt("break", 39);
 
-          case 19:
+          case 21:
             updateStepTwo = {
               $set: {
                 'signatory.client': signatory.client,
@@ -85,38 +89,35 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
                 }
               }
             };
-            _context.next = 22;
+            _context.next = 24;
             return setAcceptanceById(_id, updateStepTwo);
 
-          case 22:
+          case 24:
             updatedAcceptance = _context.sent;
 
-            if (!(_data.typeAcceptance === 'Parcial')) {
-              _context.next = 26;
-              break;
+            //Recibe la firma por parte del cliente y cambia el estado a "signClient"
+            if (data.typeAcceptance === 'Parcial') {//El estado se mantiene igual
+              //Se envía correo al gerente de proyecto del contractor para aceptación final.
+              //TODO: Implementar envio de correo al gerente para cierre final del acta.
+            } else {
+              //Se empuja el estado de cerrado.
+              _updateStepThree = {
+                $push: {
+                  stage: {
+                    name: 'closed',
+                    completed: true
+                  }
+                }
+              };
             }
 
-            _context.next = 30;
-            break;
-
-          case 26:
-            //Se empuja el estado de cerrado.
-            _updateStepThree = {
-              $push: {
-                stage: {
-                  name: 'closed',
-                  completed: true
-                }
-              }
-            };
+            ;
             _context.next = 29;
-            return setAcceptanceById(_id, _updateStepThree);
+            return setAcceptanceById(_id, updateStepThree);
 
           case 29:
             updatedAcceptance = _context.sent;
-
-          case 30:
-            return _context.abrupt("break", 38);
+            return _context.abrupt("break", 39);
 
           case 31:
             //Se debe enviar una aceptación de los pendientes
@@ -133,26 +134,27 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
 
           case 34:
             updatedAcceptance = _context.sent;
-            return _context.abrupt("break", 38);
+            return _context.abrupt("break", 39);
 
           case 36:
-            console.log("No se encontró ningún stage con ese nombre");
-            result = "No se encontró ningún stage con ese nombre";
-
-          case 38:
+            console.log('No se encontró ningún stage con ese nombre');
+            result = 'No se encontró ningún stage con ese nombre';
             return _context.abrupt("return", updatedAcceptance);
 
-          case 41:
-            _context.prev = 41;
-            _context.t1 = _context["catch"](0);
+          case 39:
+            return _context.abrupt("return", updatedAcceptance);
+
+          case 42:
+            _context.prev = 42;
+            _context.t1 = _context["catch"](1);
             return _context.abrupt("return", _context.t1);
 
-          case 44:
+          case 45:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 41]]);
+    }, _callee, null, [[1, 42]]);
   }));
 
   return function updateDynamicAcceptance(_x, _x2, _x3, _x4) {
@@ -187,21 +189,21 @@ var setAcceptanceById = /*#__PURE__*/function () {
           case 9:
             throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
 
-          case 10:
-            _context2.next = 15;
+          case 11:
+            _context2.next = 16;
             break;
 
-          case 12:
-            _context2.prev = 12;
+          case 13:
+            _context2.prev = 13;
             _context2.t0 = _context2["catch"](0);
             return _context2.abrupt("return", _context2.t0);
 
-          case 15:
+          case 16:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 12]]);
+    }, _callee2, null, [[0, 13]]);
   }));
 
   return function setAcceptanceById(_x5, _x6) {
@@ -233,21 +235,21 @@ var readAcceptanceById = /*#__PURE__*/function () {
           case 8:
             throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
 
-          case 9:
-            _context3.next = 14;
+          case 10:
+            _context3.next = 15;
             break;
 
-          case 11:
-            _context3.prev = 11;
+          case 12:
+            _context3.prev = 12;
             _context3.t0 = _context3["catch"](0);
             return _context3.abrupt("return", _context3.t0);
 
-          case 14:
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 11]]);
+    }, _callee3, null, [[0, 12]]);
   }));
 
   return function readAcceptanceById(_x7) {
@@ -338,91 +340,6 @@ var getLastStageName = /*#__PURE__*/function () {
   };
 }();
 
-var data = {
-  "_id": {
-    "$oid": "643c3c15ae1896e1e634dbb7"
-  },
-  "_codeProjectERP": "PJ2203-0112",
-  "_idProjectERP": 32,
-  "dateAcceptance": {
-    "$date": "2023-01-28T01:00:00Z"
-  },
-  "serviceObject": "Asistencia tecnica para la instalacion de 5 alarmas",
-  "dateInit": {
-    "$date": "2023-01-28T01:00:00Z"
-  },
-  "dateEnd": {
-    "$date": "2023-01-28T01:00:00Z"
-  },
-  "erpRef": {
-    "client": {
-      "purchaseOrder": "oc123456789"
-    },
-    "own": {
-      "proposal": "OF12334567890"
-    }
-  },
-  "client": {
-    "company": "ULTRACEM",
-    "Name": "Pedro Perez",
-    "Position": "Jefe de Compras",
-    "Email": "perdro.perez@prueba.com"
-  },
-  "controller": {
-    "Position": "No especificado"
-  },
-  "contractor": {
-    "Name": "Pedro Perez",
-    "Position": "Jefe de Compras",
-    "Email": "perdro.perez@prueba.com"
-  },
-  "deliverables": [{
-    "_id": "uuid",
-    "description": "Este es entregable 1",
-    "compliance": 100,
-    "accepted": true
-  }, {
-    "_id": "uuid",
-    "description": "Este es entregable 2",
-    "compliance": 100,
-    "accepted": true
-  }],
-  "citySign": "Barranquilla",
-  "officeSign": "el cliente",
-  "serviceValue": 5,
-  "recommendations": "Estas son nuestras recomendaciones",
-  "typeAcceptance": "Total",
-  "stage": [{
-    "name": "new",
-    "date": {
-      "$date": "2023-04-16T18:19:01.177Z"
-    },
-    "completed": false,
-    "_id": {
-      "$oid": "643c3c15ae1896e1e634dbb8"
-    }
-  }, {
-    "name": "rejected",
-    "date": {
-      "$date": "2023-04-16T18:19:01.177Z"
-    },
-    "completed": true,
-    "_id": {
-      "$oid": "643c3c15ae1896e1e634dbb8"
-    }
-  }],
-  "_idFiles": [],
-  "dateSign": {
-    "$date": "2023-04-16T18:19:01.186Z"
-  },
-  "rejectedMessage": [],
-  "createdAt": {
-    "$date": "2023-04-16T18:19:01.191Z"
-  },
-  "updatedAt": {
-    "$date": "2023-04-16T18:19:01.191Z"
-  }
-};
 module.exports = {
   updateDynamicAcceptance: updateDynamicAcceptance,
   setAcceptanceById: setAcceptanceById,

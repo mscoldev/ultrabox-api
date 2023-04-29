@@ -6,7 +6,7 @@ const PjAcceptance = require('../../models/projects/acceptance.model');
 const {
   updateDynamicAcceptance,
   setAcceptanceById,
-  findSomeStageComplete,
+  // findSomeStageComplete,
 } = require('../../helpers/validators/projects/stages');
 
 const getAcceptanceById = async (req = request, res = response, next) => {
@@ -71,7 +71,7 @@ const updateAcceptanceById = async (req = request, res = response, next) => {
     //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
 
     //TODO: Terminar de validar el caso de mensajes rechazados.
-    const description = data?.rejectedMessage?.description;
+    // const description = data?.rejectedMessage?.description;
     // const a = typeof description === 'string';
 
     if (rejectedMessage) {

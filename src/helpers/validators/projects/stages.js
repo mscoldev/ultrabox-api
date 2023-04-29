@@ -2,16 +2,12 @@ const _ = require('lodash');
 const boom = require('@hapi/boom');
 const PjAcceptance = require('../../../models/projects/acceptance.model');
 
-const updateDynamicAcceptance = async (
-  _id,
-  signatory,
-  serviceValue,
-  recommendations
-) => {
+const updateDynamicAcceptance = async (_id, signatory, serviceValue, recommendations) => {
+  console.log(`Consultando id: ${_id}`);
   //Obtener los datos del acta
   try {
     //Consultar registro
-    console.log('Consulta');
+    console.log(`Consultando id: ${_id}`);
     const data = await readAcceptanceById(_id);
     console.log({ data });
     //Ultimo estado reportado
@@ -58,6 +54,7 @@ const updateDynamicAcceptance = async (
         if (data.typeAcceptance === 'Parcial') {
           //El estado se mantiene igual
           //Se envía correo al gerente de proyecto del contractor para aceptación final.
+          //TODO: Implementar envio de correo al gerente para cierre final del acta.
         } else {
           //Se empuja el estado de cerrado.
           const updateStepThree = {
@@ -68,9 +65,9 @@ const updateDynamicAcceptance = async (
               },
             },
           };
+        };
           updatedAcceptance = await setAcceptanceById(_id, updateStepThree);
-        }
-        break;
+          break;
       case 'signedByClient':
         //Se debe enviar una aceptación de los pendientes
         const updateStepThree = {
@@ -88,12 +85,14 @@ const updateDynamicAcceptance = async (
       default:
         console.log('No se encontró ningún stage con ese nombre');
         result = 'No se encontró ningún stage con ese nombre';
+        return updatedAcceptance;
     }
     return updatedAcceptance;
-  } catch (err) {
-    return err;
+    } catch (err) {
+      return err;
+    }
   }
-};
+
 
 const setAcceptanceById = async (_id, update) => {
   try {
@@ -101,11 +100,12 @@ const setAcceptanceById = async (_id, update) => {
     const updateAcceptance = await PjAcceptance.findByIdAndUpdate(_id, update, {
       new: true,
     });
+
     if (updateAcceptance != null) {
       return updateAcceptance;
     } else {
-      //TODO: Validar error boom en la funcnpm on setAcceptanceById del archivo stage
-      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);
+      //TODO: Validar error boom en la función setAcceptanceById del archivo stage
+      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);;
     }
   } catch (err) {
     return err;
@@ -119,11 +119,13 @@ const readAcceptanceById = async (_id) => {
       return acceptance;
     } else {
       throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);
+      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);
     }
   } catch (err) {
     return err;
   }
 };
+
 
 const findSomeStageComplete = async (data, someStageName) => {
   // const data = await readAcceptanceById(_id);
@@ -136,6 +138,7 @@ const findSomeStageComplete = async (data, someStageName) => {
   return result;
 };
 
+
 const updateSelectionStage = async (_id, stage) => {
   //Obtener los datos de la base datos por medio del _id
   const data = await readAcceptanceById(_id);
@@ -144,11 +147,11 @@ const updateSelectionStage = async (_id, stage) => {
   return confirmStage;
 };
 
+
 const getLastStageName = async (data) => {
   const stages = _.orderBy(data.stage, ['date'], ['desc']);
   return stages.length > 0 ? stages[0].name : null;
 };
-
 
 
 module.exports = {
