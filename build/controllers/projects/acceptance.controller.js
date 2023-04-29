@@ -119,7 +119,7 @@ var setAcceptance = /*#__PURE__*/function () {
         stage,
         _req$body,
         signatory,
-        data,
+        _data,
         newAcceptance,
         acceptanceSaved,
         _args2 = arguments;
@@ -137,9 +137,9 @@ var setAcceptance = /*#__PURE__*/function () {
               date: Date.now(),
               completed: true
             };
-            _req$body = req.body, signatory = _req$body.signatory, data = _objectWithoutProperties(_req$body, _excluded);
-            data['stage'] = stage;
-            newAcceptance = new PjAcceptance(data);
+            _req$body = req.body, signatory = _req$body.signatory, _data = _objectWithoutProperties(_req$body, _excluded);
+            _data['stage'] = stage;
+            newAcceptance = new PjAcceptance(_data);
             _context2.next = 10;
             return newAcceptance.save();
 
@@ -169,8 +169,8 @@ var setAcceptance = /*#__PURE__*/function () {
   return function setAcceptance() {
     return _ref2.apply(this, arguments);
   };
-}(); //TODO: Implementar actualizacion general de acta sin mensajes de rechazo.
-//TODO: Implementra cambios de estado del acta automatizados desde el backend.
+}(); //TODO: Implementar actualización general de acta sin mensajes de rechazo.
+//TODO: Implementar cambios de estado del acta automatizados desde el backend.
 
 
 var updateAcceptanceById = /*#__PURE__*/function () {
@@ -178,6 +178,8 @@ var updateAcceptanceById = /*#__PURE__*/function () {
     var req,
         res,
         next,
+        _data2,
+        _data2$rejectedMessag,
         body,
         _req$body2,
         stage,
@@ -186,6 +188,7 @@ var updateAcceptanceById = /*#__PURE__*/function () {
         recommendations,
         rejectedMessage,
         _id,
+        description,
         RejectedMessage,
         updatedAcceptance,
         _updatedAcceptance,
@@ -205,38 +208,43 @@ var updateAcceptanceById = /*#__PURE__*/function () {
             _id = Types.ObjectId(req.params._id); //* Si el Stage del acta es new se reciben los datos para la firma por parte del contractor.
             //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
             //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
+            //TODO: Terminar de validar el caso de mensajes rechazados.
 
-            if (!(!stage && rejectedMessage != null)) {
-              _context3.next = 17;
+            description = (_data2 = data) === null || _data2 === void 0 ? void 0 : (_data2$rejectedMessag = _data2.rejectedMessage) === null || _data2$rejectedMessag === void 0 ? void 0 : _data2$rejectedMessag.description; // const a = typeof description === 'string';
+
+            if (!rejectedMessage) {
+              _context3.next = 18;
               break;
             }
 
             RejectedMessage = {
               $push: {
                 rejectedMessage: rejectedMessage
-              },
-              stage: {
-                name: stage.name
               }
             };
-            _context3.next = 12;
-            return setAcceptanceById(_id, RejectedMessage);
+            _context3.next = 13;
+            return setAcceptanceById(_id, RejectedMessage, serviceValue, recommendations);
 
-          case 12:
+          case 13:
             updatedAcceptance = _context3.sent;
             console.log('Activado rejected');
             res.status(200).json({
               msg: 'Acta actualizada',
               updatedAcceptance: updatedAcceptance
             });
-            _context3.next = 22;
+            _context3.next = 23;
             break;
 
+<<<<<<< HEAD
           case 17:
             _context3.next = 19;
+=======
+          case 18:
+            _context3.next = 20;
+>>>>>>> develop
             return updateDynamicAcceptance(_id, signatory, serviceValue, recommendations);
 
-          case 19:
+          case 20:
             _updatedAcceptance = _context3.sent;
             console.log('Activado updated');
             res.status(200).json({
@@ -244,21 +252,21 @@ var updateAcceptanceById = /*#__PURE__*/function () {
               updatedAcceptance: _updatedAcceptance
             });
 
-          case 22:
-            _context3.next = 27;
+          case 23:
+            _context3.next = 28;
             break;
 
-          case 24:
-            _context3.prev = 24;
+          case 25:
+            _context3.prev = 25;
             _context3.t0 = _context3["catch"](3);
             next(_context3.t0);
 
-          case 27:
+          case 28:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[3, 24]]);
+    }, _callee3, null, [[3, 25]]);
   }));
 
   return function updateAcceptanceById() {

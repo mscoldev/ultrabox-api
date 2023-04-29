@@ -55,10 +55,17 @@ const setAcceptance = async (req = request, res = response, next) => {
     next(err);
   }
 };
+<<<<<<< HEAD
 
 //TODO: Implementar actualizacion general de acta sin mensajes de rechazo.
 //TODO: Implementra cambios de estado del acta automatizados desde el backend.
 
+=======
+
+//TODO: Implementar actualización general de acta sin mensajes de rechazo.
+//TODO: Implementar cambios de estado del acta automatizados desde el backend.
+
+>>>>>>> develop
 const updateAcceptanceById = async (req = request, res = response, next) => {
   try {
     const body = req.body;
@@ -70,14 +77,29 @@ const updateAcceptanceById = async (req = request, res = response, next) => {
     //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
     //* de ser asi, se almacena el rejectedMessage.description y el stage tendría un rejected
 
-    if (!stage && rejectedMessage != null) {
+    //TODO: Terminar de validar el caso de mensajes rechazados.
+    const description = data?.rejectedMessage?.description;
+    // const a = typeof description === 'string';
+
+    if (rejectedMessage) {
       const RejectedMessage = {
+<<<<<<< HEAD
         $push: {
           rejectedMessage: rejectedMessage,
         },
         stage: { name: stage.name },
       };
       const updatedAcceptance = await setAcceptanceById(_id, RejectedMessage);
+=======
+        $push: { rejectedMessage: rejectedMessage },
+      };
+      const updatedAcceptance = await setAcceptanceById(
+        _id,
+        RejectedMessage,
+        serviceValue,
+        recommendations
+      );
+>>>>>>> develop
       console.log('Activado rejected');
       res.status(200).json({
         msg: 'Acta actualizada',

@@ -1,6 +1,6 @@
 "use strict";
 
-var _require = require("mongoose"),
+var _require = require('mongoose'),
     Schema = _require.Schema,
     model = _require.model;
 
@@ -27,7 +27,7 @@ var productionLogSchema = Schema({
   },
   molino: {
     type: String,
-    required: [true, 'Debe indicar el punto de produccion molino']
+    required: [true, 'Debe indicar el punto de producción molino']
   },
   _idProductionLine: {
     ref: 'ProductionLine',
@@ -35,11 +35,11 @@ var productionLogSchema = Schema({
   },
   receta: {
     type: Number,
-    required: [true, 'Debe definir una receta para el registro de produccion']
+    required: [true, 'Debe definir una receta para el registro de producción']
   },
   silo: {
     type: Number,
-    required: [true, 'Debe seleccionar un lugar de destino para la produccion']
+    required: [true, 'Debe seleccionar un lugar de destino para la producción']
   },
   kwhpd004: {
     type: Number,
@@ -65,7 +65,17 @@ var productionLogSchema = Schema({
     type: Number,
     required: [false],
     "default": 0
-  }
+  },
+  migrate: [{
+    type: {
+      type: String,
+      "default": 'none'
+    },
+    date: {
+      type: Date,
+      "default": Date.now
+    }
+  }]
 }, {
   timestamps: true,
   versionKey: false

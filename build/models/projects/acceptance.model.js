@@ -135,6 +135,11 @@ var pjAcceptanceSchema = Schema({
     required: true,
     "default": Date.now
   },
+  country: {
+    type: String,
+    required: true,
+    "default": 'Colombia'
+  },
   citySign: {
     type: String,
     required: true,

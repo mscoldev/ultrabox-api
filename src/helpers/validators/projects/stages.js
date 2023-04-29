@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const boom = require('@hapi/boom');
 const PjAcceptance = require('../../../models/projects/acceptance.model');
 
 const updateDynamicAcceptance = async (
@@ -10,6 +11,7 @@ const updateDynamicAcceptance = async (
   //Obtener los datos del acta
   try {
     //Consultar registro
+    console.log('Consulta');
     const data = await readAcceptanceById(_id);
     console.log({ data });
     //Ultimo estado reportado
@@ -49,7 +51,12 @@ const updateDynamicAcceptance = async (
             },
           },
         };
+              completed: true,
+            },
+          },
+        };
 
+        updatedAcceptance = await setAcceptanceById(_id, updateStepTwo);
         updatedAcceptance = await setAcceptanceById(_id, updateStepTwo);
 
         //Recibe la firma por parte del cliente y cambia el estado a "signClient"
@@ -67,8 +74,14 @@ const updateDynamicAcceptance = async (
             },
           };
           updatedAcceptance = await setAcceptanceById(_id, updateStepThree);
+                completed: true,
+              },
+            },
+          };
+          updatedAcceptance = await setAcceptanceById(_id, updateStepThree);
         }
         break;
+      case 'signedByClient':
       case 'signedByClient':
         //Se debe enviar una aceptación de los pendientes
         const updateStepThree = {
@@ -79,18 +92,27 @@ const updateDynamicAcceptance = async (
             },
           },
         };
+              completed: true,
+            },
+          },
+        };
 
+        updatedAcceptance = await setAcceptanceById(_id, updateStepThree);
         updatedAcceptance = await setAcceptanceById(_id, updateStepThree);
 
         break;
       default:
         console.log('No se encontró ningún stage con ese nombre');
         result = 'No se encontró ningún stage con ese nombre';
+        console.log('No se encontró ningún stage con ese nombre');
+        result = 'No se encontró ningún stage con ese nombre';
     }
     return updatedAcceptance;
   } catch (err) {
     return err;
+    return err;
   }
+};
 };
 
 const setAcceptanceById = async (_id, update) => {
@@ -99,27 +121,35 @@ const setAcceptanceById = async (_id, update) => {
     const updateAcceptance = await PjAcceptance.findByIdAndUpdate(_id, update, {
       new: true,
     });
+    const updateAcceptance = await PjAcceptance.findByIdAndUpdate(_id, update, {
+      new: true,
+    });
     if (updateAcceptance != null) {
       return updateAcceptance;
     } else {
+      //TODO: Validar error boom en la funcnpm on setAcceptanceById del archivo stage
+      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);;
+    }
+  } catch (err) {
+    return err;
+  }
+};
+};
+
+const readAcceptanceById = async (_id) => {
+  try {
+    const acceptance = await PjAcceptance.findById(_id);
+    const acceptance = await PjAcceptance.findById(_id);
+    if (acceptance != null) {
+      return acceptance;
+    } else {
+      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);
       throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);
     }
   } catch (err) {
     return err;
   }
 };
-
-const readAcceptanceById = async (_id) => {
-  try {
-    const acceptance = await PjAcceptance.findById(_id);
-    if (acceptance != null) {
-      return acceptance;
-    } else {
-      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);
-    }
-  } catch (err) {
-    return err;
-  }
 };
 
 const findSomeStageComplete = async (data, someStageName) => {
@@ -128,9 +158,14 @@ const findSomeStageComplete = async (data, someStageName) => {
     (stageSome) =>
       stageSome.name === someStageName && stageSome.completed === true
   );
+  const existingStageComplete = data.stage.some(
+    (stageSome) =>
+      stageSome.name === someStageName && stageSome.completed === true
+  );
   console.log(`Se encontró el estado ${someStageName} completo en el array`);
   const result = existingStageComplete === true ? someStageName : false;
   return result;
+};
 };
 
 const updateSelectionStage = async (_id, stage) => {
@@ -140,16 +175,24 @@ const updateSelectionStage = async (_id, stage) => {
   const confirmStage = await findSomeStageComplete(data, stage);
   return confirmStage;
 };
+};
 
 const getLastStageName = async (data) => {
   const stages = _.orderBy(data.stage, ['date'], ['desc']);
   return stages.length > 0 ? stages[0].name : null;
 };
+};
 
 const data = {
   _id: {
     $oid: '643c3c15ae1896e1e634dbb7',
+  _id: {
+    $oid: '643c3c15ae1896e1e634dbb7',
   },
+  _codeProjectERP: 'PJ2203-0112',
+  _idProjectERP: 32,
+  dateAcceptance: {
+    $date: '2023-01-28T01:00:00Z',
   _codeProjectERP: 'PJ2203-0112',
   _idProjectERP: 32,
   dateAcceptance: {
@@ -158,7 +201,12 @@ const data = {
   serviceObject: 'Asistencia tecnica para la instalacion de 5 alarmas',
   dateInit: {
     $date: '2023-01-28T01:00:00Z',
+  serviceObject: 'Asistencia tecnica para la instalacion de 5 alarmas',
+  dateInit: {
+    $date: '2023-01-28T01:00:00Z',
   },
+  dateEnd: {
+    $date: '2023-01-28T01:00:00Z',
   dateEnd: {
     $date: '2023-01-28T01:00:00Z',
   },

@@ -10,6 +10,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var _ = require('lodash');
 
+var boom = require('@hapi/boom');
+
 var PjAcceptance = require('../../../models/projects/acceptance.model');
 
 var updateDynamicAcceptance = /*#__PURE__*/function () {
