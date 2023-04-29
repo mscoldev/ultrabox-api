@@ -140,6 +140,11 @@ var pjAcceptanceSchema = Schema({
     required: true,
     "default": 'Barranquilla'
   },
+  country: {
+    type: String,
+    required: true,
+    "default": 'Colombia'
+  },
   officeSign: {
     type: String,
     required: true,

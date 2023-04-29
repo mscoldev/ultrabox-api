@@ -14,7 +14,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var _require = require("express"),
+var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
@@ -23,7 +23,7 @@ var boom = require('@hapi/boom');
 var _require2 = require('mongoose'),
     Types = _require2.Types;
 
-var PjAcceptance = require("../../models/projects/acceptance.model");
+var PjAcceptance = require('../../models/projects/acceptance.model');
 
 var _require3 = require('../../helpers/validators/projects/stages'),
     updateDynamicAcceptance = _require3.updateDynamicAcceptance,
@@ -133,9 +133,9 @@ var setAcceptance = /*#__PURE__*/function () {
             next = _args2.length > 2 ? _args2[2] : undefined;
             _context2.prev = 3;
             stage = {
-              "name": "new",
-              "date": Date.now(),
-              "completed": true
+              name: 'new',
+              date: Date.now(),
+              completed: true
             };
             _req$body = req.body, signatory = _req$body.signatory, data = _objectWithoutProperties(_req$body, _excluded);
             data['stage'] = stage;
@@ -182,6 +182,8 @@ var updateAcceptanceById = /*#__PURE__*/function () {
         _req$body2,
         stage,
         signatory,
+        serviceValue,
+        recommendations,
         rejectedMessage,
         _id,
         RejectedMessage,
@@ -198,7 +200,7 @@ var updateAcceptanceById = /*#__PURE__*/function () {
             next = _args3.length > 2 ? _args3[2] : undefined;
             _context3.prev = 3;
             body = req.body;
-            _req$body2 = req.body, stage = _req$body2.stage, signatory = _req$body2.signatory;
+            _req$body2 = req.body, stage = _req$body2.stage, signatory = _req$body2.signatory, serviceValue = _req$body2.serviceValue, recommendations = _req$body2.recommendations;
             rejectedMessage = body.rejectedMessage;
             _id = Types.ObjectId(req.params._id); //* Si el Stage del acta es new se reciben los datos para la firma por parte del contractor.
             //* las otros datos no se tienen en cuenta, debe verificarse el si stage es rejected al momento te recibir
@@ -222,7 +224,7 @@ var updateAcceptanceById = /*#__PURE__*/function () {
 
           case 12:
             updatedAcceptance = _context3.sent;
-            console.log("Activado rejected");
+            console.log('Activado rejected');
             res.status(200).json({
               msg: 'Acta actualizada',
               updatedAcceptance: updatedAcceptance
@@ -232,11 +234,11 @@ var updateAcceptanceById = /*#__PURE__*/function () {
 
           case 17:
             _context3.next = 19;
-            return updateDynamicAcceptance(_id, signatory);
+            return updateDynamicAcceptance(_id, signatory, serviceValue, recommendations);
 
           case 19:
             _updatedAcceptance = _context3.sent;
-            console.log("Activado updated");
+            console.log('Activado updated');
             res.status(200).json({
               msg: 'Acta actualizada',
               updatedAcceptance: _updatedAcceptance

@@ -13,7 +13,7 @@ var _ = require('lodash');
 var PjAcceptance = require('../../../models/projects/acceptance.model');
 
 var updateDynamicAcceptance = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(_id, signatory) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(_id, signatory, serviceValue, recommendations) {
     var _data, lastStage, updatedAcceptance, updateStepOne, updateStepTwo, _updateStepThree, updateStepThree;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -40,7 +40,7 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
             }); //Evaluar los Stage y actualizar según el Stage
 
             _context.t0 = lastStage;
-            _context.next = _context.t0 === 'new' ? 12 : _context.t0 === "signedByContractor" ? 19 : _context.t0 === "signedByClient" ? 31 : 36;
+            _context.next = _context.t0 === 'new' ? 12 : _context.t0 === 'signedByContractor' ? 19 : _context.t0 === 'signedByClient' ? 31 : 36;
             break;
 
           case 12:
@@ -72,7 +72,9 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
           case 19:
             updateStepTwo = {
               $set: {
-                'signatory.client': signatory.client
+                'signatory.client': signatory.client,
+                serviceValue: serviceValue,
+                recommendations: recommendations
               },
               $push: {
                 stage: {
@@ -132,8 +134,8 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
             return _context.abrupt("break", 38);
 
           case 36:
-            console.log("No se encontró ningún stage con ese nombre");
-            result = "No se encontró ningún stage con ese nombre";
+            console.log('No se encontró ningún stage con ese nombre');
+            result = 'No se encontró ningún stage con ese nombre';
 
           case 38:
             return _context.abrupt("return", updatedAcceptance);
@@ -151,7 +153,7 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
     }, _callee, null, [[0, 41]]);
   }));
 
-  return function updateDynamicAcceptance(_x, _x2) {
+  return function updateDynamicAcceptance(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -200,7 +202,7 @@ var setAcceptanceById = /*#__PURE__*/function () {
     }, _callee2, null, [[0, 12]]);
   }));
 
-  return function setAcceptanceById(_x3, _x4) {
+  return function setAcceptanceById(_x5, _x6) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -246,7 +248,7 @@ var readAcceptanceById = /*#__PURE__*/function () {
     }, _callee3, null, [[0, 11]]);
   }));
 
-  return function readAcceptanceById(_x5) {
+  return function readAcceptanceById(_x7) {
     return _ref3.apply(this, arguments);
   };
 }();
@@ -274,7 +276,7 @@ var findSomeStageComplete = /*#__PURE__*/function () {
     }, _callee4);
   }));
 
-  return function findSomeStageComplete(_x6, _x7) {
+  return function findSomeStageComplete(_x8, _x9) {
     return _ref4.apply(this, arguments);
   };
 }();
@@ -306,7 +308,7 @@ var updateSelectionStage = /*#__PURE__*/function () {
     }, _callee5);
   }));
 
-  return function updateSelectionStage(_x8, _x9) {
+  return function updateSelectionStage(_x10, _x11) {
     return _ref5.apply(this, arguments);
   };
 }();
@@ -329,94 +331,94 @@ var getLastStageName = /*#__PURE__*/function () {
     }, _callee6);
   }));
 
-  return function getLastStageName(_x10) {
+  return function getLastStageName(_x12) {
     return _ref6.apply(this, arguments);
   };
 }();
 
 var data = {
-  "_id": {
-    "$oid": "643c3c15ae1896e1e634dbb7"
+  _id: {
+    $oid: '643c3c15ae1896e1e634dbb7'
   },
-  "_codeProjectERP": "PJ2203-0112",
-  "_idProjectERP": 32,
-  "dateAcceptance": {
-    "$date": "2023-01-28T01:00:00Z"
+  _codeProjectERP: 'PJ2203-0112',
+  _idProjectERP: 32,
+  dateAcceptance: {
+    $date: '2023-01-28T01:00:00Z'
   },
-  "serviceObject": "Asistencia tecnica para la instalacion de 5 alarmas",
-  "dateInit": {
-    "$date": "2023-01-28T01:00:00Z"
+  serviceObject: 'Asistencia tecnica para la instalacion de 5 alarmas',
+  dateInit: {
+    $date: '2023-01-28T01:00:00Z'
   },
-  "dateEnd": {
-    "$date": "2023-01-28T01:00:00Z"
+  dateEnd: {
+    $date: '2023-01-28T01:00:00Z'
   },
-  "erpRef": {
-    "client": {
-      "purchaseOrder": "oc123456789"
+  erpRef: {
+    client: {
+      purchaseOrder: 'oc123456789'
     },
-    "own": {
-      "proposal": "OF12334567890"
+    own: {
+      proposal: 'OF12334567890'
     }
   },
-  "client": {
-    "company": "ULTRACEM",
-    "Name": "Pedro Perez",
-    "Position": "Jefe de Compras",
-    "Email": "perdro.perez@prueba.com"
+  client: {
+    company: 'ULTRACEM',
+    Name: 'Pedro Perez',
+    Position: 'Jefe de Compras',
+    Email: 'perdro.perez@prueba.com'
   },
-  "controller": {
-    "Position": "No especificado"
+  controller: {
+    Position: 'No especificado'
   },
-  "contractor": {
-    "Name": "Pedro Perez",
-    "Position": "Jefe de Compras",
-    "Email": "perdro.perez@prueba.com"
+  contractor: {
+    Name: 'Pedro Perez',
+    Position: 'Jefe de Compras',
+    Email: 'perdro.perez@prueba.com'
   },
-  "deliverables": [{
-    "_id": "uuid",
-    "description": "Este es entregable 1",
-    "compliance": 100,
-    "accepted": true
+  deliverables: [{
+    _id: 'uuid',
+    description: 'Este es entregable 1',
+    compliance: 100,
+    accepted: true
   }, {
-    "_id": "uuid",
-    "description": "Este es entregable 2",
-    "compliance": 100,
-    "accepted": true
+    _id: 'uuid',
+    description: 'Este es entregable 2',
+    compliance: 100,
+    accepted: true
   }],
-  "citySign": "Barranquilla",
-  "officeSign": "el cliente",
-  "serviceValue": 5,
-  "recommendations": "Estas son nuestras recomendaciones",
-  "typeAcceptance": "Total",
-  "stage": [{
-    "name": "new",
-    "date": {
-      "$date": "2023-04-16T18:19:01.177Z"
+  citySign: 'Barranquilla',
+  officeSign: 'el cliente',
+  serviceValue: 5,
+  recommendations: 'Estas son nuestras recomendaciones',
+  typeAcceptance: 'Total',
+  stage: [{
+    name: 'new',
+    date: {
+      $date: '2023-04-16T18:19:01.177Z'
     },
-    "completed": false,
-    "_id": {
-      "$oid": "643c3c15ae1896e1e634dbb8"
+    completed: false,
+    _id: {
+      $oid: '643c3c15ae1896e1e634dbb8'
     }
   }, {
-    "name": "rejected",
-    "date": {
-      "$date": "2023-04-16T18:19:01.177Z"
+    name: 'rejected',
+    date: {
+      $date: '2023-04-16T18:19:01.177Z'
     },
-    "completed": true,
-    "_id": {
-      "$oid": "643c3c15ae1896e1e634dbb8"
+    completed: true,
+    _id: {
+      $oid: '643c3c15ae1896e1e634dbb8'
     }
   }],
-  "_idFiles": [],
-  "dateSign": {
-    "$date": "2023-04-16T18:19:01.186Z"
+  _idFiles: [],
+  dateSign: {
+    $date: '2023-04-16T18:19:01.186Z'
   },
-  "rejectedMessage": [],
-  "createdAt": {
-    "$date": "2023-04-16T18:19:01.191Z"
+  rejectedMessage: [],
+  createdAt: {
+    $date: '2023-04-16T18:19:01.191Z'
   },
-  "updatedAt": {
-    "$date": "2023-04-16T18:19:01.191Z"
+  updatedAt: {
+    $date: '2023-04-16T18:19:01.191Z'
   }
 };
 module.exports = {

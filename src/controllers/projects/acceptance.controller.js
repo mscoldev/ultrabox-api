@@ -1,44 +1,47 @@
-const { response, request } = require("express");
+const { response, request } = require('express');
 const boom = require('@hapi/boom');
 const { Types } = require('mongoose');
-const PjAcceptance = require("../../models/projects/acceptance.model");
+const PjAcceptance = require('../../models/projects/acceptance.model');
 
-const { updateDynamicAcceptance, setAcceptanceById, findSomeStageComplete } = require('../../helpers/validators/projects/stages')
-
-
-
+const {
+  updateDynamicAcceptance,
+  setAcceptanceById,
+  findSomeStageComplete,
+} = require('../../helpers/validators/projects/stages');
 
 const getAcceptanceById = async (req = request, res = response, next) => {
   try {
     const { _id, _codeProjectERP } = req.query;
-    if (_id == undefined & _codeProjectERP == undefined) {
-      throw boom.badRequest('Debe definir mínimo un parámetro de consulta: _id o _codeProjectERP')
+    if ((_id == undefined) & (_codeProjectERP == undefined)) {
+      throw boom.badRequest(
+        'Debe definir mínimo un parámetro de consulta: _id o _codeProjectERP'
+      );
     } else {
       //*Aquí buscamos en la base de datos por cualquiera de los dos parámetros.
-      const acceptance = await PjAcceptance
-        .findOne({ $or: [{ _codeProjectERP }, { _id }] })
-        .populate({ path: '_idFiles', model: 'File' })
+      const acceptance = await PjAcceptance.findOne({
+        $or: [{ _codeProjectERP }, { _id }],
+      }).populate({ path: '_idFiles', model: 'File' });
       if (acceptance != null) {
         res.status(200).json({
           msg: 'Acta de aceptación',
-          acceptance
-        })
+          acceptance,
+        });
       } else {
-        throw boom.notFound(`Oops!, no se encontraron actas con alguno de los parámetros de búsqueda ingresados.`)
+        throw boom.notFound(
+          `Oops!, no se encontraron actas con alguno de los parámetros de búsqueda ingresados.`
+        );
       }
     }
   } catch (err) {
     next(err);
   }
-}
-
-
+};
 
 const setAcceptance = async (req = request, res = response, next) => {
   //* Crear un acta por medio del formulario y asignar por defecto la condición de "new". No permitir el ingreso de firmas en el primer estado.
 
   try {
-    const stage = { "name": "new", "date": Date.now(), "completed": true }
+    const stage = { name: 'new', date: Date.now(), completed: true };
     const { signatory, ...data } = req.body;
     data['stage'] = stage;
     const newAcceptance = new PjAcceptance(data);
@@ -46,24 +49,21 @@ const setAcceptance = async (req = request, res = response, next) => {
     console.log(acceptanceSaved);
     res.status(200).json({
       msg: 'Nueva acta de aceptación de proyecto almacenada',
-      acceptanceSaved
+      acceptanceSaved,
     });
-
   } catch (err) {
     next(err);
   }
-}
-
+};
 
 //TODO: Implementar actualizacion general de acta sin mensajes de rechazo.
 //TODO: Implementra cambios de estado del acta automatizados desde el backend.
 
-
 const updateAcceptanceById = async (req = request, res = response, next) => {
   try {
-    const body = req.body
-    const { stage, signatory } = req.body
-    const { rejectedMessage } = body
+    const body = req.body;
+    const { stage, signatory, serviceValue, recommendations } = req.body;
+    const { rejectedMessage } = body;
     const _id = Types.ObjectId(req.params._id);
 
     //* Si el Stage del acta es new se reciben los datos para la firma por parte del contractor.
@@ -75,30 +75,34 @@ const updateAcceptanceById = async (req = request, res = response, next) => {
         $push: {
           rejectedMessage: rejectedMessage,
         },
-        stage: { name: stage.name }
+        stage: { name: stage.name },
       };
       const updatedAcceptance = await setAcceptanceById(_id, RejectedMessage);
-      console.log("Activado rejected");
+      console.log('Activado rejected');
       res.status(200).json({
         msg: 'Acta actualizada',
-        updatedAcceptance
-      })
+        updatedAcceptance,
+      });
     } else {
-      const updatedAcceptance = await updateDynamicAcceptance(_id, signatory);
-      console.log("Activado updated");
+      const updatedAcceptance = await updateDynamicAcceptance(
+        _id,
+        signatory,
+        serviceValue,
+        recommendations
+      );
+      console.log('Activado updated');
       res.status(200).json({
         msg: 'Acta actualizada',
-        updatedAcceptance
-      })
+        updatedAcceptance,
+      });
     }
   } catch (err) {
     next(err);
   }
-}
-
+};
 
 module.exports = {
   setAcceptance,
   getAcceptanceById,
   updateAcceptanceById,
-}
+};
