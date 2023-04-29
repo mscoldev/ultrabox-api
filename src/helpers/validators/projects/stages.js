@@ -2,7 +2,12 @@ const _ = require('lodash');
 const boom = require('@hapi/boom');
 const PjAcceptance = require('../../../models/projects/acceptance.model');
 
-const updateDynamicAcceptance = async (_id, signatory, serviceValue, recommendations) => {
+const updateDynamicAcceptance = async (
+  _id,
+  signatory,
+  serviceValue,
+  recommendations
+) => {
   console.log(`Consultando id: ${_id}`);
   //Obtener los datos del acta
   try {
@@ -37,8 +42,8 @@ const updateDynamicAcceptance = async (_id, signatory, serviceValue, recommendat
         const updateStepTwo = {
           $set: {
             'signatory.client': signatory.client,
-            'serviceValue': serviceValue,
-            'recommendations': recommendations,
+            serviceValue: serviceValue,
+            recommendations: recommendations,
           },
           $push: {
             stage: {
@@ -65,9 +70,9 @@ const updateDynamicAcceptance = async (_id, signatory, serviceValue, recommendat
               },
             },
           };
-        };
-          updatedAcceptance = await setAcceptanceById(_id, updateStepThree);
-          break;
+        }
+        updatedAcceptance = await setAcceptanceById(_id, updateStepThree);
+        break;
       case 'signedByClient':
         //Se debe enviar una aceptación de los pendientes
         const updateStepThree = {
@@ -88,11 +93,10 @@ const updateDynamicAcceptance = async (_id, signatory, serviceValue, recommendat
         return updatedAcceptance;
     }
     return updatedAcceptance;
-    } catch (err) {
-      return err;
-    }
+  } catch (err) {
+    return err;
   }
-
+};
 
 const setAcceptanceById = async (_id, update) => {
   try {
@@ -105,7 +109,7 @@ const setAcceptanceById = async (_id, update) => {
       return updateAcceptance;
     } else {
       //TODO: Validar error boom en la función setAcceptanceById del archivo stage
-      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);;
+      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);
     }
   } catch (err) {
     return err;
@@ -119,13 +123,11 @@ const readAcceptanceById = async (_id) => {
       return acceptance;
     } else {
       throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);
-      throw boom.notFound(`Oops!, acta con _id:${_id}, no encontrada`);
     }
   } catch (err) {
     return err;
   }
 };
-
 
 const findSomeStageComplete = async (data, someStageName) => {
   // const data = await readAcceptanceById(_id);
@@ -138,7 +140,6 @@ const findSomeStageComplete = async (data, someStageName) => {
   return result;
 };
 
-
 const updateSelectionStage = async (_id, stage) => {
   //Obtener los datos de la base datos por medio del _id
   const data = await readAcceptanceById(_id);
@@ -147,12 +148,10 @@ const updateSelectionStage = async (_id, stage) => {
   return confirmStage;
 };
 
-
 const getLastStageName = async (data) => {
   const stages = _.orderBy(data.stage, ['date'], ['desc']);
   return stages.length > 0 ? stages[0].name : null;
 };
-
 
 module.exports = {
   updateDynamicAcceptance,
