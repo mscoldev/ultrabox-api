@@ -1,16 +1,14 @@
-const { ControladorABMES } = require('../../../models/mes/PLCs/controladorAB.model')
+const {
+  ControladorABMES,
+} = require('../../../models/mes/PLCs/controladorAB.model');
 
-
-const setValuesToPLC = async (infoPLC, materials) => {
+const setValuesToPLC = async (infoPLC, material) => {
   try {
     const controladorABMES = new ControladorABMES(infoPLC);
-    controladorABMES.setValuesToPLC(materials);
+    controladorABMES.setValuesToPLC(material);
   } catch (err) {
     console.log(err.message);
   }
-}
-
-
-
+};
 
 module.exports = setValuesToPLC;

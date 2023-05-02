@@ -3,52 +3,84 @@ const boom = require('@hapi/boom');
 const { Types } = require('mongoose');
 const Material = require('../../models/material.model');
 const setValuesToPLC = require('../../controllers/mes/PLCs/plcs.controller');
+const Device = require('../../models/connections/device.model');
+
+// class ControladorABMES {
+//   constructor(infoPLC) {
+//     this.ip = infoPLC.ip; //IP del controlador
+//     this.slot = infoPLC.slot; //Slot del controladorSlot del controlador
+//     this.tagNameArray = infoPLC.tagNameArray; //tagNameArray del controladorNombre con el que se definió para el canal de entrada de materiales.
+//     this.limitInputs = infoPLC.limitInputs; // Numero de canales de entrada.
+//     this.limitMaterials = infoPLC.limitMaterials; // Numero maximo de materiales a crear en el controlador.
+//     // this.materials = infoPLC.materials;
+//   }
 
 const updateMaterialToPLC = async (req = request, res = response, next) => {
-  const infoPLC = {
-    ip: '192.168.201.108',
-    slot: 3,
-    nameTagChannelIn: '',
-    limitInputs: 14,
-    limitMaterials: 14,
-  };
+  const deviceMasterName = 'PLC_PRINCIPAL';
+  const tagNameArray = 'PROD_TOLVAS';
 
-  const materials = [
-    {
-      name: 'CLINKER',
-      _idController: 0,
-    },
-    {
-      name: 'CALIZA',
-      _idController: 1,
-    },
-    {
-      name: 'YESO',
-      _idController: 2,
-    },
-    {
-      name: 'ESCORIA',
-      _idController: 3,
-    },
-    {
-      name: 'CENIZA',
-      _idController: 4,
-    },
-    {
-      name: 'ARCILLA T',
-      _idController: 5,
-    },
-    ,
-    {
-      name: 'ANDESITA',
-      _idController: 8,
-    },
-  ];
+  // Leer los datos de de configuración del PLC que están registrados en la base de datos.
+  // const infoPLC = {
+  //   ip: '192.168.201.108',
+  //   slot: 3,
+  //   nameTagChannelIn: '',
+  //   limitInputs: 14,
+  //   limitMaterials: 14,
+  // };
+  const material = await Material.find({}).select({
+    _id: 0,
+    name: 1,
+    _idControllerMaterial: 1,
+  });
+  const limitInputs = 14;
+  const limitMaterials = material.length;
+
+  const deviceInfo = await Device.findOne({ name: deviceMasterName });
+  const infoPLC = deviceInfo.toObject();
+  infoPLC.limitInputs = limitInputs;
+  infoPLC.limitMaterials = limitMaterials;
+  infoPLC.tagNameArray = tagNameArray;
+
+  console.log({ material });
+
+  // const materials = [
+  //   {
+  //     name: 'CLINKER',
+  //     _idController: 0,
+  //   },
+  //   {
+  //     name: 'CALIZA',
+  //     _idController: 1,
+  //   },
+  //   {
+  //     name: 'YESO',
+  //     _idController: 2,
+  //   },
+  //   {
+  //     name: 'ESCORIA',
+  //     _idController: 3,
+  //   },
+  //   {
+  //     name: 'CENIZA',
+  //     _idController: 4,
+  //   },
+  //   {
+  //     name: 'ARCILLA T',
+  //     _idController: 5,
+  //   },
+  //   ,
+  //   {
+  //     name: 'ANDESITA',
+  //     _idController: 8,
+  //   },
+  // ];
+
   try {
-    const responsePLC = setValuesToPLC(infoPLC, materials);
+    console.log({ infoPLC });
+    const responsePLC = await setValuesToPLC(infoPLC, material);
     if (!responsePLC) {
       throw boom.failedDependency(
-        'Falla en el modulo de conexion con controlador'
+        'Falla en el modulo de conexión con controlador'
       );
     }
     res.status(200).json({
