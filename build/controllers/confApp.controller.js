@@ -12,7 +12,11 @@ var _require = require('express'),
     response = _require.response,
     request = _require.request;
 
+var boom = require('@hapi/boom');
+
 var ConfApp = require('../models/confApp.model');
+
+var Device = require('../models/connections/device.model');
 
 var getConfActiveCompany = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -29,7 +33,7 @@ var getConfActiveCompany = /*#__PURE__*/function () {
             _context.prev = 2;
             _context.next = 5;
             return ConfApp.findOne({
-              "deleted": false
+              deleted: false
             });
 
           case 5:
@@ -81,7 +85,7 @@ var setConfCompany = /*#__PURE__*/function () {
             body = req.body;
             _context2.next = 6;
             return ConfApp.findOne({
-              "deleted": false
+              deleted: false
             });
 
           case 6:
@@ -94,27 +98,26 @@ var setConfCompany = /*#__PURE__*/function () {
 
           case 10:
             confAppCompanySaved = _context2.sent;
-            ;
             res.status(201).json({
               msg: 'Configuracion cargada',
               confAppCompanySaved: confAppCompanySaved
             });
-            _context2.next = 18;
+            _context2.next = 17;
             break;
 
-          case 15:
-            _context2.prev = 15;
+          case 14:
+            _context2.prev = 14;
             _context2.t0 = _context2["catch"](2);
             return _context2.abrupt("return", res.status(500).json({
               msg: "Algo ha salido mal...".concat(_context2.t0.message)
             }));
 
-          case 18:
+          case 17:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[2, 15]]);
+    }, _callee2, null, [[2, 14]]);
   }));
 
   return function setConfCompany() {
@@ -122,8 +125,127 @@ var setConfCompany = /*#__PURE__*/function () {
   };
 }();
 
+var setConnectionDeviceController = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res, next) {
+    var body, device, newDevice;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
+            body = req.body;
+            console.log({
+              body: body
+            });
+            device = new Device(body);
+            console.log({
+              device: device
+            });
+            _context3.next = 7;
+            return device.save();
+
+          case 7:
+            newDevice = _context3.sent;
+            console.log({
+              newDevice: newDevice
+            });
+
+            if (newDevice) {
+              _context3.next = 13;
+              break;
+            }
+
+            throw boom.badRequest('Algo salió mal, verifica el requerimiento');
+
+          case 13:
+            res.status(201).json({
+              message: 'Un nuevo device ha sido creado con exito',
+              newDevice: newDevice
+            });
+
+          case 14:
+            _context3.next = 19;
+            break;
+
+          case 16:
+            _context3.prev = 16;
+            _context3.t0 = _context3["catch"](0);
+            next(_context3.t0);
+
+          case 19:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[0, 16]]);
+  }));
+
+  return function setConnectionDeviceController(_x, _x2, _x3) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var updateConnectionDeviceController = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res, next) {
+    var body, _id, device;
+
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            body = req.body;
+            _id = req.params._id;
+            console.log({
+              body: body
+            });
+            _context4.next = 6;
+            return Device.findByIdAndUpdate(_id, body, {
+              "new": true
+            });
+
+          case 6:
+            device = _context4.sent;
+
+            if (device) {
+              _context4.next = 11;
+              break;
+            }
+
+            throw boom.badRequest('Algo salió mal, verifica el requerimiento');
+
+          case 11:
+            res.status(201).json({
+              message: "Cambios aceptados para el device con _id:".concat(_id),
+              device: device
+            });
+
+          case 12:
+            _context4.next = 17;
+            break;
+
+          case 14:
+            _context4.prev = 14;
+            _context4.t0 = _context4["catch"](0);
+            next(_context4.t0);
+
+          case 17:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[0, 14]]);
+  }));
+
+  return function updateConnectionDeviceController(_x4, _x5, _x6) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
 module.exports = {
   getConfActiveCompany: getConfActiveCompany,
-  setConfCompany: setConfCompany
+  setConfCompany: setConfCompany,
+  setConnectionDeviceController: setConnectionDeviceController,
+  updateConnectionDeviceController: updateConnectionDeviceController
 };
 //# sourceMappingURL=confApp.controller.js.map

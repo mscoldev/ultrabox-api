@@ -25,28 +25,28 @@ var ControladorABMES = /*#__PURE__*/function () {
   function ControladorABMES(infoPLC) {
     _classCallCheck(this, ControladorABMES);
 
-    this.ip = infoPLC.ip; //IP del controlador
+    this.ipAddress = infoPLC.ipAddress; //IP del controlador
 
     this.slot = infoPLC.slot; //Slot del controladorSlot del controlador
 
-    this.nameTagChannelIn = infoPLC.nameTagChannelIn; //nameTagChannelIn del controladorNombre con el que se definio para el canal de entrada de materiales.
+    this.tagNameArray = infoPLC.tagNameArray; //tagNameArray del controladorNombre con el que se definió para el canal de entrada de materiales.
 
     this.limitInputs = infoPLC.limitInputs; // Numero de canales de entrada.
 
     this.limitMaterials = infoPLC.limitMaterials; // Numero maximo de materiales a crear en el controlador.
     // this.materials = infoPLC.materials;
-  }
+  } //TODO : Error con crash de la API si la variable del PLC no existe. (Corregir)
+  //! Error potencial si la variable del PLC no existe. (Corregir)
+
 
   _createClass(ControladorABMES, [{
     key: "setValuesToPLC",
-    value: //TODO : Error con crash de la API si la variable del PLC no existe. (Corregir)
-    //! Error potencial si la variable del PLC no existe. (Corregir)
-    function setValuesToPLC(materials) {
+    value: function setValuesToPLC(material) {
       var _this = this;
 
       var PLC = new Controller();
-      PLC.connect(this.ip, this.slot).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var descriptionPLC, nameTagChannelIn, limitInputs, limitMaterials, materialsData, newUpdateMaterial;
+      PLC.connect(this.ipAddress, this.slot).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var descriptionPLC, ipAddress, tagNameArray, limitInputs, limitMaterials, materialsData, newUpdateMaterial;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -55,13 +55,22 @@ var ControladorABMES = /*#__PURE__*/function () {
                 console.log({
                   descriptionPLC: descriptionPLC
                 });
-                nameTagChannelIn = _this.nameTagChannelIn; //nameTagChannelIn del controladorNombre con el que se definio para el canal de entrada de materiales.
+                ipAddress = _this.ipAddress;
+                tagNameArray = _this.tagNameArray; //tagNameArray del controladorNombre con el que se definio para el canal de entrada de materiales.
 
-                limitInputs = _this.limitInputs; // Numero de canales de entrada.
+                limitInputs = _this.limitInputs; // Numero de canales de entrada. ejemplo: Valvula 1 - 7 (Total: 7)
 
-                limitMaterials = _this.limitMaterials; // Numero maximo de materiales a crear en el controlador.
+                limitMaterials = _this.limitMaterials; // Numero máximo de materiales a crear en el controlador.
 
-                materialsData = materials;
+                materialsData = material;
+                console.log({
+                  material: material,
+                  ipAddress: ipAddress,
+                  tagNameArray: tagNameArray,
+                  limitInputs: limitInputs,
+                  limitMaterials: limitMaterials,
+                  materialsData: materialsData
+                });
                 newUpdateMaterial = materialsData.map( /*#__PURE__*/function () {
                   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(material) {
                     var id, name, i, lengthData, dataValue, bufferAB, length;
@@ -69,43 +78,47 @@ var ControladorABMES = /*#__PURE__*/function () {
                       while (1) {
                         switch (_context.prev = _context.next) {
                           case 0:
-                            id = material._idController;
+                            id = material._idControllerMaterial;
                             name = material.name;
+                            console.log({
+                              id: id,
+                              name: name
+                            });
                             i = 0;
 
-                          case 3:
+                          case 4:
                             if (!(i <= limitInputs)) {
-                              _context.next = 21;
+                              _context.next = 22;
                               break;
                             }
 
-                            lengthData = PLC.newTag("".concat(nameTagChannelIn, "[").concat(i, "].MATERIAL[").concat(id, "].LEN"));
-                            dataValue = PLC.newTag("".concat(nameTagChannelIn, "[").concat(i, "].MATERIAL[").concat(id, "].DATA"), null, false, 1, 15);
-                            _context.next = 8;
+                            lengthData = PLC.newTag("".concat(tagNameArray, "[").concat(i, "].MATERIAL[").concat(id, "].LEN"));
+                            dataValue = PLC.newTag("".concat(tagNameArray, "[").concat(i, "].MATERIAL[").concat(id, "].DATA"), null, false, 1, 15);
+                            _context.next = 9;
                             return PLC.readTag(lengthData);
 
-                          case 8:
-                            _context.next = 10;
+                          case 9:
+                            _context.next = 11;
                             return PLC.readTag(dataValue);
 
-                          case 10:
+                          case 11:
                             bufferAB = bufToArray(Buffer.from(name));
                             length = bufferAB.length;
                             dataValue.value = bufferAB;
                             lengthData.value = length;
-                            _context.next = 16;
+                            _context.next = 17;
                             return PLC.writeTag(lengthData);
 
-                          case 16:
-                            _context.next = 18;
+                          case 17:
+                            _context.next = 19;
                             return PLC.writeTag(dataValue);
 
-                          case 18:
+                          case 19:
                             i++;
-                            _context.next = 3;
+                            _context.next = 4;
                             break;
 
-                          case 21:
+                          case 22:
                           case "end":
                             return _context.stop();
                         }
@@ -120,7 +133,7 @@ var ControladorABMES = /*#__PURE__*/function () {
                 console.log("Valores Actualizados en PLC con exito.");
                 return _context2.abrupt("return", descriptionPLC);
 
-              case 9:
+              case 11:
               case "end":
                 return _context2.stop();
             }
@@ -133,8 +146,9 @@ var ControladorABMES = /*#__PURE__*/function () {
               switch (_context3.prev = _context3.next) {
                 case 0:
                   console.error(e);
+                  throw new Error('No se pudo conectar al PLC');
 
-                case 1:
+                case 2:
                 case "end":
                   return _context3.stop();
               }

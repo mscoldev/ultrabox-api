@@ -21,13 +21,29 @@ var Material = require('../../models/material.model');
 
 var setValuesToPLC = require('../../controllers/mes/PLCs/plcs.controller');
 
+var Device = require('../../models/connections/device.model'); // class ControladorABMES {
+//   constructor(infoPLC) {
+//     this.ip = infoPLC.ip; //IP del controlador
+//     this.slot = infoPLC.slot; //Slot del controladorSlot del controlador
+//     this.tagNameArray = infoPLC.tagNameArray; //tagNameArray del controladorNombre con el que se definió para el canal de entrada de materiales.
+//     this.limitInputs = infoPLC.limitInputs; // Numero de canales de entrada.
+//     this.limitMaterials = infoPLC.limitMaterials; // Numero maximo de materiales a crear en el controlador.
+//     // this.materials = infoPLC.materials;
+//   }
+
+
 var updateMaterialToPLC = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var req,
         res,
         next,
+        deviceMasterName,
+        tagNameArray,
+        material,
+        limitInputs,
+        limitMaterials,
+        deviceInfo,
         infoPLC,
-        materials,
         responsePLC,
         _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -37,64 +53,108 @@ var updateMaterialToPLC = /*#__PURE__*/function () {
             req = _args.length > 0 && _args[0] !== undefined ? _args[0] : request;
             res = _args.length > 1 && _args[1] !== undefined ? _args[1] : response;
             next = _args.length > 2 ? _args[2] : undefined;
-            infoPLC = {
-              ip: '192.168.201.108',
-              slot: 3,
-              nameTagChannelIn: '',
-              limitInputs: 14,
-              limitMaterials: 14
-            };
-            materials = [{
-              name: 'CLINKER',
-              _idController: 0
-            }, {
-              name: 'CALIZA',
-              _idController: 1
-            }, {
-              name: 'YESO',
-              _idController: 2
-            }, {
-              name: 'ESCORIA',
-              _idController: 3
-            }, {
-              name: 'CENIZA',
-              _idController: 4
-            }, {
-              name: 'ARCILLA T',
-              _idController: 5
-            },, {
-              name: 'ANDESITA',
-              _idController: 8
-            }];
-            _context.prev = 5;
-            responsePLC = setValuesToPLC(infoPLC, materials);
+            deviceMasterName = 'PLC_PRINCIPAL';
+            tagNameArray = 'PROD_TOLVAS'; // Leer los datos de de configuración del PLC que están registrados en la base de datos.
+            // const infoPLC = {
+            //   ip: '192.168.201.108',
+            //   slot: 3,
+            //   nameTagChannelIn: '',
+            //   limitInputs: 14,
+            //   limitMaterials: 14,
+            // };
+
+            _context.next = 7;
+            return Material.find({}).select({
+              _id: 0,
+              name: 1,
+              _idControllerMaterial: 1
+            });
+
+          case 7:
+            material = _context.sent;
+            limitInputs = 14;
+            limitMaterials = material.length;
+            _context.next = 12;
+            return Device.findOne({
+              name: deviceMasterName
+            });
+
+          case 12:
+            deviceInfo = _context.sent;
+            infoPLC = deviceInfo.toObject();
+            infoPLC.limitInputs = limitInputs;
+            infoPLC.limitMaterials = limitMaterials;
+            infoPLC.tagNameArray = tagNameArray;
+            console.log({
+              material: material
+            }); // const materials = [
+            //   {
+            //     name: 'CLINKER',
+            //     _idController: 0,
+            //   },
+            //   {
+            //     name: 'CALIZA',
+            //     _idController: 1,
+            //   },
+            //   {
+            //     name: 'YESO',
+            //     _idController: 2,
+            //   },
+            //   {
+            //     name: 'ESCORIA',
+            //     _idController: 3,
+            //   },
+            //   {
+            //     name: 'CENIZA',
+            //     _idController: 4,
+            //   },
+            //   {
+            //     name: 'ARCILLA T',
+            //     _idController: 5,
+            //   },
+            //   ,
+            //   {
+            //     name: 'ANDESITA',
+            //     _idController: 8,
+            //   },
+            // ];
+
+            _context.prev = 18;
+            console.log({
+              infoPLC: infoPLC
+            });
+            _context.next = 22;
+            return setValuesToPLC(infoPLC, material);
+
+          case 22:
+            responsePLC = _context.sent;
 
             if (responsePLC) {
-              _context.next = 9;
+              _context.next = 25;
               break;
             }
 
-            throw boom.failedDependency('Falla en el modulo de conexion con controlador');
+            throw boom.failedDependency('Falla en el modulo de conexión con controlador');
 
-          case 9:
+          case 25:
             res.status(200).json({
               msg: 'Materiales actualizados en PLC',
               responsePLC: responsePLC
             });
-            _context.next = 15;
+            _context.next = 31;
             break;
 
-          case 12:
-            _context.prev = 12;
-            _context.t0 = _context["catch"](5);
+          case 28:
+            _context.prev = 28;
+            _context.t0 = _context["catch"](18);
             next(_context.t0);
 
-          case 15:
+          case 31:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[5, 12]]);
+    }, _callee, null, [[18, 28]]);
   }));
 
   return function updateMaterialToPLC() {

@@ -46,7 +46,7 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
             }); //Evaluar los Stage y actualizar según el Stage
 
             _context.t0 = lastStage;
-            _context.next = _context.t0 === 'new' ? 14 : _context.t0 === 'signedByContractor' ? 21 : _context.t0 === 'signedByClient' ? 31 : 36;
+            _context.next = _context.t0 === 'new' ? 14 : _context.t0 === 'signedByContractor' ? 21 : _context.t0 === 'signedByClient' ? 30 : 35;
             break;
 
           case 14:
@@ -73,14 +73,14 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
               updatedAcceptance: updatedAcceptance
             }); //Envía un correo al cliente con los datos para actualizar
 
-            return _context.abrupt("break", 39);
+            return _context.abrupt("break", 38);
 
           case 21:
             updateStepTwo = {
               $set: {
                 'signatory.client': signatory.client,
-                'serviceValue': serviceValue,
-                'recommendations': recommendations
+                serviceValue: serviceValue,
+                recommendations: recommendations
               },
               $push: {
                 stage: {
@@ -111,15 +111,14 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
               };
             }
 
-            ;
-            _context.next = 29;
+            _context.next = 28;
             return setAcceptanceById(_id, updateStepThree);
 
-          case 29:
+          case 28:
             updatedAcceptance = _context.sent;
-            return _context.abrupt("break", 39);
+            return _context.abrupt("break", 38);
 
-          case 31:
+          case 30:
             //Se debe enviar una aceptación de los pendientes
             updateStepThree = {
               $push: {
@@ -129,32 +128,32 @@ var updateDynamicAcceptance = /*#__PURE__*/function () {
                 }
               }
             };
-            _context.next = 34;
+            _context.next = 33;
             return setAcceptanceById(_id, updateStepThree);
 
-          case 34:
+          case 33:
             updatedAcceptance = _context.sent;
-            return _context.abrupt("break", 39);
+            return _context.abrupt("break", 38);
 
-          case 36:
+          case 35:
             console.log('No se encontró ningún stage con ese nombre');
             result = 'No se encontró ningún stage con ese nombre';
             return _context.abrupt("return", updatedAcceptance);
 
-          case 39:
+          case 38:
             return _context.abrupt("return", updatedAcceptance);
 
-          case 42:
-            _context.prev = 42;
+          case 41:
+            _context.prev = 41;
             _context.t1 = _context["catch"](1);
             return _context.abrupt("return", _context.t1);
 
-          case 45:
+          case 44:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 42]]);
+    }, _callee, null, [[1, 41]]);
   }));
 
   return function updateDynamicAcceptance(_x, _x2, _x3, _x4) {
@@ -189,21 +188,21 @@ var setAcceptanceById = /*#__PURE__*/function () {
           case 9:
             throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
 
-          case 11:
-            _context2.next = 16;
+          case 10:
+            _context2.next = 15;
             break;
 
-          case 13:
-            _context2.prev = 13;
+          case 12:
+            _context2.prev = 12;
             _context2.t0 = _context2["catch"](0);
             return _context2.abrupt("return", _context2.t0);
 
-          case 16:
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 13]]);
+    }, _callee2, null, [[0, 12]]);
   }));
 
   return function setAcceptanceById(_x5, _x6) {
@@ -235,21 +234,21 @@ var readAcceptanceById = /*#__PURE__*/function () {
           case 8:
             throw boom.notFound("Oops!, acta con _id:".concat(_id, ", no encontrada"));
 
-          case 10:
-            _context3.next = 15;
+          case 9:
+            _context3.next = 14;
             break;
 
-          case 12:
-            _context3.prev = 12;
+          case 11:
+            _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
             return _context3.abrupt("return", _context3.t0);
 
-          case 15:
+          case 14:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 12]]);
+    }, _callee3, null, [[0, 11]]);
   }));
 
   return function readAcceptanceById(_x7) {

@@ -12,7 +12,7 @@ var _require = require('../../../models/mes/PLCs/controladorAB.model'),
     ControladorABMES = _require.ControladorABMES;
 
 var setValuesToPLC = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(infoPLC, materials) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(infoPLC, material) {
     var controladorABMES;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -20,7 +20,7 @@ var setValuesToPLC = /*#__PURE__*/function () {
           case 0:
             try {
               controladorABMES = new ControladorABMES(infoPLC);
-              controladorABMES.setValuesToPLC(materials);
+              controladorABMES.setValuesToPLC(material);
             } catch (err) {
               console.log(err.message);
             }

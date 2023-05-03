@@ -156,7 +156,7 @@ var pjAcceptanceSchema = Schema({
   },
   recommendations: {
     type: String,
-    required: true,
+    required: false,
     "default": 'No se especificaron recomendaciones para el contratista'
   },
   typeAcceptance: {
