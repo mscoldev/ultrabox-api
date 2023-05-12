@@ -17,7 +17,7 @@ const Device = require('../../models/connections/device.model');
 
 const updateMaterialToPLC = async (req = request, res = response, next) => {
   const deviceMasterName = 'PLC_PRINCIPAL';
-  const tagNameArray = 'PROD_TOLVAS';
+  const tagNameArray = 'COMPONENTE';
 
   // Leer los datos de de configuración del PLC que están registrados en la base de datos.
   // const infoPLC = {
