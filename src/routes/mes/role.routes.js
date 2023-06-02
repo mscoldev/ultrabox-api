@@ -1,5 +1,5 @@
 const { Router } = require('express');
-
+const baseAuth = require('../baseAuth');
 
 // Funciones desde el controlador
 const {
@@ -10,20 +10,23 @@ const {
     deleteRoleById
 } = require("../../controllers/mes/role.controller");
 
+const { ROLE: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
 
 const router = Router();
 
 
 //Routes Role
-router.get('/', getRoles);
+router.get('/', authenticate, getRoles);
 
-router.get('/:_id', getRoleById);
+router.get('/:_id', authenticate, getRoleById);
 
-router.post('/', createRole);
+router.post('/', authenticate, createRole);
 
-router.put('/:_id', updateRoleById);
+router.put('/:_id', authenticate, updateRoleById);
 
-router.delete('/:_id', deleteRoleById);
+router.delete('/:_id', authenticate, deleteRoleById);
 
 
 

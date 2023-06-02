@@ -1,5 +1,5 @@
 const { Router } = require('express');
-
+const baseAuth = require('../baseAuth')
 
 // Funciones desde el controlador
 const {
@@ -11,25 +11,28 @@ const {
   deleteMaterialById,
   updateMaterialToPLC
 } = require("../../controllers/mes/material.controller");
+const { MATERIAL: NAME_MODULE } = require('../../constants/module_names');
 
 //Importacion de Router express
 const router = Router();
+
+const authenticate = baseAuth(NAME_MODULE);
 
 
 //Aqui las rutas necesarias --->
 
 //Listar todos los materiales en la base de datos
 
-router.get('/line', getMaterialsByLine);
-router.get('/:materialId', getMaterialsById);
-router.get('/', getMaterials);
-router.put('/:materialId', updateMaterialById);
-router.delete('/:materialId', deleteMaterialById);
+router.get('/line', authenticate, getMaterialsByLine);
+router.get('/:materialId', authenticate, getMaterialsById);
+router.get('/', authenticate, getMaterials);
+router.put('/:materialId', authenticate, updateMaterialById);
+router.delete('/:materialId', authenticate, deleteMaterialById);
 
 
 //Agregar nuevos materiales al base de datos
-router.post('/updateplc', updateMaterialToPLC);
-router.post('/', createMaterial);
+router.post('/updateplc', authenticate, updateMaterialToPLC);
+router.post('/', authenticate, createMaterial);
 
 
 module.exports = router;

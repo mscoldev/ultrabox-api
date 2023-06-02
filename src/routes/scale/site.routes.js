@@ -1,6 +1,6 @@
 
 const { Router } = require('express');
-
+const baseAuth = require('../baseAuth');
 
 const { getSites,
     getSiteById,
@@ -8,18 +8,23 @@ const { getSites,
     deleteSiteById,
     createSite } = require('../../controllers/scale/site.controller');
 
+
+const { SITE: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
+    
 const router = Router();
 
 
-router.get('/', getSites);
+router.get('/', authenticate, getSites);
 
-router.get('/:id', getSiteById);
+router.get('/:id', authenticate, getSiteById);
 
-router.put('/:id', updateSiteById);
+router.put('/:id', authenticate, updateSiteById);
 
-router.post('/', createSite);
+router.post('/', authenticate, createSite);
 
-router.delete('/:id', deleteSiteById);
+router.delete('/:id', authenticate, deleteSiteById);
 
 
 

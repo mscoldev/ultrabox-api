@@ -1,5 +1,5 @@
 const { Router } = require('express');
-
+const baseAuth = require('../baseAuth');
 
 // Funciones desde el controlador
 const { createRecipe,
@@ -7,15 +7,19 @@ const { createRecipe,
     updateRecipe,
     deleteRecipeById } = require("../../controllers/mes/recipe.controller");
 
+const { RECIPE: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
+
 //Importacion de Router express
 const router = Router();
 
 
 //Aqui las rutas necesarias --->
 
-router.post('/', createRecipe);
-router.get('/', getRecipe);
-router.put('/:recipeId', updateRecipe);
-router.delete('/:recipeId', deleteRecipeById);
+router.post('/', authenticate, createRecipe);
+router.get('/', authenticate, getRecipe);
+router.put('/:recipeId', authenticate, updateRecipe);
+router.delete('/:recipeId', authenticate, deleteRecipeById);
 
 module.exports = router;

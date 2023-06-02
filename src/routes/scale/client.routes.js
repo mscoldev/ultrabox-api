@@ -2,6 +2,7 @@
 const { Router } = require('express');
 
 const { validateJWT } = require('../../middlewares/validateJWT')
+const baseAuth = require('../baseAuth');
 
 
 
@@ -11,18 +12,23 @@ const { getClients,
     deleteClientById,
     createClient } = require('../../controllers/scale/client.controller');
 
+
+const { CLIENT: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
+
 const router = Router();
 
 
-router.get('/', getClients);
+router.get('/', authenticate, getClients);
 
-router.get('/:id', getClientById);
+router.get('/:id', authenticate, getClientById);
 
-router.put('/:id', updateClientById);
+router.put('/:id', authenticate, updateClientById);
 
-router.post('/', createClient);
+router.post('/', authenticate, createClient);
 
-router.delete('/:id', deleteClientById);
+router.delete('/:id', authenticate, deleteClientById);
 
 
 

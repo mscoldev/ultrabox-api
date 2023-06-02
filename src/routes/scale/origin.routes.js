@@ -1,5 +1,6 @@
 
 const { Router } = require('express');
+const baseAuth = require('../baseAuth');
 
 const { getOrigins,
     getOriginById,
@@ -7,18 +8,22 @@ const { getOrigins,
     deleteOriginById,
     createOrigin } = require('../../controllers/scale/origin.controller');
 
+const { ORIGIN: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
+
 const router = Router();
 
 
-router.get('/', getOrigins);
+router.get('/', authenticate, getOrigins);
 
-router.get('/:id', getOriginById);
+router.get('/:id', authenticate, getOriginById);
 
-router.put('/:id', updateOriginById);
+router.put('/:id', authenticate, updateOriginById);
 
-router.post('/', createOrigin);
+router.post('/', authenticate, createOrigin);
 
-router.delete('/:id', deleteOriginById);
+router.delete('/:id', authenticate, deleteOriginById);
 
 
 

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const passport = require('passport');
+const baseAuth = require('./baseAuth');
 
 // Funciones desde el controlador
 const {
@@ -9,6 +9,10 @@ const {
   updateConnectionDeviceController,
 } = require('../controllers/confApp.controller');
 
+const { CONF: NAME_MODULE } = require('../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
+
 //Importacion de Router express
 const router = Router();
 
@@ -16,16 +20,17 @@ const router = Router();
 
 router.get(
   '/company',
-  [passport.authenticate('jwt', { session: false })],
+  authenticate,
   getConfActiveCompany
 );
 
-router.put('/company', setConfCompany);
+router.put('/company', authenticate, setConfCompany);
 
 //CONFIGURACIÓN DE DEVICES
-router.post('/connection/device/controller', setConnectionDeviceController);
+router.post('/connection/device/controller', authenticate, setConnectionDeviceController);
 router.put(
   '/connection/device/controller/:_id',
+  authenticate,
   updateConnectionDeviceController
 );
 

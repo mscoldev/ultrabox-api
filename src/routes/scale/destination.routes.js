@@ -1,6 +1,6 @@
 
 const { Router } = require('express');
-
+const baseAuth = require('../baseAuth');
 
 
 
@@ -10,18 +10,23 @@ const { getDestinations,
     deleteDestinationById,
     createDestination } = require('../../controllers/scale/destination.controller');
 
+
+const { DESTINATION: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
+
 const router = Router();
 
 
-router.get('/', getDestinations);
+router.get('/', authenticate, getDestinations);
 
-router.get('/:id', getDestinationById);
+router.get('/:id', authenticate, getDestinationById);
 
-router.put('/:id', updateDestinationById);
+router.put('/:id', authenticate, updateDestinationById);
 
-router.post('/', createDestination);
+router.post('/', authenticate, createDestination);
 
-router.delete('/:id', deleteDestinationById);
+router.delete('/:id', authenticate, deleteDestinationById);
 
 
 

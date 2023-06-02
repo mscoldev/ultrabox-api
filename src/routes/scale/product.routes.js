@@ -1,23 +1,29 @@
 
 const { Router } = require('express');
+const baseAuth = require('../baseAuth');
+
 const { getProducts,
     getProductById,
     updateProductById,
     deleteProductById,
     createProduct } = require('../../controllers/scale/product.controller');
 
+const { PRODUCT: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
+
 const router = Router();
 
 
-router.get('/', getProducts);
+router.get('/', authenticate, getProducts);
 
-router.get('/:id', getProductById);
+router.get('/:id', authenticate, getProductById);
 
-router.put('/:id', updateProductById);
+router.put('/:id', authenticate, updateProductById);
 
-router.post('/', createProduct);
+router.post('/', authenticate, createProduct);
 
-router.delete('/:id', deleteProductById);
+router.delete('/:id', authenticate, deleteProductById);
 
 
 

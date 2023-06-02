@@ -1,6 +1,6 @@
 
 const { Router } = require('express');
-
+const baseAuth = require('../baseAuth');
 
 const { getDrivers,
     getDriverById,
@@ -8,18 +8,22 @@ const { getDrivers,
     deleteDriverById,
     createDriver } = require('../../controllers/scale/driver.controller');
 
+const { DRIVER: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
+
 const router = Router();
 
 
-router.get('/', getDrivers);
+router.get('/', authenticate, getDrivers);
 
-router.get('/:id', getDriverById);
+router.get('/:id', authenticate, getDriverById);
 
-router.put('/:id', updateDriverById);
+router.put('/:id', authenticate, updateDriverById);
 
-router.post('/', createDriver);
+router.post('/', authenticate, createDriver);
 
-router.delete('/:id', deleteDriverById);
+router.delete('/:id', authenticate, deleteDriverById);
 
 
 

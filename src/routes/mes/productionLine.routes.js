@@ -1,5 +1,5 @@
 const { Router } = require('express');
-
+const baseAuth = require('../baseAuth');
 
 // Funciones desde el controlador
 const {
@@ -11,21 +11,24 @@ const {
     getNameProdLinesByIdController
 } = require('../../controllers/mes/productionLine.controller');
 
+const { PRODUCTION_LINE: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
 
 const router = Router();
 
 
 //Routes production
-router.get('/', getProductionLines);
+router.get('/', authenticate, getProductionLines);
 
-router.get('/:_id', getProductionLineById);
-router.get('/name/:idc', getNameProdLinesByIdController);
+router.get('/:_id', authenticate, getProductionLineById);
+router.get('/name/:idc', authenticate, getNameProdLinesByIdController);
 
-router.post('/', createProductionLine);
+router.post('/', authenticate, createProductionLine);
 
-router.put('/:_id', updateProductionLineById);
+router.put('/:_id', authenticate, updateProductionLineById);
 
-router.delete('/:_id', deleteProductionLineById);
+router.delete('/:_id', authenticate, deleteProductionLineById);
 
 
 

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-
+const baseAuth = require('../baseAuth');
 
 // Funciones desde el controlador
 const {
@@ -10,20 +10,23 @@ const {
     deleteScheduleById
 } = require("../../controllers/mes/scheduling.controller");
 
+const { SCHEDULING: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
 
 const router = Router();
 
 
 //Routes TypesDocument
-router.get('/', getSchedule);
+router.get('/', authenticate, getSchedule);
 
-router.get('/:_id', getScheduleById);
+router.get('/:_id', authenticate, getScheduleById);
 
-router.post('/', setSchedule);
+router.post('/', authenticate, setSchedule);
 
-router.put('/:_id', updateScheduleById);
+router.put('/:_id', authenticate, updateScheduleById);
 
-router.delete('/:_id', deleteScheduleById);
+router.delete('/:_id', authenticate, deleteScheduleById);
 
 
 

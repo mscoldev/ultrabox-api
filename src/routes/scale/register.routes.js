@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const passport = require('passport');
+const baseAuth = require('../baseAuth');
 
 const { getRegisters,
     getRegisterById,
@@ -8,24 +8,24 @@ const { getRegisters,
     deleteRegisterById,
     createRegister } = require('../../controllers/scale/register.controller');
 
+const { REGISTER: NAME_MODULE } = require('../../constants/module_names');
+
+const authenticate = baseAuth(NAME_MODULE);
+
 const router = Router();
 
 
-router.get('/', getRegisters);
+router.get('/', authenticate, getRegisters);
 
-router.get('/:id', getRegisterById);
+router.get('/:id', authenticate, getRegisterById);
 
-router.get('/truck/:numberPlate', getLastRegisterByNumberPlate);
+router.get('/truck/:numberPlate', authenticate, getLastRegisterByNumberPlate);
 
-router.put('/:id', [
-    passport.authenticate('jwt', { session: false })
-], updateRegisterById);
+router.put('/:id', authenticate, updateRegisterById);
 
-router.post('/', [
-    passport.authenticate('jwt', { session: false })
-], createRegister);
+router.post('/', authenticate, createRegister);
 
-router.delete('/:id', deleteRegisterById);
+router.delete('/:id', authenticate, deleteRegisterById);
 
 
 
