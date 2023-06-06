@@ -18,6 +18,7 @@ const SCHEDULING = 'Dashboard'
 const TYPES_DOCUMENT = 'Dashboard'
 const CONF = 'Dashboard'
 const FILES = 'Dashboard'
+const MODULE = 'Dashboard'
 
 
 
@@ -42,4 +43,5 @@ module.exports = {
   TYPES_DOCUMENT,
   CONF,
   FILES,
+  MODULE,
 };

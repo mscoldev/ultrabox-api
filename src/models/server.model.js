@@ -40,6 +40,7 @@ class Server {
       typesDocument: '/api/typesDocument',
       productionLog: '/api/mes/productionLog',
       location: '/api/mes/location',
+      module: '/api/mes/module',
       scheduling: '/api/mes/scheduling',
       tools: '/api/mes/tools',
 
@@ -146,6 +147,7 @@ class Server {
     this.app.use(this.paths.typesDocument, require('../routes/mes/typesDocument.routes'));
     this.app.use(this.paths.productionLog, require('../routes/mes/productionLogs.routes'));
     this.app.use(this.paths.location, require('../routes/mes/location.routes'));
+    this.app.use(this.paths.module, require('../routes/mes/module.routes'));
     this.app.use(this.paths.scheduling, require('../routes/mes/scheduling.routes'));
     this.app.use(this.paths.tools, require('../routes/tools/units.routes'));
 
