@@ -31,27 +31,27 @@ const getChildrenModuleById = async (req = request, res = response) => {
     }
 }
 
-// const updateRoleById = async (req = request, res = response) => {
-//     try {
-//         const paramsId = req.params._id;
-//         const body = req.body;
-//         const updatedRole = await Role.findByIdAndUpdate(paramsId, body, { new: true });
-//         if (updatedRole != null) {
-//             res.status(200).json({
-//                 msg: 'Role actualizado por Id',
-//                 updatedRole
-//             });
-//         } else {
-//             res.status(404).json({
-//                 msg: 'Role no encontrado, verifique el Id ingresado'
-//             })
-//         }
-//     } catch (err) {
-//         return res.status(500).json({
-//             message: err.message
-//         })
-//     }
-// }
+const updateModuleById = async (req = request, res = response) => {
+    try {
+        const paramsId = req.params._id;
+        const body = req.body;
+        const updatedModule = await Module.findByIdAndUpdate(paramsId, body, { new: true });
+        if (updatedModule != null) {
+            res.status(200).json({
+                msg: 'Modulo actualizado por Id',
+                updatedModule
+            });
+        } else {
+            res.status(404).json({
+                msg: 'Modulo no encontrado, verifique el Id ingresado'
+            })
+        }
+    } catch (err) {
+        return res.status(500).json({
+            message: err.message
+        })
+    }
+}
 
 const deleteModuleById = async (req = request, res = response) => {
     try {
@@ -59,14 +59,14 @@ const deleteModuleById = async (req = request, res = response) => {
         console.log(paramsId);
         const body = { deleted: true }
         const deletedModule = await Module.findByIdAndUpdate(paramsId, body);
-        console.log(deletedRole);
-        if (deletedRole != null) {
+        console.log(deletedModule);
+        if (deletedModule != null) {
             res.status(202).json({
-                msg: 'Role eliminado Id:' + paramsId
+                msg: 'Modulo eliminado Id:' + paramsId
             });
         } else {
             res.status(404).json({
-                msg: 'Role no encontrado, verifique el Id ingresado'
+                msg: 'Modulo no encontrado, verifique el Id ingresado'
             })
         }
     } catch (err) {
@@ -95,4 +95,4 @@ const createModule = async (req = request, res = response) => {
 
 
 
-module.exports = { createModule, getModules, getChildrenModuleById, deleteModuleById }
+module.exports = { createModule, getModules, updateModuleById, getChildrenModuleById, deleteModuleById }

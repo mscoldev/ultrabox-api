@@ -6,6 +6,7 @@ const {
     getModules,
     getChildrenModuleById,
     createModule,
+    updateModuleById,
     deleteModuleById,
 } = require("../../controllers/mes/module.controller");
 
@@ -22,6 +23,8 @@ router.get('/', authenticate, getModules);
 router.get('/:_id',  authenticate, getChildrenModuleById);
 
 router.post('/',  authenticate, createModule);
+
+router.put('/:_id', authenticate, updateModuleById);
 
 router.delete('/:_id', authenticate, deleteModuleById);
 
