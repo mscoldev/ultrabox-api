@@ -4,29 +4,15 @@ const { Types } = require('mongoose');
 const Material = require('../../models/material.model');
 const setValuesToPLC = require('../../controllers/mes/PLCs/plcs.controller');
 const Device = require('../../models/connections/device.model');
+const {getTagDevice}= require('../../helpers/subapi')
 
-// class ControladorABMES {
-//   constructor(infoPLC) {
-//     this.ip = infoPLC.ip; //IP del controlador
-//     this.slot = infoPLC.slot; //Slot del controladorSlot del controlador
-//     this.tagNameArray = infoPLC.tagNameArray; //tagNameArray del controladorNombre con el que se definió para el canal de entrada de materiales.
-//     this.limitInputs = infoPLC.limitInputs; // Numero de canales de entrada.
-//     this.limitMaterials = infoPLC.limitMaterials; // Numero maximo de materiales a crear en el controlador.
-//     // this.materials = infoPLC.materials;
-//   }
+
 
 const updateMaterialToPLC = async (req = request, res = response, next) => {
   const deviceMasterName = 'PLC_PRINCIPAL';
   const tagNameArray = 'COMPONENTE';
 
-  // Leer los datos de de configuración del PLC que están registrados en la base de datos.
-  // const infoPLC = {
-  //   ip: '192.168.201.108',
-  //   slot: 3,
-  //   nameTagChannelIn: '',
-  //   limitInputs: 14,
-  //   limitMaterials: 14,
-  // };
+
   const material = await Material.find({}).select({
     _id: 0,
     name: 1,
@@ -94,7 +80,7 @@ const updateMaterialToPLC = async (req = request, res = response, next) => {
 
 const getMaterials = async (req = request, res = response) => {
   try {
-    const materials = await Material.find({ deleted: false })
+    const materialsPromise = Material.find({ deleted: false })
       .populate([
         {
           path: 'productionLineUse',
@@ -108,9 +94,23 @@ const getMaterials = async (req = request, res = response) => {
         model: 'Unit',
       })
       .exec();
+    const endpoint = '/device/tag'
+    const urlApi = `${process.env.API_DEVICE_CONNECT}${endpoint}`;
+    const confDevice = {
+      address: "192.168.201.108",
+      slot: 2,
+      tag: "PROD_TOLVAS[1,0]",
+      length: 30,
+    };
+
+    const tagDevicePromise = getTagDevice(urlApi, confDevice);
+
+    const [materials, data] = await Promise.all([materialsPromise, tagDevicePromise]);
+
     res.status(200).json({
       msg: 'List of materials',
       materials,
+      device: data.data
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
